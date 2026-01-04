@@ -1,0 +1,90 @@
+name: OpenCode
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened, assigned]
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  opencode:
+    if: |
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@opencode')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@opencode')) ||
+      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@opencode')) ||
+      (github.event_name == 'issues' && (contains(github.event.issue.body, '@opencode') || contains(github.event.issue.title, '@opencode')))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      actions: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install OpenCode
+        run: npm install -g opencode
+
+      - name: Determine context
+        id: context
+        run: |
+          if [[ "${{ github.event_name }}" == "issue_comment" ]]; then
+            echo "type=issue_comment" >> $GITHUB_OUTPUT
+            echo "number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+            echo "body=${{ github.event.comment.body }}" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "pull_request_review_comment" ]]; then
+            echo "type=pr_comment" >> $GITHUB_OUTPUT
+            echo "number=${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+            echo "body=${{ github.event.comment.body }}" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "pull_request_review" ]]; then
+            echo "type=pr_review" >> $GITHUB_OUTPUT
+            echo "number=${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+            echo "body=${{ github.event.review.body }}" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "issues" ]]; then
+            echo "type=issue" >> $GITHUB_OUTPUT
+            echo "number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
+            echo "body=${{ github.event.issue.body }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run OpenCode
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENCODE_PROVIDER: copilot
+        run: |
+          opencode --print "
+          REPO: ${{ github.repository }}
+          EVENT: ${{ steps.context.outputs.type }}
+          NUMBER: ${{ steps.context.outputs.number }}
+
+          You have been mentioned in this repository. Follow the instructions in AGENTS.md.
+
+          Key guidelines:
+          - spec.md is the product spec - do not implement anything that contradicts it
+          - One issue = one branch = one PR
+          - TDD required: write tests first, then implement
+          - Use gh CLI to interact with issues and PRs
+          - For bugs, file as GitHub Issue
+          - For non-blocking feedback, create follow-up GitHub Issues
+
+          Unity project conventions:
+          - C#: PascalCase for types/public, camelCase for locals/private
+          - Prefer composition over inheritance
+          - Keep MonoBehaviours small, move logic to plain C# classes
+          - EditMode tests for pure logic, PlayMode for scene-dependent
+
+          Use \`gh issue view ${{ steps.context.outputs.number }}\` or \`gh pr view ${{ steps.context.outputs.number }}\` to see full context.
+          Respond by commenting on the issue/PR with your findings or actions taken.
+          "

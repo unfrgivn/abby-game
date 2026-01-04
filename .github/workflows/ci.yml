@@ -1,0 +1,120 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    name: Validate Unity Project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Check Unity project structure
+        run: |
+          if [[ ! -d "UnityProject" ]]; then
+            echo "Warning: UnityProject directory not found (expected for M0)"
+            exit 0
+          fi
+          echo "Unity project found at UnityProject/"
+
+      - name: Validate required files
+        run: |
+          echo "Checking required documentation..."
+          test -f "spec.md" && echo "✓ spec.md found" || echo "✗ spec.md missing"
+          test -f "AGENTS.md" && echo "✓ AGENTS.md found" || echo "✗ AGENTS.md missing"
+          test -f "docs/setup.md" && echo "✓ docs/setup.md found" || echo "✗ docs/setup.md missing"
+
+  unity-tests:
+    name: Unity Tests
+    runs-on: ubuntu-latest
+    # Only run if Unity project exists
+    if: hashFiles('UnityProject/ProjectSettings/ProjectVersion.txt') != ''
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Get Unity version
+        id: unity-version
+        run: |
+          VERSION=$(head -1 UnityProject/ProjectSettings/ProjectVersion.txt | cut -d ' ' -f 2)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Unity version: $VERSION"
+
+      - name: Cache Unity Library
+        uses: actions/cache@v4
+        with:
+          path: UnityProject/Library
+          key: Library-${{ hashFiles('UnityProject/Assets/**', 'UnityProject/Packages/**', 'UnityProject/ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      - name: Run EditMode tests
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: UnityProject
+          testMode: editmode
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkName: EditMode Tests
+
+      - name: Run PlayMode tests
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: UnityProject
+          testMode: playmode
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkName: PlayMode Tests
+
+  unity-build:
+    name: Unity Build (macOS)
+    runs-on: ubuntu-latest
+    needs: unity-tests
+    # Only run on main branch pushes
+    if: github.ref == 'refs/heads/main' && hashFiles('UnityProject/ProjectSettings/ProjectVersion.txt') != ''
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Cache Unity Library
+        uses: actions/cache@v4
+        with:
+          path: UnityProject/Library
+          key: Library-${{ hashFiles('UnityProject/Assets/**', 'UnityProject/Packages/**', 'UnityProject/ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      - name: Build macOS
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: UnityProject
+          targetPlatform: StandaloneOSX
+          buildName: TinyWilds
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TinyWilds-macOS
+          path: build/StandaloneOSX
+          retention-days: 14

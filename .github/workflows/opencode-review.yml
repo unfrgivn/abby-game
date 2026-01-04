@@ -1,0 +1,63 @@
+name: OpenCode PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "UnityProject/**/*.cs"
+      - "docs/**/*.md"
+      - "scripts/**/*.sh"
+
+jobs:
+  opencode-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install OpenCode
+        run: npm install -g opencode
+
+      - name: Run OpenCode PR Review
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENCODE_PROVIDER: copilot
+        run: |
+          opencode --print "
+          REPO: ${{ github.repository }}
+          PR NUMBER: ${{ github.event.pull_request.number }}
+
+          Please review this pull request following the guidelines in AGENTS.md:
+
+          ## Review Focus:
+          - Code quality and C# best practices (PascalCase types/public, camelCase locals/private)
+          - Unity patterns (composition over inheritance, small MonoBehaviours)
+          - Potential bugs or issues
+          - Test coverage (EditMode for pure logic, PlayMode for scene-dependent)
+          - Alignment with spec.md goals
+
+          ## Merge Policy (from AGENTS.md):
+          Only block for serious problems:
+          - Failing tests or broken build
+          - Breaking changes to player flow, save model, or public APIs
+          - Behavior contradicts spec.md or introduces unplanned scope
+          - Crash, data loss, security issue, or major performance regression
+          - New third-party dependency without approval
+
+          For non-blocking feedback, suggest creating follow-up GitHub Issues.
+
+          Use \`gh pr comment ${{ github.event.pull_request.number }}\` to leave your review.
+          Use \`gh pr diff ${{ github.event.pull_request.number }}\` to see the changes.
+          "
