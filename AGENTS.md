@@ -146,3 +146,4 @@ After code changes:
 
 - Subagents are defined in `.opencode/agent/*.md`
 - Custom tools are defined in `.opencode/tool/*.ts`
+- Be sure to always cleanup any temp files created while testing and commit work when finished.
