@@ -35,8 +35,8 @@ Before modifying ANY file in the repository, agents MUST:
    - Follow TDD: write tests first when applicable.
 
 4. **Open a Pull Request**
-   - PR title must include the issue reference (e.g., `feat: Add lantern scanning (#42)`).
-   - Link the PR to the GitHub Issue.
+   - PR title should be descriptive but should **not** include the issue number (e.g., `feat: Add lantern scanning`).
+   - Link the PR to the GitHub Issue in the PR description (e.g., `Closes #42` or `Fixes #42`).
    - Wait for CI/review if configured.
 
 5. **Rebase and merge to main**
@@ -57,7 +57,7 @@ Before modifying ANY file in the repository, agents MUST:
 - Branch name must include the Linear issue key (or GitHub issue number for pure-bug work), for example:
   - `feat/TW-123-blacklight-notes`
   - `fix/gh-456-shop-crash`
-- PR title must include the same identifier so Linear links the PR back to the issue. :contentReference[oaicite:1]{index=1}
+- PR title should be descriptive without the issue number; link the issue in the PR description instead (e.g., `Closes #456` or `Relates to TW-123`).
 
 ## Worktrees (worktrunk)
 
