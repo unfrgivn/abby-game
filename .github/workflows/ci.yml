@@ -34,15 +34,25 @@ jobs:
   unity-tests:
     name: Unity Tests
     runs-on: ubuntu-latest
-    # Only run if Unity project exists
-    if: hashFiles('UnityProject/ProjectSettings/ProjectVersion.txt') != ''
+    needs: validate
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           lfs: true
 
+      - name: Check Unity project exists
+        id: check-unity
+        run: |
+          if [[ -f "UnityProject/ProjectSettings/ProjectVersion.txt" ]]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Unity project not found - skipping tests"
+          fi
+
       - name: Get Unity version
+        if: steps.check-unity.outputs.exists == 'true'
         id: unity-version
         run: |
           VERSION=$(head -1 UnityProject/ProjectSettings/ProjectVersion.txt | cut -d ' ' -f 2)
@@ -50,6 +60,7 @@ jobs:
           echo "Unity version: $VERSION"
 
       - name: Cache Unity Library
+        if: steps.check-unity.outputs.exists == 'true'
         uses: actions/cache@v4
         with:
           path: UnityProject/Library
@@ -58,6 +69,7 @@ jobs:
             Library-
 
       - name: Run EditMode tests
+        if: steps.check-unity.outputs.exists == 'true'
         uses: game-ci/unity-test-runner@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -70,6 +82,7 @@ jobs:
           checkName: EditMode Tests
 
       - name: Run PlayMode tests
+        if: steps.check-unity.outputs.exists == 'true'
         uses: game-ci/unity-test-runner@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -85,15 +98,25 @@ jobs:
     name: Unity Build (macOS)
     runs-on: ubuntu-latest
     needs: unity-tests
-    # Only run on main branch pushes
-    if: github.ref == 'refs/heads/main' && hashFiles('UnityProject/ProjectSettings/ProjectVersion.txt') != ''
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           lfs: true
 
+      - name: Check Unity project exists
+        id: check-unity
+        run: |
+          if [[ -f "UnityProject/ProjectSettings/ProjectVersion.txt" ]]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Unity project not found - skipping build"
+          fi
+
       - name: Cache Unity Library
+        if: steps.check-unity.outputs.exists == 'true'
         uses: actions/cache@v4
         with:
           path: UnityProject/Library
@@ -102,6 +125,7 @@ jobs:
             Library-
 
       - name: Build macOS
+        if: steps.check-unity.outputs.exists == 'true'
         uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -113,6 +137,7 @@ jobs:
           buildName: TinyWilds
 
       - name: Upload build artifact
+        if: steps.check-unity.outputs.exists == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: TinyWilds-macOS
