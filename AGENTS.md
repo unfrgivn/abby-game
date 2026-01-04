@@ -38,14 +38,57 @@ Before modifying ANY file in the repository, agents MUST:
 4. **Open a Pull Request**
    - PR title should be descriptive but should **not** include the issue number (e.g., `feat: Add lantern scanning`).
    - Link the PR to the GitHub Issue in the PR description (e.g., `Closes #42` or `Fixes #42`).
-   - Wait for CI/review if configured.
 
-5. **Rebase and merge to main**
+5. **Wait for CI checks to pass**
+   - Monitor PR checks: `gh pr checks <pr-number> --watch`
+   - All required checks must pass before merging.
+   - If checks fail, see "Handling PR failures" below.
+
+6. **Rebase and merge to main**
    - Rebase from `main` before merging to ensure a linear history: `git fetch origin && git rebase origin/main`.
    - Always use **squash merge** to keep `main` history clean: `gh pr merge <pr-number> --squash --delete-branch`.
-   - Delete the branch after merge.
+   - The `--delete-branch` flag removes the remote branch automatically.
+
+7. **Clean up worktree**
+   - After merge completes, remove the local worktree: `wt remove <branch-name>`
+   - Verify cleanup: `wt list` should no longer show the branch.
 
 **Why this matters**: Untracked changes on `main` break history, make rollbacks hard, and bypass review. All work must be traceable.
+
+### Handling PR failures
+
+When CI checks fail or the PR cannot be merged:
+
+1. **Identify the failure**
+   - Run `gh pr checks <pr-number>` to see which checks failed.
+   - Run `gh pr view <pr-number>` to see review comments or merge conflicts.
+
+2. **Attempt to fix autonomously**
+   - For test failures: read the logs, fix the code, push a new commit.
+   - For lint/format failures: run the appropriate fix command and push.
+   - For merge conflicts: rebase on main and resolve conflicts.
+   - For review feedback: address comments and push fixes.
+
+3. **If autonomous fix fails, escalate**
+   - After 2-3 failed fix attempts, STOP further attempts.
+   - Document what was tried and what failed.
+   - Propose options to the user:
+     ```
+     PR #42 is failing and I cannot resolve it autonomously.
+     
+     **What failed**: [specific check/error]
+     **What I tried**: [list of fix attempts]
+     **Why it didn't work**: [explanation]
+     
+     **Options to move forward**:
+     1. [Option A] - [implications]
+     2. [Option B] - [implications]
+     3. [Manual intervention needed] - [what the user needs to do]
+     
+     Which approach would you like me to take?
+     ```
+
+4. **Never force-merge or skip checks** without explicit user approval.
 
 ## One issue = one branch = one PR
 
@@ -99,7 +142,19 @@ wt switch -c feat/gh-42-add-lantern
 # 3. Worktree created at: ~/Sites/project.feat-gh-42-add-lantern
 #    All work for this issue happens in that directory
 
-# 4. After PR merges, clean up
+# 4. Make changes, commit, push, create PR
+git add . && git commit -m "Add lantern feature (#42)"
+git push -u origin feat/gh-42-add-lantern
+gh pr create --title "feat: Add lantern feature" --body "Closes #42"
+
+# 5. Wait for CI checks to pass
+gh pr checks <pr-number> --watch
+
+# 6. Rebase and squash merge
+git fetch origin && git rebase origin/main
+gh pr merge <pr-number> --squash --delete-branch
+
+# 7. Clean up worktree
 wt remove feat/gh-42-add-lantern
 ```
 
