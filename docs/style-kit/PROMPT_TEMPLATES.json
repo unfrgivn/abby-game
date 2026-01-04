@@ -1,0 +1,108 @@
+{
+  "global_style_stamp": "Stylized cozy 3D game art; top-down 3/4 view at ~60\u00b0 tilt; chunky toy-like shapes; flat painted materials; minimal texture detail; bright but calm palette; soft sunlight; clean silhouettes; playful kid-imagination vibe; no realism; no gritty.",
+  "palette": [
+    {
+      "name": "paper_white",
+      "hex": "#F5F3EE",
+      "note": "Paper white (UI, highlights)"
+    },
+    {
+      "name": "warm_gray",
+      "hex": "#CFC8BD",
+      "note": "Warm gray (stone, muted UI)"
+    },
+    {
+      "name": "deep_ink",
+      "hex": "#2D2A2A",
+      "note": "Deep ink (lines, text)"
+    },
+    {
+      "name": "sky",
+      "hex": "#7EC8FF",
+      "note": "Sky blue"
+    },
+    {
+      "name": "sky_light",
+      "hex": "#CFEFFF",
+      "note": "Sky light (haze, highlights)"
+    },
+    {
+      "name": "water",
+      "hex": "#2F86D6",
+      "note": "Water deep"
+    },
+    {
+      "name": "water_shallow",
+      "hex": "#66C7E8",
+      "note": "Water shallow"
+    },
+    {
+      "name": "grass",
+      "hex": "#63C35C",
+      "note": "Grass base"
+    },
+    {
+      "name": "grass_light",
+      "hex": "#A6E67E",
+      "note": "Grass highlight"
+    },
+    {
+      "name": "dirt",
+      "hex": "#C9A06A",
+      "note": "Dirt path"
+    },
+    {
+      "name": "rock",
+      "hex": "#8E97A3",
+      "note": "Rock neutral"
+    },
+    {
+      "name": "tree_leaf",
+      "hex": "#3DBB7A",
+      "note": "Leaf base"
+    },
+    {
+      "name": "tree_trunk",
+      "hex": "#B57B4B",
+      "note": "Trunk / wood"
+    },
+    {
+      "name": "sun_yellow",
+      "hex": "#FFD45A",
+      "note": "Accent: sunny yellow"
+    },
+    {
+      "name": "coral",
+      "hex": "#FF6F61",
+      "note": "Accent: coral"
+    },
+    {
+      "name": "purple",
+      "hex": "#7B6DFF",
+      "note": "Accent: purple"
+    }
+  ],
+  "negative_common": "photorealistic, realistic skin, gritty, horror, dark, high-frequency texture, microdetail, noisy, film grain, chromatic aberration, excessive bloom, harsh shadows, complex patterns, text, watermark, logo, UI text.",
+  "templates": {
+    "key_art_world_vibe": {
+      "prompt": "[SCENE], [MOOD]. Stylized cozy 3D game concept art, top-down 3/4 view at ~60\u00b0 tilt, chunky toy-like shapes, flat painted materials, minimal texture detail, soft sunlight, clean silhouettes, kid-imagination playground vibe. Include landmarks and a readable path. Palette limited to provided hex colors. No text.",
+      "negative": "photorealistic, realistic skin, gritty, horror, dark, high-frequency texture, microdetail, noisy, film grain, chromatic aberration, excessive bloom, harsh shadows, complex patterns, text, watermark, logo, UI text."
+    },
+    "environment_zone": {
+      "prompt": "Top-down 3/4 environment concept for a small open area: [SCENE]. Clear loop path, 3 landmark sightlines, clustered props, low fences, no tall walls. Chunky shapes, flat colors, soft shadows, minimal textures. Palette locked. No text.",
+      "negative": "photorealistic, realistic skin, gritty, horror, dark, high-frequency texture, microdetail, noisy, film grain, chromatic aberration, excessive bloom, harsh shadows, complex patterns, text, watermark, logo, UI text."
+    },
+    "character_turnaround": {
+      "prompt": "Orthographic character turnaround sheet: front, side, back, 3/4. Clean neutral background. Chunky toy-like proportions, flat colors, minimal details, palette limited. No labels, no text.",
+      "negative": "photorealistic, realistic skin, gritty, horror, dark, high-frequency texture, microdetail, noisy, film grain, chromatic aberration, excessive bloom, harsh shadows, complex patterns, text, watermark, logo, UI text."
+    },
+    "prop_sheet_isolated": {
+      "prompt": "3D prop sheet, isolated on neutral background: [SUBJECT LIST]. Chunky shapes, flat painted materials, minimal texture detail, palette limited. No labels, no text.",
+      "negative": "photorealistic, realistic skin, gritty, horror, dark, high-frequency texture, microdetail, noisy, film grain, chromatic aberration, excessive bloom, harsh shadows, complex patterns, text, watermark, logo, UI text."
+    },
+    "ui_sticker_kit": {
+      "prompt": "UI kit, sticker style: quest tracker panel, interaction prompt bubble, minimap frame, inventory/tool wheel, icon set. Rounded corners, paper feel, thick outline icons. Palette limited. No text.",
+      "negative": "photorealistic, realistic skin, gritty, horror, dark, high-frequency texture, microdetail, noisy, film grain, chromatic aberration, excessive bloom, harsh shadows, complex patterns, text, watermark, logo, UI text."
+    }
+  }
+}

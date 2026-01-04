@@ -1,0 +1,17 @@
+name,hex,note
+paper_white,#F5F3EE,"Paper white (UI, highlights)"
+warm_gray,#CFC8BD,"Warm gray (stone, muted UI)"
+deep_ink,#2D2A2A,"Deep ink (lines, text)"
+sky,#7EC8FF,Sky blue
+sky_light,#CFEFFF,"Sky light (haze, highlights)"
+water,#2F86D6,Water deep
+water_shallow,#66C7E8,Water shallow
+grass,#63C35C,Grass base
+grass_light,#A6E67E,Grass highlight
+dirt,#C9A06A,Dirt path
+rock,#8E97A3,Rock neutral
+tree_leaf,#3DBB7A,Leaf base
+tree_trunk,#B57B4B,Trunk / wood
+sun_yellow,#FFD45A,Accent: sunny yellow
+coral,#FF6F61,Accent: coral
+purple,#7B6DFF,Accent: purple
