@@ -2,46 +2,43 @@
 
 ## Biomes (start with 2)
 1. Meadow Park
-- rolling grass, flowers, picnic props, cardboard forts, signposts
+- Rolling hills (smooth curves, no sharp cliffs).
+- Vibrant green grass gradient (lime to forest).
+- Props: Picnic baskets, checkered blankets, cardboard castles, chunky signposts.
 2. Beach Cove
-- sand, shells, driftwood, small dock, floaties, tide pools
+- Soft sand (warm beige/yellow).
+- Round smooth rocks, drift-logs (no splinters), plastic bucket castles.
 
 ## Landmarks (exploration anchors)
-- Clubhouse tree (visible from many angles)
-- Cardboard fort tower (silly silhouette)
-- Kite hill / windmill (motion draws attention)
-- Friendly “cave” tunnel (not scary; playful)
+- **Clubhouse Tree:** Massive, round canopy (like broccoli), distinct silhouette.
+- **Cardboard Fort Tower:** Taped together, marker drawings, silly flags.
+- **Kite Hill:** Soft slope, wind chimes, spinning pinwheels.
 
 ## Dressing rules
-- Fewer, bigger props beat many small props.
-- Cluster props in 3s and 5s.
-- Keep paths readable; avoid clutter near intersections.
-- Use accent colors to mark “things you can do.”
+- **Clumping:** Nature isn't scattered evenly. Trees grow in friend groups (3-5).
+- **Scale:** Props are oversized. A flower is 30% of player height. A pebble is a distinct shape, not noise.
+- **Pathing:** Dirt paths are warm terracotta/salmon, carved into the green with soft edges.
 
 ## Starter prop kit (build first)
-Nature
-- Trees: round canopy, tall thin, palm-ish (3)
-- Rocks: small, medium, flat (3)
-- Bushes (2)
-- Flowers/grass clumps (3)
-- Log + stump (2)
+Nature (Soft/Round)
+- **Trees:** Sphere clusters (puff balls), Balloon style, Palm-ish (thick smooth trunk).
+- **Rocks:** River stones (smooth), gumdrops.
+- **Bushes:** Mounds, cloud shapes.
+- **Flowers:** Daisy (big center), Tulip (closed cup), distinct oversized.
 
 Playground/craft
-- Cardboard fort pieces: wall, door, ramp, tower (4)
-- Signs: arrow sign, notice board (2)
-- Bench + picnic table (2)
-- Rope bridge segments (3)
-- Flags/cones/lantern string (3)
-- Craft items: tape roll, paint bucket, giant marker, sticker sheet (4)
+- **Cardboard:** Walls with flap details, tape strips (visible texture).
+- **Signs:** Chunky wood, painted with icons (no small text).
+- **Furniture:** Benches are thick planks, picnic tables have rounded corners.
+- **Decor:** Bunting flags, paper lanterns, sidewalk chalk drawings.
 
 Interactables
-- Collectible: stickers (20 in the zone)
-- Critters: 6 simple “photo subjects”
-- Quest objects: lost hat, kite, snack box, map piece (4)
+- **Collectible:** Holographic Stickers (sparkle shader), "Shiny" rocks.
+- **Critters:** Round frogs, cube-ish ducks, simple shapes.
 
 ## Tiny vertical slice (one zone)
 Meadow Park loop path with:
-- 2 NPCs
-- 1 collectible type
-- 1 landmark fort
-- 1 “reward moment” (sticker badge into a book page)
+- 2 NPCs (Chibi proportion)
+- 1 Collectible type (Star Sticker)
+- 1 Landmark (Cardboard Castle)
+- 1 "Reward Moment" (Sticker page reveal)

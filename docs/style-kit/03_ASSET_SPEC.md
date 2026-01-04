@@ -2,51 +2,44 @@
 
 ## Units and scale
 - 1 Unity unit = 1 meter
-- Player height: 1.2 m (toy-like)
-- Doorway props: ~1.6 m (still feels big and inviting)
+- Player height: 1.0 m (Classic Chibi)
+- Doorway props: ~1.5 m (Wide and accessible)
 
-## Player proportions
-- Head: 40%–45% of total height
-- Torso: 35%–40%
-- Legs: 20%–25%
-- Hands/feet: oversized (mittens/boots)
-- Face: dot eyes + simple mouth; minimal features
+## Player proportions (Chibi Style)
+- **Head:** ~45-50% of total height. Big and expressive.
+- **Hair:** Chunky tufts, messy bun (Fae's signature). No individual strands.
+- **Body:** Small, compact torso.
+- **Limbs:** Rounded "noodle" limbs or soft cylinders. No sharp elbows/knees.
+- **Hands/Feet:** Oversized for readability. Mittens or minimal finger detail.
+- **Face:** Wide set dot eyes, simple mouth, small blush stickers.
 
-## Poly budgets (guidance, not law)
-Keep it simple; prioritize silhouette.
-- Player: 2k–6k tris
-- NPC: 1.5k–5k tris
-- Trees: 200–1.5k tris
-- Small props: 50–800 tris
-- Landmarks: 2k–10k tris (split into chunks if needed)
+## Poly budgets (guidance)
+Prioritize silhouette smoothness.
+- **Player:** 4k–8k tris (Focus on round head/hair and backpack details).
+- **NPC:** 2k–5k tris.
+- **Trees:** 500–2k tris (Blobby canopies).
+- **Small props:** 100–1k tris.
 
-## Textures
-Default: none (flat colors or vertex colors).
-If required:
-- 512–1024 px for hero props
-- 256–512 px for small props
-Avoid:
-- high-frequency noise
-- realistic photo textures
-
-## Materials
-- Matte, non-metallic
-- Roughness: mid to high
-- Metallic: 0
-- Optional subtle rim light (very faint)
+## Textures & Materials
+- **Default Material:** "Soft Plastic" / Matte Clay.
+  - Roughness: High (0.8).
+  - Metallic: 0.
+- **Fae's Backpack:** Special "Holo-Sparkle" shader.
+  - Iridescent gradients.
+  - Glitter texture mask.
+- **Faces:** Decal sheet or separate material for expression swapping.
 
 ## Naming conventions
 `cat_item_variant_size`
 Examples:
-- `prop_tree_round_m`
-- `prop_sign_arrow_s`
-- `npc_frog_shopkeeper`
-- `collect_sticker_star`
+- `char_fae_base`
+- `prop_tree_puff_l`
+- `prop_sign_chunky_s`
+- `vfx_sparkle_star`
 
 ## Collisions
-- Use primitive colliders whenever possible
-- Keep collisions forgiving; players should not get “stuck” on corners
+- Use primitive Capsules and Spheres.
+- Soft edges everywhere.
 
 ## LOD
-Only add LOD if performance demands it.
-First: solve with fewer objects, simpler meshes, baked lighting.
+- Aggressive LODs for mobile, but keep the silhouette "round" even at distance.
