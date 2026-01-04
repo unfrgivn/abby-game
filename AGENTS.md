@@ -26,7 +26,9 @@ Before modifying ANY file in the repository, agents MUST:
    - If a Linear issue already exists, reference it; otherwise create the GitHub Issue first.
 
 2. **Create a worktree and feature branch (REQUIRED)**
-   - **ALWAYS use Worktrunk** to create a new worktree: `wt switch -c <branch-name>`
+   - **BLOCKING REQUIREMENT:** You MUST check for Worktrunk (`wt`) before creating any branch.
+   - Run `wt list` to verify availability.
+   - If `wt` exists, you **MUST** use `wt switch -c <branch-name>`. **DO NOT** use `git checkout -b`.
    - Branch from `main`.
    - Name format: `<type>/gh-<issue-number>-<short-description>` (e.g., `feat/gh-42-add-lantern`, `fix/gh-99-combat-crash`, `chore/gh-7-update-docs`).
    - **Work in the new worktree directory**, not the main checkout.
@@ -54,6 +56,11 @@ Before modifying ANY file in the repository, agents MUST:
    - Verify cleanup: `wt list` should no longer show the branch.
 
 **Why this matters**: Untracked changes on `main` break history, make rollbacks hard, and bypass review. All work must be traceable.
+
+## Forbidden Actions
+
+- **NEVER** use `git checkout -b` or `git switch -c` if the `wt` command is available.
+- **NEVER** start coding without verifying you are in the correct worktree directory.
 
 ### Handling PR failures
 
