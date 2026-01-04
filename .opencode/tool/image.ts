@@ -32,8 +32,8 @@ export const generate = tool({
     if (args.preview) cmdParts.push("--preview")
 
     const geminiCmd = cmdParts.join(" ")
-    const result = await Bun.$`gemini -p ${geminiCmd}`.text()
-    return `Command: gemini -p '${geminiCmd}'\n\nOutput:\n${result}\n\nImages saved to ./${outputDir}/`
+    const result = await Bun.$`gemini --yolo -p ${geminiCmd}`.text()
+    return `Command: gemini --yolo -p '${geminiCmd}'\n\nOutput:\n${result}\n\nImages saved to ./${outputDir}/`
   },
 })
 
@@ -49,8 +49,8 @@ export const edit = tool({
     if (args.preview) cmdParts.push("--preview")
 
     const geminiCmd = cmdParts.join(" ")
-    const result = await Bun.$`gemini -p ${geminiCmd}`.text()
-    return `Command: gemini -p '${geminiCmd}'\n\nOutput:\n${result}\n\nEdited image saved to ./${outputDir}/`
+    const result = await Bun.$`gemini --yolo -p ${geminiCmd}`.text()
+    return `Command: gemini --yolo -p '${geminiCmd}'\n\nOutput:\n${result}\n\nEdited image saved to ./${outputDir}/`
   },
 })
 
@@ -73,8 +73,8 @@ export const icon = tool({
     if (args.preview) cmdParts.push("--preview")
 
     const geminiCmd = cmdParts.join(" ")
-    const result = await Bun.$`gemini -p ${geminiCmd}`.text()
-    return `Command: gemini -p '${geminiCmd}'\n\nOutput:\n${result}\n\nIcons saved to ./${outputDir}/`
+    const result = await Bun.$`gemini --yolo -p ${geminiCmd}`.text()
+    return `Command: gemini --yolo -p '${geminiCmd}'\n\nOutput:\n${result}\n\nIcons saved to ./${outputDir}/`
   },
 })
 
@@ -97,8 +97,8 @@ export const pattern = tool({
     if (args.preview) cmdParts.push("--preview")
 
     const geminiCmd = cmdParts.join(" ")
-    const result = await Bun.$`gemini -p ${geminiCmd}`.text()
-    return `Command: gemini -p '${geminiCmd}'\n\nOutput:\n${result}\n\nPattern saved to ./${outputDir}/`
+    const result = await Bun.$`gemini --yolo -p ${geminiCmd}`.text()
+    return `Command: gemini --yolo -p '${geminiCmd}'\n\nOutput:\n${result}\n\nPattern saved to ./${outputDir}/`
   },
 })
 
@@ -121,8 +121,8 @@ export const story = tool({
     if (args.preview) cmdParts.push("--preview")
 
     const geminiCmd = cmdParts.join(" ")
-    const result = await Bun.$`gemini -p ${geminiCmd}`.text()
-    return `Command: gemini -p '${geminiCmd}'\n\nOutput:\n${result}\n\nStory images saved to ./${outputDir}/`
+    const result = await Bun.$`gemini --yolo -p ${geminiCmd}`.text()
+    return `Command: gemini --yolo -p '${geminiCmd}'\n\nOutput:\n${result}\n\nStory images saved to ./${outputDir}/`
   },
 })
 
@@ -145,8 +145,8 @@ export const diagram = tool({
     if (args.preview) cmdParts.push("--preview")
 
     const geminiCmd = cmdParts.join(" ")
-    const result = await Bun.$`gemini -p ${geminiCmd}`.text()
-    return `Command: gemini -p '${geminiCmd}'\n\nOutput:\n${result}\n\nDiagram saved to ./${outputDir}/`
+    const result = await Bun.$`gemini --yolo -p ${geminiCmd}`.text()
+    return `Command: gemini --yolo -p '${geminiCmd}'\n\nOutput:\n${result}\n\nDiagram saved to ./${outputDir}/`
   },
 })
 
@@ -162,8 +162,8 @@ export const restore = tool({
     if (args.preview) cmdParts.push("--preview")
 
     const geminiCmd = cmdParts.join(" ")
-    const result = await Bun.$`gemini -p ${geminiCmd}`.text()
-    return `Command: gemini -p '${geminiCmd}'\n\nOutput:\n${result}\n\nRestored image saved to ./${outputDir}/`
+    const result = await Bun.$`gemini --yolo -p ${geminiCmd}`.text()
+    return `Command: gemini --yolo -p '${geminiCmd}'\n\nOutput:\n${result}\n\nRestored image saved to ./${outputDir}/`
   },
 })
 
@@ -174,7 +174,7 @@ export const nanobanana = tool({
   },
   async execute(args) {
     const geminiCmd = `/nanobanana ${args.request}`
-    const result = await Bun.$`gemini -p ${geminiCmd}`.text()
-    return `Command: gemini -p '${geminiCmd}'\n\nOutput:\n${result}\n\nOutput saved to ./${outputDir}/`
+    const result = await Bun.$`gemini --yolo -p ${geminiCmd}`.text()
+    return `Command: gemini --yolo -p '${geminiCmd}'\n\nOutput:\n${result}\n\nOutput saved to ./${outputDir}/`
   },
 })
