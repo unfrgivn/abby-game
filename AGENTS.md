@@ -1,4 +1,4 @@
-# Tiny Wilds (Unity) agent rules
+# Wilds of Cloverhollow (Unity) agent rules
 
 ## Source of truth
 

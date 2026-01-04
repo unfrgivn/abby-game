@@ -1,4 +1,4 @@
-# Tiny Wilds (working title)
+# Wilds of Cloverhollow
 
 Lil Gator-style, top-down 3D cozy adventure with tool-driven puzzles and simple real-time combat
 

@@ -44,7 +44,7 @@ The PoC is complete when:
 
 Core loop
 
-- Game boots into MainTown
+- Game boots into Cloverhollow
 - Player moves and interacts
 - Journal UI shows discovered blacklight notes
 - Blacklight lantern reveals notes and hidden doors
@@ -74,7 +74,7 @@ These decisions prevent churn.
 ### 1.1 Scenes and loading
 
 - Content scenes:
-  - MainTown
+  - Cloverhollow
   - SchoolInterior
   - ArcadeInterior
 - A persistent “Bootstrap” scene loads first and never unloads.
@@ -295,7 +295,7 @@ These should be enforced from day one.
 This sequence reduces rework and improves iteration speed.
 
 1. Bootstrap scene + InputRouter + UIRoot skeleton + DebugOverlay
-2. MainTown blockout + Player movement + Camera
+2. Cloverhollow blockout + Player movement + Camera
 3. Interaction system (prompt + interact verb)
 4. GameState + SaveSystem + SceneDirector + anchors + respawn
 5. Lantern scanning + notes + journal
@@ -331,19 +331,19 @@ Tasks
 
 Acceptance criteria
 
-- Bootstrap loads first; then loads MainTown additively.
+- Bootstrap loads first; then loads Cloverhollow additively.
 - DebugOverlay works in play mode.
 - Input can drive UI panels (open/close) and gameplay actions (even if gameplay actions are stubbed).
 
 ---
 
-### 7.2 MainTown blockout + camera + movement
+### 7.2 Cloverhollow blockout + camera + movement
 
 Owner: @unity-engineer
 
 Tasks
 
-1. Create MainTown blockout using the sketch as reference:
+1. Create Cloverhollow blockout using the sketch as reference:
    - Home area with bed anchor
    - Road to School entrance
    - Park area
@@ -431,7 +431,7 @@ Tasks
 6. RespawnSystem:
    - On tired:
      - if interior; load same interior and spawn at entrance anchor
-     - else; load MainTown and spawn at home bed anchor
+     - else; load Cloverhollow and spawn at home bed anchor
    - Restore energy to a safe value (example: 50%)
 
 Acceptance criteria
@@ -633,7 +633,7 @@ Automated checks (minimal)
 - Unit test: SaveData serialize/deserialize round trip
 - PlayMode smoke test:
   - load Bootstrap
-  - load MainTown
+  - load Cloverhollow
   - assert player spawns at home anchor
 
 Acceptance criteria

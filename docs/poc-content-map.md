@@ -1,7 +1,7 @@
 # PoC content map
 Version: v1  
 Purpose: Concrete placement list for the PoC loop (notes, hidden doors, anchors, encounters, arcade).  
-Scope: MainTown, SchoolInterior, ArcadeInterior.
+Scope: Cloverhollow, SchoolInterior, ArcadeInterior.
 
 This file is meant to be a literal checklist for building scenes. It assumes the revised architecture (Bootstrap + persistent GameState + ScriptableObject databases + stable GUID ids).
 
@@ -9,7 +9,7 @@ This file is meant to be a literal checklist for building scenes. It assumes the
 
 ## 1. Scenes and classification
 ### 1.1 Content scenes
-- **MainTown** (Exterior)
+- **Cloverhollow** (Exterior)
 - **SchoolInterior** (Interior)
 - **ArcadeInterior** (Interior)
 
@@ -20,7 +20,7 @@ Respawn rules:
 
 Anchors to place in scenes (each must have a `PersistentId` component with the exact id below):
 
-- **Home Bed Anchor** (MainTown)  
+- **Home Bed Anchor** (Cloverhollow)  
   - AnchorId: `55452987-7a93-43ac-ad9b-5adfa125a88a`  
   - Placement: inside Fae’s house, next to the bed (or at the front door if you are not building an interior).
 
@@ -42,10 +42,10 @@ Optional (only if you want the school hidden door to load a sub-room with its ow
 ## 2. Intended PoC player path (no quest system)
 This is the “soft quest” driven by notes.
 
-1) Start at **Home Bed** in MainTown.
+1) Start at **Home Bed** in Cloverhollow.
 2) Use **Blacklight Lantern** to discover the first note near home.
 3) Follow the road to **SchoolInterior**; discover 2–3 notes; reveal and open the **School Hidden Door**; collect a candy bar reward in the secret room.
-4) Exit to **Park** area in MainTown; trigger **Chaos Raccoon** encounter; take damage; eat candy bar to restore energy.
+4) Exit to **Park** area in Cloverhollow; trigger **Chaos Raccoon** encounter; take damage; eat candy bar to restore energy.
 5) Reveal the **Park Hedge Gate** hidden door as a shortcut.
 6) Enter **ArcadeInterior**; play **Claw Machine**; win gems and/or candy bars.
 7) Save; reload; everything persists (position, notes, doors, prizes).
@@ -78,7 +78,7 @@ Recommended: keep note body text to 1–2 lines.
 
 ### NOTE 1
 - noteId: `05d763c1-0a81-46fc-9e99-4acb426c0b25`
-- Scene: MainTown
+- Scene: Cloverhollow
 - Suggested placement: Fae’s bedroom wall poster OR journal page on desk (right next to the bed)
 - Title: “Glow Time”
 - Body: “If you can’t see it, shine the light. Start with the road to school.”
@@ -87,7 +87,7 @@ Recommended: keep note body text to 1–2 lines.
 
 ### NOTE 2
 - noteId: `3b59327c-3932-4c40-8ce5-15ea485a8898`
-- Scene: MainTown
+- Scene: Cloverhollow
 - Suggested placement: sidewalk chalk near the main road out of the home yard
 - Title: “Follow Me”
 - Body: “The real clue trail starts at school. Look for the star.”
@@ -124,7 +124,7 @@ Recommended: keep note body text to 1–2 lines.
 
 ### NOTE 6
 - noteId: `773a4316-f5a7-4566-9093-fec4194de64d`
-- Scene: MainTown (Park area)
+- Scene: Cloverhollow (Park area)
 - Suggested placement: playground sign or trash can sticker near where the raccoon encounter triggers
 - Title: “Trash Bandit”
 - Body: “Raccoons dash past you. Dodge when they swipe!”
@@ -133,7 +133,7 @@ Recommended: keep note body text to 1–2 lines.
 
 ### NOTE 7
 - noteId: `5b8be8fb-8042-4e74-afa8-7bdcd2f0f042`
-- Scene: MainTown (Park area, near hedge gate)
+- Scene: Cloverhollow (Park area, near hedge gate)
 - Suggested placement: hedge wall near the hidden gate
 - Title: “Paw Gate”
 - Body: “Paw prints mean a secret path. Shine the hedge.”
@@ -172,7 +172,7 @@ Recommended: keep note body text to 1–2 lines.
 
 ### 5.2 Park hidden door: “Paw Hedge Gate”
 - doorId: `326e80cb-d53c-42ed-a2da-405e4ce2ec56`
-- Scene: MainTown (Park)
+- Scene: Cloverhollow (Park)
 - Placement: hedge wall segment that visually looks like set dressing
 - UV symbol: **three paw prints** leading into a leaf outline
 - Reveal requirement: blacklight scan completes on the hedge gate reveal area
@@ -190,7 +190,7 @@ Recommended: keep note body text to 1–2 lines.
 ## 6. Combat encounter placement
 ### 6.1 Park raccoon encounter (single encounter for PoC)
 - encounterId: `a54ac5a3-b1b9-440e-9350-ac46a2140144`
-- Scene: MainTown (Park)
+- Scene: Cloverhollow (Park)
 - Placement: a trigger volume near NOTE 6 (trash can / playground sign)
 - Behavior:
   - On player enter:
@@ -224,7 +224,7 @@ Notes:
 ---
 
 ## 8. Blockers for future content (set dressing only)
-Place playful blockers in MainTown so the map feels bigger without building it.
+Place playful blockers in Cloverhollow so the map feels bigger without building it.
 
 - **To Mountains**: sign “Field trip later!” + orange cones
 - **To Ocean/Dock**: sign “Bridge under construction” + wooden barrier
