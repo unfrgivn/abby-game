@@ -39,8 +39,9 @@ Before modifying ANY file in the repository, agents MUST:
    - Link the PR to the GitHub Issue.
    - Wait for CI/review if configured.
 
-5. **Merge to main**
-   - Squash or merge per project preference.
+5. **Rebase and merge to main**
+   - Rebase from `main` before merging to ensure a linear history: `git fetch origin && git rebase origin/main`.
+   - Always use **squash merge** to keep `main` history clean: `gh pr merge <pr-number> --squash --delete-branch`.
    - Delete the branch after merge.
 
 **Why this matters**: Untracked changes on `main` break history, make rollbacks hard, and bypass review. All work must be traceable.
