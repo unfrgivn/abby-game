@@ -1,4 +1,4 @@
-# Tiny Wilds (Unity) agent rules
+# Wilds of Cloverhollow (Unity) agent rules
 
 ## Source of truth
 
@@ -9,10 +9,41 @@
 
 - Linear is the source of truth for phases and planned work.
 - All work must map to a Linear issue in the current phase.
-- Bugs are tracked as GitHub Issues and synced into Linear via Linear’s GitHub Issues Sync. :contentReference[oaicite:0]{index=0}
+- Bugs are tracked as GitHub Issues and synced into Linear via Linear's GitHub Issues Sync. :contentReference[oaicite:0]{index=0}
   - File a bug as a GitHub Issue.
   - Ensure it appears in Linear (sync), then schedule it into the right phase.
   - Do not track bugs only in Linear without a GitHub Issue.
+
+## Mandatory workflow for all file modifications (CRITICAL)
+
+**Every file modification requires the full issue/branch/PR workflow. No exceptions.**
+
+Before modifying ANY file in the repository, agents MUST:
+
+1. **Create a GitHub Issue first**
+   - Describe what will be changed and why.
+   - Use appropriate labels (e.g., `enhancement`, `bug`, `chore`, `docs`).
+   - If a Linear issue already exists, reference it; otherwise create the GitHub Issue first.
+
+2. **Create a feature branch**
+   - Branch from `main`.
+   - Name format: `<type>/gh-<issue-number>-<short-description>` (e.g., `feat/gh-42-add-lantern`, `fix/gh-99-combat-crash`, `chore/gh-7-update-docs`).
+   - Use Worktrunk if available: `wt switch -c feat/gh-42-add-lantern`.
+
+3. **Make changes on the branch**
+   - Commit with clear messages referencing the issue (e.g., `Add lantern scanning (#42)`).
+   - Follow TDD: write tests first when applicable.
+
+4. **Open a Pull Request**
+   - PR title must include the issue reference (e.g., `feat: Add lantern scanning (#42)`).
+   - Link the PR to the GitHub Issue.
+   - Wait for CI/review if configured.
+
+5. **Merge to main**
+   - Squash or merge per project preference.
+   - Delete the branch after merge.
+
+**Why this matters**: Untracked changes on `main` break history, make rollbacks hard, and bypass review. All work must be traceable.
 
 ## One issue = one branch = one PR
 
@@ -146,3 +177,4 @@ After code changes:
 
 - Subagents are defined in `.opencode/agent/*.md`
 - Custom tools are defined in `.opencode/tool/*.ts`
+- Be sure to always cleanup any temp files created while testing and commit work when finished.

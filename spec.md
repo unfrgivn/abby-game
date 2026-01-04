@@ -1,150 +1,301 @@
+# Wilds of Cloverhollow
 
-# Tiny Wilds (working title)
-Lil Gator-style, top-down 3D cozy adventure in Unity
+Lil Gator-style, top-down 3D cozy adventure with tool-driven puzzles and simple real-time combat
 
-## 1. Product goals
-- A chill exploration game for an 8-year-old to co-create.
-- Short play loop: walk around, meet characters, do tiny quests, collect cute stuff.
-- Strong readability from a top-down camera.
-- Content should be easy to add: props, NPCs, quests, collectibles.
+## 1. Vision
 
-## 2. Non-goals (for the first release)
-- Combat.
-- Procedural generation.
-- Complex physics puzzles.
-- Online multiplayer.
-- Full “open world” scale. We will fake it with a small, dense map.
+A calm, wholesome adventure about a kid balancing everyday life (school, family, town) with a magical “secret” quest to stop chaos spreading. Magic realism and dreamlike moments, grounded in kid everyday reality.
 
-## 3. Target platforms
-- Primary: macOS (keyboard and mouse).
-- Secondary: iPad (touch).
-- Optional later: iPhone (only if UI and readability hold up).
+Tone rules:
 
-## 4. Core gameplay loop
-1) Explore a small “park world”
-2) Find NPCs with simple needs
-3) Complete micro-quests (2 to 5 minutes)
-4) Earn rewards (stickers, badges, costume bits)
-5) Unlock small world changes (new props, new NPCs, new zones)
+- Cozy, safe, friendly
+- Mischievous chaos; not scary
+- Short, kid-friendly dialog; humor welcome
+- Family-friendly; no gore; no horror
 
-## 5. Player verbs
+## 2. Target audience
+
+- Kids 8 to 12
+- Family-friendly
+
+## 3. Inspirations
+
+- Zelda: exploration, tool gating, readable combat
+- Lil Gator / Alba: playful exploration, charm-forward world
+- Animal Crossing / Stardew: cozy town vibe and approachable tasks
+- Earthbound: kid-centric story tone and humor
+
+## 4. Product goals
+
+- Dense zones that feel “open” without being huge
+- Tool-driven puzzle progression (Blacklight Lantern, then Lasso, then Flute)
+- Simple real-time combat that is non-scary and quick (Light Attack + Dodge)
+- Easy-to-add content: NPCs, micro-quests, collectibles, puzzle set pieces
+- Save-anywhere; stop and resume exactly where you were
+
+## 5. Non-goals for the proof-of-concept
+
+- No complex RPG builds or grinding
+- No procedural generation
+- No timers as fail states
+- No scary enemies or dark imagery
+- No advanced base building (clubhouse later)
+- No travel to mountains, ocean, island (blocked in PoC)
+
+## 6. Setting
+
+Calming biomes:
+
+- Meadows, forest, ponds, hills, caves
+
+World fantasy:
+
+- Small town plus nearby nature zones
+- “Chaos” is a spell that makes things goofy and unruly
+
+## 7. High-level story (Hero’s Journey outline)
+
+- Start: Fae wakes up at home (ordinary life)
+- Chaos begins showing up around town and school
+- Constraint: school responsibilities; must solve “how to get out” via story puzzles
+- Allies: other kids join the party later (Sue, Jordan)
+- Twist: the bad guy is actually a kid friend
+- Final twist: it was all a dream when mom wakes Fae up
+
+PoC narrative rule:
+
+- Only establish the premise and the first “lantern mystery.” Do not attempt major twists in PoC.
+
+## 8. Main character
+
+Fae:
+
+- Age 10; loves art, music, animals, nature
+- Brave, curious, kind-hearted, smart; inventor/builder vibe
+- Backpack with journal and tools
+
+Animal companion:
+
+- Maddie the kitten follows initially
+
+## 9. Core gameplay loop
+
+1. Explore a zone
+2. Talk to NPCs; discover a problem or clue
+3. Solve a puzzle or complete a micro-quest
+4. Earn rewards (gems, items, story progress)
+5. Unlock new interactions, areas, tools, and story beats
+
+## 10. Player verbs
+
+Always:
+
 - Move (walk/run)
 - Interact (talk, pick up, use)
-- Hop (optional, low stakes traversal)
-- Tool (one tool only for v1; choose one)
-  - Camera tool (take photos of critters)
-  - Magnet hand (pull “stickers” / trinkets)
-  - Net (catch butterflies, no failure)
+- Journal (clues and quest steps)
 
-## 6. World structure
-World is a dense playground, not a wilderness simulation.
-- Zone A: Meadow Park (start zone)
-- Zone B: Beach Cove (unlocks after 3 to 5 quests)
-- Zone C: Clubhouse Hill (unlocks after a “big” quest chain)
+Often:
 
-Each zone has:
-- 1 landmark visible from afar
-- 2 to 3 quest NPCs
-- 1 collectible theme
-- 3 to 6 “photo subjects” or “spotting targets”
+- Use tool (Lantern, later Lasso, later Flute)
+- Combat (simple real-time)
 
-## 7. Quests (v1 patterns)
-Keep quests templated.
-- Fetch: find 3 items
-- Spotting: photo or “observe” 2 critters
-- Delivery: take X to NPC Y
-- Decorate: place 3 stickers/props on a board
-- Build: place 3 cardboard pieces to make a ramp
+PoC must include:
 
-No fail states. No timers. No “wrong answers.”
+- Movement + interact
+- Journal v0
+- Blacklight Lantern v0
+- One combat encounter type (Chaos Raccoon)
+- Arcade claw machine v0
 
-## 8. Progression and rewards
-- Reward types:
-  - Stickers (collectible currency)
-  - Badges (quest completion stamps)
-  - Costume bits (hat, backpack, toy sword)
-- Gating:
-  - New zone unlocks after N badges
-  - New NPCs appear after zone unlocks
-- Save:
-  - Autosave after quest completion and zone transitions
+## 11. Camera and controls
 
-## 9. Art direction (Lil Gator, top-down 3D)
-- Chunky proportions, toy-like silhouettes
-- Flat or lightly painted materials, minimal texture detail
-- Bright but calm palette; limited accents
-- World props feel “kid-made”: cardboard, tape, doodles, stickers
-- Animation is bouncy; idles matter
+Camera:
 
-## 10. Camera
-- Perspective camera
+- Perspective
 - Tilt: 55 to 65 degrees downward
-- Soft follow and slight look-ahead
+- Soft follow with slight look-ahead
 - Avoid tall occluders; prefer low fences and short trees
 
-## 11. UX and UI
-- One big interact button on touch
-- Simple quest tracker (one active quest at a time for v1)
-- Map is optional for v1; prefer landmark signage and obvious paths
-- Sticker book screen:
-  - Shows badges earned
-  - Shows collectibles count per zone
+Input:
 
-## 12. Audio
-- Ambient loops per zone
-- Friendly UI sounds
-- Simple “reward pop” sound
-- Minimal dialog; rely on short text bubbles
+- Touch-first with optional keyboard and mouse
+- Combat buttons: Attack, Dodge
+- Tool button: Blacklight Lantern toggles on/off or hold-to-scan (final choice made during implementation)
+- Flute opens animal selection menu (later milestone)
 
-## 13. Tech stack (Unity)
-- Unity (LTS preferred; pin exact version once chosen)
+## 12. World and locations
+
+Long-term world includes multiple towns and a central gated Enchanted Forest. PoC is intentionally small.
+
+### 12.1 PoC playable scope
+
+- Hero’s House (start; includes bed respawn anchor)
+- School (interior; includes entrance respawn anchor)
+- Park/Playground (outdoor)
+- Arcade (interior; includes entrance respawn anchor)
+
+### 12.2 PoC navigation requirements
+
+- One obvious main road connecting Home, School, Park, Arcade
+- One simple loop path to reduce backtracking
+- Clear blocked paths to future areas (mountains, ocean, enchanted forest)
+
+## 13. School (story-driven gating)
+
+School is not a schedule simulation; it appears as story scenes and puzzle sequences.
+
+School puzzle patterns:
+
+- Find items (hall pass, art supplies, note pages)
+- Dialog routing (talk to the right adult with the right phrasing)
+- Invisible ink clue discovery (lantern)
+- Hidden door discovery (lantern)
+
+PoC must include:
+
+- At least 2 blacklight notes in school
+- At least 1 hidden door in school
+
+## 14. Tool progression
+
+Tool progression is the main gating system:
+
+1. Blacklight Lantern (PoC scope)
+2. Lasso (later)
+3. Flute (later)
+
+### 14.1 Blacklight Lantern (PoC scope)
+
+What it does:
+
+- Reveals hidden notes (invisible ink)
+- Reveals hidden doors (UV symbols activate doorways)
+
+Lantern interactions:
+
+- Hidden note: scanning reveals a UV doodle and triggers a short UI popup (text + simple icon)
+- Hidden door: scanning reveals a UV symbol; once revealed, the door becomes interactable
+
+PoC must include:
+
+- 6 to 10 hidden notes total across PoC map
+- 2 hidden doors total (School plus Park or Arcade)
+
+## 15. Animal companions
+
+Rules:
+
+- One animal follows you at a time
+- Maddie the kitten follows you initially
+- Active animal automatically helps in fights
+- Bonding and multiple animals come later; PoC only needs Maddie as a follower and combat helper
+
+## 16. Combat (simple live, non-scary)
+
+Combat is real-time, not turn-based.
+
+Control scheme:
+
+- Light attack
+- Dodge roll with brief invulnerability
+
+Combat constraints:
+
+- Short encounters; no grind
+- Player never “dies”; player gets “tired” and respawns
+- No loss of items or currency on respawn for PoC
+
+Respawn rules:
+
+- If inside a named interior location (School, Arcade), respawn at that location’s entrance
+- If outside (town and park), respawn in bed at home
+
+PoC must include:
+
+- 1 enemy family: Chaos Raccoon
+- 1 to 2 encounters placed outdoors (park or outside arcade)
+
+## 17. Enemies (PoC)
+
+Chaos Raccoon:
+
+- Cute silhouette; playful animations; no scary face
+- Teaches dodge timing quickly
+
+Suggested behavior:
+
+- Approach, telegraph swipe, swipe, dash past player, reposition
+
+## 18. Arcade mini-game (PoC)
+
+Arcade exists for fun and prizes; it is not progression gating.
+
+PoC includes:
+
+- Claw machine only
+- Prize pool: gems and candy bars
+
+Candy bars:
+
+- Consumable; restore energy (exact values set during implementation)
+
+## 19. Progression system (story flags)
+
+Use story flags as gating; explicit and simple.
+
+Examples:
+
+- Tool.Lantern.Unlocked
+- School.UVNotesFound
+- School.HiddenDoorOpened
+- Park.HiddenDoorOpened
+- Arcade.ClawMachine.Introduced
+- Combat.Raccoon.FirstDefeated
+
+## 20. Save system (evolves with features)
+
+Goal: save-anywhere; resume exactly where you were.
+
+Approach:
+
+- Start with a minimal safe payload
+- Add fields only when related features ship
+- Backward-compatible defaults for missing fields
+
+PoC minimum save payload:
+
+- Scene or zone id
+- Player position and facing
+- Story flags
+- Inventory: gems, candy bars, tools unlocked
+- Player energy state
+- Respawn anchors (home bed id; entrance ids for interiors)
+- Enemy encounter state is optional in PoC (it is acceptable for enemies to respawn)
+
+## 21. Art direction (production rules)
+
+- Chunky proportions, toy-like silhouettes
+- Flat or lightly painted materials; minimal texture detail
+- Bright but calm palette; limited accents
+- Props can feel kid-made (cardboard, tape, doodles, stickers)
+- Bouncy animation; strong idles
+
+## 22. Tech stack
+
+- Unity LTS (pin exact version)
 - URP
-- Input System (supports touch + keyboard/mouse)
-- Cinemachine (camera follow)
-- Addressables optional later (do not start with it)
+- Input System
+- Cinemachine
+- Keep dependencies minimal
 
-## 14. Architecture (v1)
-Keep it boring and modular.
-- Player:
-  - PlayerController (movement + facing)
-  - Interactor (ray/overlap for interact targets)
-- Interactables:
-  - IInteractable interface
-  - Simple components: Talkable, Pickup, Useable
-- Quest system:
-  - QuestDefinition (data)
-  - QuestRuntimeState (saveable)
-  - QuestManager (single active quest)
-- World state:
-  - Simple flags (badge counts, zone unlocked flags)
-- Save system:
-  - JSON file per profile (single slot is fine)
+## 23. Proof-of-concept definition of done
 
-## 15. Milestones
-M0: Project boot
-- Unity project created, URP configured, input system set
-- Top-down camera follow working
+A player can:
 
-M1: Vertical slice (Meadow Park)
-- Player movement + interact
-- 2 NPCs
-- 1 collectible type
-- 1 quest chain (3 micro-quests)
-- Autosave
-- Simple sticker book screen
-
-M2: Content scaling
-- Quest templates implemented (fetch, spot, delivery, decorate)
-- Add Beach Cove zone
-
-M3: Polish
-- Animation pass, VFX puffs, UI bounce
-- Basic performance pass
-- Build pipeline
-
-## 16. Quality bar (Definition of Done for a feature)
-- Works on macOS and iPad controls
-- No hard locks
-- Saves and loads correctly
-- Readable from camera distance
-- Minimal settings, minimal dependencies
+- Start at Fae’s house
+- Walk to school; discover blacklight notes; open at least one hidden door
+- Walk to park; complete at least one lantern interaction and one raccoon encounter
+- Enter arcade; play claw machine; win gems or candy bars
+- Use candy bar to restore energy
+- Get “tired” in combat; respawn correctly (interior entrance or home bed)
+- Save anywhere; quit; reload; resume in the same spot with the same inventory and flags
