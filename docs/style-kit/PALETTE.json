@@ -1,82 +1,82 @@
 [
   {
     "name": "paper_white",
-    "hex": "#F5F3EE",
-    "note": "Paper white (UI, highlights)"
+    "hex": "#F8F6F2",
+    "note": "UI background, text highlights. Warmer white."
   },
   {
-    "name": "warm_gray",
-    "hex": "#CFC8BD",
-    "note": "Warm gray (stone, muted UI)"
+    "name": "ink_black",
+    "hex": "#3A3636",
+    "note": "Primary text, outlines (if used). Soft black."
   },
   {
-    "name": "deep_ink",
-    "hex": "#2D2A2A",
-    "note": "Deep ink (lines, text)"
+    "name": "fae_hoodie",
+    "hex": "#6B5B95",
+    "note": "Fae's main purple. Cozy, slightly desaturated."
   },
   {
-    "name": "sky",
-    "hex": "#7EC8FF",
-    "note": "Sky blue"
+    "name": "fae_shorts",
+    "hex": "#3F4B66",
+    "note": "Dark teal/slate for shorts."
   },
   {
-    "name": "sky_light",
-    "hex": "#CFEFFF",
-    "note": "Sky light (haze, highlights)"
+    "name": "holo_base",
+    "hex": "#D6E4FF",
+    "note": "Backpack base. Shimmers with pink/cyan."
   },
   {
-    "name": "water",
-    "hex": "#2F86D6",
-    "note": "Water deep"
+    "name": "rainbow_red",
+    "hex": "#FF8B8B",
+    "note": "Strap/Sock accent."
   },
   {
-    "name": "water_shallow",
-    "hex": "#66C7E8",
-    "note": "Water shallow"
+    "name": "rainbow_yellow",
+    "hex": "#FFD966",
+    "note": "Strap/Sock accent."
   },
   {
-    "name": "grass",
-    "hex": "#63C35C",
-    "note": "Grass base"
+    "name": "rainbow_teal",
+    "hex": "#66D2C8",
+    "note": "Strap/Sock accent."
   },
   {
-    "name": "grass_light",
-    "hex": "#A6E67E",
-    "note": "Grass highlight"
+    "name": "grass_base",
+    "hex": "#76C466",
+    "note": "Vibrant but soft meadow green."
   },
   {
-    "name": "dirt",
-    "hex": "#C9A06A",
-    "note": "Dirt path"
+    "name": "grass_shadow",
+    "hex": "#5CA052",
+    "note": "AO and shadow areas for grass."
   },
   {
-    "name": "rock",
-    "hex": "#8E97A3",
-    "note": "Rock neutral"
+    "name": "dirt_path",
+    "hex": "#E6B88A",
+    "note": "Warm playful dirt/sand."
   },
   {
-    "name": "tree_leaf",
-    "hex": "#3DBB7A",
-    "note": "Leaf base"
+    "name": "tree_puff",
+    "hex": "#4BA868",
+    "note": "Tree canopy (broccoli style)."
   },
   {
-    "name": "tree_trunk",
-    "hex": "#B57B4B",
-    "note": "Trunk / wood"
+    "name": "wood_trunk",
+    "hex": "#9E7656",
+    "note": "Tree trunks and fences."
   },
   {
-    "name": "sun_yellow",
-    "hex": "#FFD45A",
-    "note": "Accent: sunny yellow"
+    "name": "stone_gray",
+    "hex": "#9FA6B3",
+    "note": "Cool gray for smooth rocks."
   },
   {
-    "name": "coral",
-    "hex": "#FF6F61",
-    "note": "Accent: coral"
+    "name": "sky_day",
+    "hex": "#89CFF0",
+    "note": "Soft playful blue."
   },
   {
-    "name": "purple",
-    "hex": "#7B6DFF",
-    "note": "Accent: purple"
+    "name": "interaction_gold",
+    "hex": "#FFC845",
+    "note": "Interactables and 'shiny' cues."
   }
 ]
