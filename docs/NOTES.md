@@ -38,14 +38,14 @@
     - Ice Cream Shop
     - Arcade (with playable mini-games like skee-ball, whack-a-mole, claw machine)
     - Bon Appetit (Restaurant)
-  - Second Town (meet 2nd party member here)
+  - Bubblegum Bay (meet 2nd party member here)
     - Lake
     - Dock
     - Boat Rental
     - Fishing Spot
     - Cafe
     - Gift Shop
-  - Third Town (meet 3rd party member here)
+  - Pinecone Pass (meet 3rd party member here)
     - Mountain
     - Ski Lodge
     - Ski lift
@@ -86,8 +86,8 @@
     - Brave, curious, kind-hearted, smart
     - Wears a backpack with her tools and journal
     - Really good at inventing and building things to help her on her adventure
-  - Sue (Girl party member meet in 2nd location)
-  - Jordan (Boy party member meet in 3rd location)
+  - Sue (Girl party member meet in Bubblegum Bay)
+  - Jordan (Boy party member meet in Pinecone Pass)
 - Enemies:
   - TBD (Boss Bad Guy who is a kid at Fae's school)
     - Drank something that gave him powers to cause chaos
