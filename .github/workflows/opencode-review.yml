@@ -28,7 +28,7 @@ jobs:
           node-version: "20"
 
       - name: Install OpenCode
-        run: npm install -g opencode
+        run: npm install -g opencode-ai
 
       - name: Run OpenCode PR Review
         env:
