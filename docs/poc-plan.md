@@ -1,47 +1,126 @@
-# Proof-of-Concept build plan
+# Proof-of-Concept build plan (revised v2)
 
-This plan is designed to be handed to OpenCode subagents. It is implementation-ready and avoids needing a full quest chain. It prioritizes a playable loop and the minimum systems required to prove the concept.
+This version tightens architecture and reliability. It keeps the PoC scope the same, but makes the implementation cleaner to extend into the full game.
+
+---
+
+## What I changed and why (high level)
+
+### 1) Reduce “manager sprawl”
+
+The original plan names many systems as separate global objects. That tends to turn into a web of references fast.  
+Revision: keep a small set of persistent services; push feature logic into local components and plain C# classes; communicate via events.
+
+### 2) Make persistence safe and future-proof
+
+The original plan saves “story flags + position” but does not force stable IDs or atomic writes. That will break as soon as you rename objects/scenes or crash during save.  
+Revision: every save-relevant object gets a stable GUID; saves are versioned; writes are atomic; load falls back to safe spawn if anything is missing.
+
+### 3) Make blacklight and interaction data-driven
+
+Hard-coding note text, prize weights, and enemy tuning inside prefabs or scripts slows iteration.  
+Revision: ScriptableObject databases for notes, doors, prize tables, and tuning constants.
+
+### 4) Make scanning and interaction performant
+
+Naive per-frame physics and allocations cause GC spikes on mobile.  
+Revision: use NonAlloc physics queries; throttle scans; use layer masks; pool VFX.
+
+### 5) Make the claw machine feel like a game, not a random button
+
+Pure RNG is fine for a placeholder but it feels flat quickly.  
+Revision: keep it simple but add one skill step (timing-based drop); still cheap to implement.
+
+### 6) Add developer tools early
+
+A PoC lives and dies by iteration speed.  
+Revision: a debug overlay with save/load, teleport, grant items, and spawn raccoon is part of the plan.
 
 ---
 
 ## 0. End-state deliverables
 
-The PoC is complete when the repo contains:
+The PoC is complete when:
 
 Core loop
 
-- A Unity project that boots into MainTown
-- Player movement and interaction
-- Journal UI v0 that shows discovered blacklight notes
-- Blacklight lantern that reveals notes and hidden doors
-- Combat v0 with Chaos Raccoon (light attack + dodge)
-- Maddie follower and simple combat assist
-- Arcade interior with a claw machine mini-game
+- Game boots into MainTown
+- Player moves and interacts
+- Journal UI shows discovered blacklight notes
+- Blacklight lantern reveals notes and hidden doors
+- Combat v0: Chaos Raccoon with Light Attack + Dodge
+- Maddie follows and provides simple combat assist
+- Arcade interior with claw machine mini-game
 - Prize pool: gems and candy bars
-- Energy model, candy consumption, “tired” state
-- Respawn rules: interior entrance if inside; bed at home if outside
-- Save-anywhere; reload resumes exact position and state
+- Energy model; candy consumption; tired state
+- Respawn rules:
+  - Inside School or Arcade; respawn at that interior entrance
+  - Outside; respawn in bed at home
+- Save-anywhere; reload resumes exact position, inventory, and discovered content
 
-Explicit non-deliverables for PoC
+Non-deliverables for PoC
 
-- Lasso and flute gameplay (only stubs if needed)
+- Lasso and flute gameplay (only stubs)
 - Multiple towns, mountains, ocean, island, enchanted forest gameplay
 - Party members
 - Clubhouse building
 
 ---
 
-## 1. Project structure expectations
+## 1. Locked decisions for PoC
 
-### 1.1 Unity folder layout
+These decisions prevent churn.
 
-Create and adhere to this:
+### 1.1 Scenes and loading
+
+- Content scenes:
+  - MainTown
+  - SchoolInterior
+  - ArcadeInterior
+- A persistent “Bootstrap” scene loads first and never unloads.
+  - Contains: UIRoot, InputRouter, SaveSystem, GameState, Audio (optional), DebugOverlay.
+- Content scenes load additively; Bootstrap keeps UI stable across transitions.
+
+### 1.2 Input System
+
+- Use Unity Input System with two action maps:
+  - Gameplay: Move, Interact, Attack, Dodge, Lantern, Journal, Pause
+  - UI: Navigate, Submit, Cancel (supports touch and mouse)
+- Touch:
+  - PoC can ship with simple on-screen buttons for Attack, Dodge, Interact, Lantern, Journal.
+  - Movement can be a virtual joystick or tap-to-move later; for PoC pick joystick to avoid pathing work.
+
+### 1.3 Saving and IDs
+
+- Everything that needs to persist has a stable GUID:
+  - Notes (noteId)
+  - Hidden doors (doorId)
+  - Respawn anchors (anchorId)
+- GUIDs are assigned in-editor and never change unless the object is replaced.
+- Save files are versioned and written atomically.
+
+### 1.4 Combat
+
+- Player: Light Attack combo (2–3 hits) + Dodge roll with i-frames and cooldown.
+- Enemy: Chaos Raccoon only.
+
+### 1.5 PoC pacing
+
+- No quest system; the blacklight note trail is the “soft quest.”
+- One hidden room or shortcut behind the school hidden door; it should contain a small reward (gem or candy) so the tool feels meaningful.
+
+---
+
+## 2. Project structure (Unity)
+
+Keep your folder structure; add a dedicated data/config area so tuning is not buried in prefabs.
 
 - Assets/
   - \_Project/
     - Scenes/
     - Prefabs/
     - Scripts/
+      - Bootstrap/
       - Core/
       - Player/
       - Camera/
@@ -53,518 +132,534 @@ Create and adhere to this:
       - Save/
       - Minigames/
       - World/
+      - Debug/
     - ScriptableObjects/
+      - Config/
+      - Content/
+      - Tuning/
     - ArtPlaceholders/
     - AudioPlaceholders/
 
-### 1.2 Scenes (PoC)
+---
 
-- MainTown (outdoor strip connecting Home, School entry, Park, Arcade entry)
-- SchoolInterior
-- ArcadeInterior
+## 3. Data-driven content (ScriptableObjects)
 
-Notes
+This is the biggest leverage change. It keeps code stable while you iterate.
 
-- Keep interiors as separate scenes for respawn clarity and simpler lighting.
-- Keep Park as part of MainTown for PoC; do not over-split scenes early.
+### 3.1 Config
 
-### 1.3 Prefabs (PoC)
+- GameConfig (ScriptableObject)
+  - Scene names and which scenes are “interiors”
+  - Default start scene and start anchor
+  - Mapping: sceneName → entranceAnchorId
+  - HomeBedAnchorId
 
-- PlayerFae (movement, interactor, tool controller, combat)
-- CompanionMaddie (follow + assist)
-- CameraRig (Cinemachine)
-- InteractableNote (blacklight note)
-- HiddenDoor (blacklight door)
-- RaccoonEnemy
-- EncounterTrigger (spawns raccoon)
-- SaveAnchorHomeBed
-- SaveAnchorEntrance (per interior)
-- UI_HUD
-- UI_Journal
-- UI_ClawMachine
+### 3.2 Content databases
+
+- NoteDatabase
+  - List of NoteDefinition:
+    - noteId (GUID string)
+    - title
+    - bodyText
+    - iconKey (optional)
+    - recommendedPlacement (string; “School hallway poster”, etc.)
+- DoorDatabase
+  - List of DoorDefinition:
+    - doorId (GUID string)
+    - type: ShortcutInScene | LoadSecretRoom
+    - targetScene (optional)
+    - targetAnchorId (optional)
+- PrizeTable
+  - Weighted rewards:
+    - GemsSmall, GemsMedium, GemsLarge
+    - CandyBar1, CandyBar2
+
+### 3.3 Tuning
+
+- PlayerTuning
+  - Move speed, accel, decel
+  - Attack timings, hitbox sizes, damage
+  - Dodge distance, i-frames, cooldown
+  - Max energy and restore amounts
+- RaccoonTuning
+  - HP
+  - Telegraph time
+  - Swipe damage, range, windup
+  - Dash speed, dash distance, recover time
+- LanternTuning
+  - Scan range
+  - Scan angle
+  - Reveal time (instant or 0.5s “charge”)
+  - Reveal persistence time (recommended 10–20 seconds)
 
 ---
 
-## 2. System architecture (what exists and what owns what)
+## 4. Runtime architecture (clean and extendable)
 
-### 2.1 Systems and responsibilities
+### 4.1 Persistent layer (Bootstrap)
 
-Core
+Bootstrap contains:
 
-- GameBootstrap
-  - Spawns persistent managers; loads initial scene
-- SceneDirector
-  - Scene transitions; knows interior versus exterior classification
-  - Provides spawn and entrance anchor lookup by id
+- GameState (plain C# + MonoBehaviour wrapper)
+  - Holds: story flags, discovered note ids, revealed door ids, inventory counts, energy, current scene context
+- SaveSystem (service)
+- SceneDirector (service)
+- InputRouter (service)
+- UIRoot (canvas + panel controllers)
+- DebugOverlay (dev only; can be toggled)
 
-Player
+Rule:
 
-- PlayerController
-  - Movement and facing
-- Interactor
-  - Detects interactables and triggers Interact
-- ToolController
-  - Blacklight lantern state (toggle or hold-to-scan)
-  - Stubs for lasso and flute (disabled in PoC)
-- CombatController
-  - Light attack combo; dodge roll; hit events
+- Persistent layer knows how to load scenes and save state.
+- Content scenes do not create global managers.
 
-World
+### 4.2 Content layer (loaded scenes)
 
-- EncounterSystem
-  - Trigger and spawn logic for raccoon encounters
-- RespawnSystem
-  - Applies respawn rules on “tired”
-- EnergySystem
-  - Manages energy; candy consumption; tired trigger
-- InventorySystem
-  - Gems and candy bars; add and remove operations
+Each content scene contains:
 
-UI
+- SceneContext (MonoBehaviour):
+  - sceneName
+  - isInterior bool
+  - references to local anchors, optional local audio snapshot
+- Respawn anchors (home bed or entrance)
+- Interactables (notes, hidden doors, claw machine trigger)
+- Encounter triggers (park zone)
 
-- HUDController
-  - Energy display; gems; candy count; prompts
-- JournalController
-  - Stores discovered notes; provides list to Journal UI
-- ClawMachineUI
-  - Plays mini-game; shows prize; grants reward
+Rule:
 
-Persistence
+- Content objects read and write state through GameState and services.
+- Content objects do not own persistence logic.
 
-- SaveSystem
-  - Minimal, safe JSON payload; backward-compatible defaults
+### 4.3 Communication
 
-### 2.2 PoC code constraints
+Use event-based communication; no direct cross-references when possible.
+Examples:
 
-- Prefer composition over inheritance.
-- MonoBehaviours stay thin; move logic to plain C# classes when practical.
-- Keep dependencies minimal: URP, Input System, Cinemachine only.
-- Any “global manager” must be created once and persist through scene loads.
+- NoteDiscovered(noteId)
+- DoorRevealed(doorId)
+- InventoryChanged
+- EnergyChanged
+- TiredTriggered(context)
+- PrizeGranted(reward)
 
----
+Implementation options:
 
-## 3. Build order (to avoid rework)
+- C# events on GameState
+- ScriptableObject event channels (fine if you prefer inspector wiring)
 
-Implement in this sequence:
-
-1. Bootstrap, camera, movement
-2. Interaction framework
-3. Save and load v0 plus respawn anchors (early)
-4. Energy model (simple)
-5. Blacklight lantern, notes, hidden doors, journal
-6. Combat v0 plus raccoon AI and encounter trigger
-7. Maddie follower and assist
-8. Arcade scene plus claw machine rewards
-9. Polish pass plus regression checklist
+For PoC, C# events are simpler.
 
 ---
 
-## 4. Detailed work items for OpenCode agents
+## 5. Performance and reliability guardrails
 
-### 4.1 Unity bootstrap, scenes, camera, movement
+These should be enforced from day one.
+
+### 5.1 Physics query rules
+
+- Use layer masks:
+  - Interactable
+  - BlacklightReveal
+  - Enemy
+- Use NonAlloc queries where repeated:
+  - Physics.OverlapSphereNonAlloc for interaction detection
+  - Physics.OverlapSphereNonAlloc for lantern scanning
+- Throttle expensive scans:
+  - Interaction selection can run at 10 Hz instead of every frame.
+  - Lantern scanning can run at 15–20 Hz; it still feels instant.
+
+### 5.2 Object lifecycle rules
+
+- Do not Instantiate/Destroy in combat loops.
+- Pool small VFX (puff) and damage number popups if you add them.
+- Raccoon spawns are few; pooling is optional but recommended if you respawn often during tests.
+
+### 5.3 Save safety rules
+
+- Save file has:
+  - version
+  - timestamp
+  - payload
+- Save writes are atomic:
+  - write to temp file
+  - flush
+  - replace the main file
+  - keep a backup file (previous save) if possible
+- Load is defensive:
+  - if corrupted, fall back to safe defaults and spawn at home bed
+
+---
+
+## 6. Revised build order
+
+This sequence reduces rework and improves iteration speed.
+
+1. Bootstrap scene + InputRouter + UIRoot skeleton + DebugOverlay
+2. MainTown blockout + Player movement + Camera
+3. Interaction system (prompt + interact verb)
+4. GameState + SaveSystem + SceneDirector + anchors + respawn
+5. Lantern scanning + notes + journal
+6. Combat controller + raccoon AI + encounter trigger
+7. Maddie follower + assist
+8. Arcade interior + claw machine (timing-based) + prizes
+9. Polish; QA checklist; perf check on iPad target settings
+
+---
+
+## 7. Work items for OpenCode agents (revised)
+
+### 7.1 Foundation: Bootstrap + UI root + input
 
 Owner: @unity-engineer
 
 Tasks
 
-1. Create Unity project with URP, Input System, Cinemachine.
-2. Create MainTown blockout using the sketch as reference:
+1. Create Bootstrap scene:
+   - PersistentRoot object marked DontDestroyOnLoad
+   - UIRoot canvas (HUD + prompt + journal panel + minigame panel placeholders)
+   - InputRouter reads Input Actions and drives player or UI
+2. Add DebugOverlay:
+   - Toggle key (example: F1 on desktop) and a simple on-screen button on touch builds
+   - Buttons:
+     - Save, Load
+     - Teleport Home
+     - Grant Candy +1
+     - Grant Gems +10
+     - Toggle Lantern Unlocked
+     - Spawn Raccoon (near player)
+3. Create Input Actions asset with two maps: Gameplay and UI.
+
+Acceptance criteria
+
+- Bootstrap loads first; then loads MainTown additively.
+- DebugOverlay works in play mode.
+- Input can drive UI panels (open/close) and gameplay actions (even if gameplay actions are stubbed).
+
+---
+
+### 7.2 MainTown blockout + camera + movement
+
+Owner: @unity-engineer
+
+Tasks
+
+1. Create MainTown blockout using the sketch as reference:
    - Home area with bed anchor
-   - Main road to School exterior entry
-   - Park area on the same strip
-   - Arcade exterior entry
-   - Blocked paths to future areas with playful signage
-3. CameraRig:
-   - Cinemachine virtual camera
-   - Tilt 55 to 65 degrees
-   - Soft follow and look-ahead
-4. PlayerFae:
-   - Top-down movement with acceleration and deceleration
+   - Road to School entrance
+   - Park area
+   - Road to Arcade entrance
+   - Blocked future paths with playful signage
+2. CameraRig using Cinemachine:
+   - Tilt 55–65 degrees
+   - Soft follow + look-ahead
+3. PlayerController:
+   - Choose CharacterController for PoC (recommended for fewer physics surprises)
+   - Smooth accel/decel; keep movement on ground plane
    - Facing based on movement direction
-   - Choose one movement tech and stick to it: CharacterController or Rigidbody
-5. Add HUD shell (empty is fine initially) to validate UI scaling.
 
 Acceptance criteria
 
-- Player moves smoothly with keyboard and touch.
-- Camera remains stable and readable.
-- MainTown loads as the default entry.
+- Movement feels stable and predictable.
+- Camera never clips into ground; player stays centered.
+- Runs at stable frame rate with placeholder assets.
 
 ---
 
-### 4.2 Interaction system
+### 7.3 Interaction system (with reliable targeting)
 
 Owner: @unity-engineer
 
-Goal
-A single “interact” verb that supports notes, doors, arcade, and later NPCs.
+Revisions
+
+- Instead of “nearest by overlap every frame,” pick best candidate by distance and angle with throttling.
 
 Tasks
 
-1. Define IInteractable:
-   - string GetPromptText()
-   - bool CanInteract(GameObject interactor)
-   - void Interact(GameObject interactor)
-2. Interactor on player:
-   - Finds nearest interactable in range (sphere overlap) or in front
-   - Shows prompt when available
-   - Calls Interact on input
-3. Prompt UI:
-   - Simple; either bottom-of-screen or floating above target
+1. IInteractable interface stays.
+2. Interactor:
+   - Every 0.1 seconds:
+     - OverlapSphereNonAlloc on Interactable layer
+     - Score each candidate by distance and facing angle
+   - Store “current target”
+   - Show prompt for current target
+3. Interact input:
+   - Buffered for a short time window (0.1–0.2s) so taps feel responsive.
 
 Acceptance criteria
 
-- Prompt appears when near an interactable.
-- Interact triggers the correct behavior.
-- No direct coupling to specific interactable classes.
+- Prompt does not flicker when multiple interactables are nearby.
+- Interact selects the expected object consistently.
 
 ---
 
-### 4.3 Save and load v0 plus respawn anchors
+### 7.4 GameState + save/load + scene transitions + respawn
 
 Owner: @unity-engineer
 
-Why now
-Everything later needs persistence and safe recovery.
+Revisions
+
+- Add stable GUIDs and versioned atomic save.
 
 Tasks
 
-1. Define SaveData v0:
-   - sceneId
-   - playerPosition (x,y,z)
-   - playerFacing (yaw or vector)
-   - storyFlags (set of strings)
-   - inventory: gems, candyBars, toolsUnlocked (lantern bool)
+1. PersistentId component:
+   - Holds a GUID string
+   - Editor-only utility: “Assign GUID if missing”
+2. GameState (service):
+   - storyFlags: HashSet<string>
+   - discoveredNotes: HashSet<string>
+   - revealedDoors: HashSet<string>
+   - inventory: gems, candyBars
    - energy: current, max
-   - respawn anchors: homeBedId, entranceIdByScene
-2. SaveSystem
-   - Save() and Load()
-   - JSON on disk; single slot is fine
-   - Backward-compatible defaults when fields are missing
-3. Respawn anchors
-   - HomeBed anchor in Home area
-   - Entrance anchor in SchoolInterior and ArcadeInterior
-4. Respawn rules implementation
-   - If tired while inside SchoolInterior or ArcadeInterior; respawn at that scene entrance anchor
-   - If tired while in MainTown; respawn at home bed
-   - No loss of gems or candy on respawn in PoC
-5. Add debug shortcuts
-   - Save, Load, Teleport-to-Home for testing
+   - currentSceneName
+3. SaveData:
+   - version int
+   - sceneName
+   - playerPosition, playerFacing
+   - storyFlags list
+   - discoveredNotes list
+   - revealedDoors list
+   - inventory
+   - energy
+4. SaveSystem:
+   - Atomic writes
+   - Backup previous save
+5. SceneDirector:
+   - LoadScene(sceneName, anchorId)
+   - Handles fade in/out (simple canvas fade)
+   - Maintains interior/exterior flag from GameConfig or SceneContext
+6. RespawnSystem:
+   - On tired:
+     - if interior; load same interior and spawn at entrance anchor
+     - else; load MainTown and spawn at home bed anchor
+   - Restore energy to a safe value (example: 50%)
 
 Acceptance criteria
 
-- Save anywhere, reload, resume exact position and scene.
-- Tired triggers respawn to correct anchor.
-- Save remains valid as new fields are added later.
+- Renaming scene objects does not break persistence because GUIDs are stable.
+- Corrupt save falls back to home bed safely.
+- Scene transitions do not duplicate UI because UIRoot is persistent.
 
 ---
 
-### 4.4 Readability defaults for URP and lantern visuals
-
-Owner: @tech-artist
-
-Tasks
-
-1. Outdoor lighting recipe
-   - One directional sun; soft shadows
-   - Warm ambient
-2. Interior lighting recipe
-   - Simple area lights; readable corners; no harsh contrast
-3. Lantern reveal visuals
-   - Select one UV glow color and use it consistently
-   - Notes and door symbols must be readable at camera distance
-   - Decide if reveal persists briefly after scanning (recommended: yes)
-
-Acceptance criteria
-
-- Blacklight notes and door symbols are legible during play.
-- Scene readability is stable with minimal post-processing.
-
----
-
-### 4.5 Blacklight lantern, notes, hidden doors, journal
+### 7.5 Lantern scanning + notes + hidden doors + journal
 
 Owners: @unity-engineer and @game-designer
 
-Mechanic definition (PoC)
+Revisions
 
-- Lantern scan mode reveals UV content in a cone or radius in front of player.
-- Notes and doors react to scanning:
-  - Notes: show UV decal and popup; save as discovered; add to journal
-  - Doors: show UV symbol; mark revealed; becomes interactable
+- Use a reveal interface and data-driven note content.
+- Reveal requires a short scan time (recommended 0.3–0.7s) to prevent accidental discovery.
 
 Tasks
 
-1. ToolController
-   - Choose: toggle lantern or hold-to-scan
-   - Expose scan distance and angle
-2. Reveal receiver component
-   - Handles OnScanEnter and OnScanStay
-   - One-time discovery for notes and doors
-3. InteractableNote
-   - noteId, title, bodyText, iconKey
-   - On discover: popup and journal entry
-4. HiddenDoor
-   - Starts non-interactable
-   - On reveal: becomes interactable
-   - PoC door behavior should be one of:
-     - Opens shortcut passage in-scene, or
-     - Loads a tiny secret room scene
-5. Journal
-   - Stores discovered notes
-   - UI shows list of entries (title and short text)
+1. IBlacklightRevealable:
+   - string GetRevealId()
+   - void OnRevealStart()
+   - void OnRevealComplete()
+2. BlacklightScanner:
+   - Runs at 15–20 Hz when lantern is active
+   - OverlapSphereNonAlloc on BlacklightReveal layer
+   - For each candidate:
+     - angle check
+     - accumulate reveal progress
+   - On complete:
+     - mark discovered in GameState
+3. NoteReveal:
+   - Linked to NoteDefinition (by noteId)
+   - On reveal complete:
+     - show popup (title + 1–2 lines)
+     - add to journal list
+4. HiddenDoorReveal:
+   - On reveal complete:
+     - mark revealed
+     - enable IInteractable on the door
+5. Journal UI:
+   - List view of discovered notes
+   - Highlight “new” note until opened once
 
-Content targets for PoC
+Content targets
 
-- 6 to 10 notes across all scenes
-- 2 hidden doors total:
-  - School hidden door (storage closet to secret room or shortcut)
-  - Park hedge gate or arcade back door
+- 8 notes is a good PoC target (not 6, not 10); it is enough to feel like a trail.
+- 2 hidden doors:
+  - School hidden door: leads to a tiny secret room with a reward
+  - Park hedge gate shortcut: opens a path that saves walking time
 
 Acceptance criteria
 
-- Lantern consistently reveals notes and doors.
-- Discovery persists across save and load.
-- Journal reflects discovered notes.
+- Reveals persist across save/load.
+- Reveal is readable and satisfying (popup + sound cue).
+- Hidden doors never become interactable until revealed.
 
 ---
 
-### 4.6 Energy and candy bars
+### 7.6 Energy + candy bars
 
 Owner: @unity-engineer
 
+Revisions
+
+- Integrate energy changes with events so HUD updates automatically.
+
 Tasks
 
-1. EnergySystem
-   - maxEnergy and currentEnergy
-   - TakeDamage reduces energy
-   - ConsumeCandy restores energy with clamp
-2. Inventory for candy bars
-   - Start with a small count or none
-   - Add via claw machine prizes
-3. UI
-   - Show energy
-   - Show candy count
+1. EnergySystem in GameState:
+   - currentEnergy, maxEnergy
+   - TakeDamage, RestoreEnergy
+2. Candy consumption:
+   - Use candy from HUD quick button or inventory panel
+   - Disallow use if candyBars == 0
+3. HUD:
+   - Energy bar/hearts
+   - Candy count + use button
+   - Gems count
 
 Acceptance criteria
 
-- Getting hit reduces energy.
-- Candy restores energy.
-- Energy reaching zero triggers tired and respawn.
+- Candy always restores the same amount and clamps to max.
+- Tired triggers only once (no double respawn).
 
 ---
 
-### 4.7 Combat v0 and Chaos Raccoon
+### 7.7 Combat controller + Chaos Raccoon AI + encounter
 
 Owners: @unity-engineer and @game-designer
 
-Player combat requirements
+Revisions
 
-- Light attack combo (2 to 3 hits)
-- Dodge roll with i-frames and cooldown
-- Targeting: simplest acceptable approach (nearest enemy within radius, or directional)
-
-Raccoon requirements
-
-- Cute and readable
-- Teaches dodge timing
-- State machine:
-  - Patrol or idle
-  - Chase
-  - Telegraph
-  - Swipe
-  - Dash past
-  - Recover
+- Use a small combat state machine to avoid input conflicts.
+- Use IDamageable to unify player and enemy damage.
 
 Tasks
 
-1. CombatController
-   - Attack input and hitbox window
-   - Dodge movement burst; invulnerability window; cooldown
-2. Damage model
-   - Enemy HP
-   - Enemy defeat behavior: puff and despawn
-3. RaccoonEnemy AI
-   - Executes swipe then dash past
-   - Telegraph uses body lean and audio cue
-4. EncounterTrigger
-   - Spawns raccoon in Park area
-   - PoC can respawn enemies on reload; persistence is optional for PoC
-5. Expose tuning constants
-   - PlayerAttackDamage, PlayerAttackRate
-   - DodgeDistance, DodgeIFrames, DodgeCooldown
-   - RaccoonHP, RaccoonDamage, TelegraphTime, DashSpeed
+1. IDamageable:
+   - void ApplyDamage(int amount, Vector3 sourcePosition)
+2. PlayerCombat:
+   - States: Idle, Attacking, Dodging, Hurt, Tired
+   - Attack combo windows; prevent attack during dodge; allow dodge cancel only if you want it (choose one)
+   - Dodge:
+     - fixed distance
+     - invulnerable frames
+     - cooldown
+3. Hit detection:
+   - Use a trigger hitbox spawned/enabled during attack frames
+   - Track already-hit targets per swing to avoid multi-hit spam
+4. Raccoon AI:
+   - States: Patrol, Chase, Telegraph, Swipe, DashPast, Recover
+   - Telegraph time is tuneable and must be obvious
+5. Encounter trigger:
+   - One park encounter zone that spawns a raccoon when entered
+   - Optional: cooldown before respawn if player leaves and re-enters quickly
 
 Acceptance criteria
 
-- Combat feels understandable and fair.
-- Dodge is required and works reliably.
-- Getting tired respawns correctly without losing prizes.
+- The first encounter teaches dodge.
+- Getting hit feels fair; telegraph is obvious.
+- No jitter or physics explosions.
 
 ---
 
-### 4.8 Maddie follower and assist
+### 7.8 Maddie follower + assist
 
 Owner: @unity-engineer
 
-PoC requirements
+Revisions
 
-- Maddie follows behind Fae.
-- Maddie assists automatically in combat on a cooldown.
+- Make Maddie purely cosmetic outside combat and only assist when an enemy is engaged to avoid constant polling.
 
 Tasks
 
-1. Follow behavior
-   - Maintain an offset behind player
-   - Smooth motion; avoid jitter; avoid blocking the player
-2. Assist behavior
-   - If enemy in range and cooldown ready; apply small damage or brief stun
-   - Simple leap or dash animation; puff VFX
-3. Persistence
-   - Maddie always active in PoC; no flute menu yet
+1. Follow:
+   - simple spring follow or “arrive” steering
+2. Assist:
+   - subscribe to “EnemyEngaged” event
+   - on cooldown; do a small dash; apply small damage
+3. Visual feedback:
+   - small puff VFX and a friendly sound
 
 Acceptance criteria
 
-- Maddie stays with player and does not interfere with movement.
-- Assist is noticeable but not overpowering.
+- Maddie never blocks the player.
+- Assist feels like a bonus; it should not solo the raccoon.
 
 ---
 
-### 4.9 Arcade and claw machine mini-game
+### 7.9 Arcade + claw machine mini-game (timing-based)
 
 Owners: @unity-engineer and @game-designer
 
-PoC requirements
+Revisions
 
-- ArcadeInterior scene
-- Claw machine interactable opens UI mini-game
-- Prize pool: gems and candy bars
-- Rewards saved and persist
+- Still simple; but include one skill input.
+
+Mechanic
+
+- A target marker oscillates left-right.
+- Player taps “Drop.”
+- Distance from center determines reward tier.
+- Reward tier maps to PrizeTable weighted results.
 
 Tasks
 
-1. ArcadeInterior blockout and claw machine interactable
-2. Claw machine UI
-   - Play button
-   - Result display
-3. Prize pool table and probabilities
-   - Gems: small, medium, large
-   - Candy bars: 1 or 2
-4. Reward grant integration
-   - Adds to inventory; updates HUD; persists via SaveSystem
+1. ArcadeInterior scene + interactable claw machine
+2. ClawMachine UI panel
+   - oscillating marker
+   - drop button
+   - reward reveal
+3. PrizeTable integration
+4. Reward grant updates inventory and saves
 
 Acceptance criteria
 
-- Player can win prizes consistently.
-- Prizes appear in inventory immediately.
-- Save and load preserves prizes.
+- Player influence matters.
+- Rewards still vary within tier so it stays interesting.
 
 ---
 
-### 4.10 QA regression checklist
+### 7.10 QA and automated checks
 
 Owner: @qa-playtest
 
-Minimum checklist
+Revisions
 
-- New game spawns at home.
-- Walk to school; reveal two notes; open hidden door; journal persists after save and load.
-- Walk to park; trigger raccoon; take damage; consume candy; verify energy.
-- Get tired outdoors; respawn at home bed.
-- Enter SchoolInterior; get tired; respawn at school entrance.
-- Enter arcade; play claw machine; receive gems or candy; save; reload; verify counts.
+- Add at least two automated checks; it saves time later.
 
----
+Manual regression checklist
 
-## 5. Map application for PoC
+- Same as original checklist; keep it.
 
-Use your sketch as the top-level layout, but implement PoC as a compact vertical strip.
+Automated checks (minimal)
 
-Placement guidance
+- Unit test: SaveData serialize/deserialize round trip
+- PlayMode smoke test:
+  - load Bootstrap
+  - load MainTown
+  - assert player spawns at home anchor
 
-- Home at the bottom of the strip; bed anchor inside or adjacent
-- School in the middle; hidden door inside
-- Park between school and arcade or adjacent; raccoon encounter zone; second hidden door
-- Arcade near the town center portion; claw machine inside
+Acceptance criteria
 
-Gates to future content
-
-- Mountains: “field trip later”
-- Ocean and dock: “bridge under construction”
-- Enchanted forest: “sparkly barrier” with a clear later promise
+- Tests run in batch mode and catch obvious breakages early.
 
 ---
 
-## 6. Asset prompt pack (for your external asset pipeline)
+## 8. PoC walkthrough script (final)
 
-Use this style anchor in every prompt:
-“Lil Gator-style; chunky toy-like shapes; low poly; flat colors or lightly painted texture; bright calm palette; soft lighting; friendly and cozy; top-down readability; rounded edges; playful kid-made vibe (cardboard, tape, stickers); no scary elements.”
-
-Blacklight notes (10)
-Prompt:
-“Create a set of invisible-ink blacklight note decals for a kid mystery game; each note is a simple doodle plus short text that only appears under a UV lantern; playful handwritten style; readable from top-down; include simple icons (school bell, paw print, star, arrow). Provide 10 variants.”
-
-Suggested note themes:
-
-1. Follow the paw prints to the playground.
-2. The real door has a star on the corner.
-3. Not all posters tell the truth.
-4. Look where the chalk is brightest.
-5. Raccoons love snacks behind the arcade.
-6. Two arrows mean turn back.
-7. The nurse knows the quiet paths.
-8. A hidden door is still a door.
-9. If you see three dots, you’re close.
-10. The glow shows what’s real.
-
-Hidden door symbols (6)
-Prompt:
-“Design 6 simple UV glyph symbols that look like kid doodles; each symbol indicates a hidden door; bold lines, playful shapes; consistent style; readable at small size; not occult.”
-
-Chaos raccoon
-Prompt:
-“Cute non-scary Chaos Raccoon enemy; toy-like proportions; expressive eyes; mischievous smile; attack set is swipe then dash past; show idle, telegraph, swipe, dash poses; low poly; flat colors; no sharp teeth; top-down readability.”
-
-Claw machine and prizes
-Prompt:
-“Small-town arcade claw machine; chunky toy-like shape; bright calm colors; sticker decals; clear glass box with prizes; prizes are colorful gem shapes and candy bars; top-down readability.”
+1. Spawn at home bed.
+2. Toggle lantern and reveal a note near home or on the road.
+3. Enter school; reveal two notes; reveal and open a hidden door; collect a small reward.
+4. Exit to park; trigger raccoon; dodge at least one swipe; defeat raccoon.
+5. Eat a candy bar after taking damage.
+6. Get tired outdoors; respawn at home bed.
+7. Enter arcade; play claw machine; win gems or candy.
+8. Save; quit; load; resume at exact position with the same inventory and discovered notes.
 
 ---
 
-## 7. Risk controls
+## 9. Updated risk controls
 
-- Do not build a full quest system for PoC.
-- Do not build a full inventory UI; use counts and a small panel.
-- Do not add more enemies until raccoon feels right.
-- Do not implement lasso or flute; keep them as stubs.
-
----
-
-## 8. PoC walkthrough script
-
-1. Spawn at home.
-2. Walk to school exterior; enter SchoolInterior.
-3. Use lantern; reveal two notes; open hidden door; journal updates.
-4. Exit; walk to park.
-5. Trigger raccoon encounter; use attack and dodge; take at least one hit.
-6. Eat a candy bar; energy increases.
-7. Get tired outdoors; respawn at home bed.
-8. Walk to arcade; enter; play claw machine; win gems or candy.
-9. Save; quit; load; resume same position with same prizes and flags.
-
----
-
-## 9. OpenCode work item split
-
-Create work items matching sections 4.1 through 4.10. Keep each work item small and verifiable.
-
-Recommended commit granularity
-
-- Movement and camera
-- Interaction
-- Save and respawn
-- Lantern and journal
-- Combat and raccoon
-- Companion
-- Arcade
-- Polish and QA checklist
+- Do not add a quest system; use notes as the trail.
+- Do not add more enemies; ship raccoon only.
+- Do not add more currencies; gems and candy only for PoC.
+- Do not add lasso/flute; only stubs.
+- Do not create cross-scene references; everything goes through GameState and services.
+- Keep per-frame allocations near zero; watch the profiler early.
