@@ -6,7 +6,7 @@ Animation should feel like a high-quality toy come to life or a playable cartoon
 Avoid "floaty" realistic blends. Prioritize strong poses and snappy timing.
 
 ## Principles
-1.  **Head Weight**: Fae's head is 45% of her mass. It drags slightly on acceleration and overshoots on stop.
+1.  **Head Weight**: Fae's head is 50% of her mass. It drags slightly on acceleration and overshoots on stop.
 2.  **Squash & Stretch**: Essential for the "soft vinyl" toy feel.
     - **Jump**: Squash flat -> Stretch long -> Tuck in air -> Squash on land.
     - **Impact**: Deform the mesh on hits.

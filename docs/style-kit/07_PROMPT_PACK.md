@@ -7,7 +7,7 @@
 - Add the negative prompt section if your tool supports it.
 
 ## Global Style Stamp
-Stylized cozy 3D game art; top-down 3/4 view at ~60° tilt; Chibi proportions (45% head); chunky toy-like shapes; flat painted materials with soft gradients; holographic sticker details; minimal texture detail; bright but calm palette; soft sunlight; clean silhouettes; playful kid-imagination vibe; no realism; no gritty.
+Stylized cozy 3D game art; top-down 3/4 view at ~60° tilt; Chibi SD proportions (1:2 ratio); chunky toy-like shapes; digital watercolor texture style; soft colored outlines; flat painted materials with soft gradients; holographic sticker details; minimal texture detail; bright but calm palette; soft sunlight; clean silhouettes; playful kid-imagination vibe; no realism; no gritty.
 
 ## Palette (include in prompts when possible)
 paper_white:#F8F6F2, ink_black:#3A3636, fae_hoodie:#6B5B95, fae_shorts:#3F4B66, holo_base:#D6E4FF, rainbow_red:#FF8B8B, rainbow_yellow:#FFD966, rainbow_teal:#66D2C8, grass_base:#76C466, grass_shadow:#5CA052, dirt_path:#E6B88A, tree_puff:#4BA868, wood_trunk:#9E7656, stone_gray:#9FA6B3, sky_day:#89CFF0, interaction_gold:#FFC845
@@ -48,7 +48,7 @@ Top-down 3/4 environment concept: [SCENE]. Sand, shells, driftwood, tiny dock, s
 
 ## D) Character concept: Player (Fae)
 **Template**
-Stylized 3D character concept, top-down Chibi proportions, big head (45%), small body, mitten hands, boot feet, simple dot eyes and small mouth. Outfit: [OUTFIT]. Accessories: Holographic backpack, sticker details. Colors from palette only. Soft lighting. No realism.
+Stylized 3D character concept, top-down Chibi SD proportions, big head (50%), small body, mitten hands, boot feet, simple dot eyes and small mouth. Outfit: [OUTFIT]. Accessories: Holographic backpack, sticker details. Colors from palette only. Soft lighting. No realism.
 
 **Variants**
 1. “adventure kid outfit with hoodie, shorts, and holographic backpack”

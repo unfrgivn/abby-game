@@ -18,10 +18,11 @@
 - **Clumping:** Nature isn't scattered evenly. Trees grow in friend groups (3-5).
 - **Scale:** Props are oversized. A flower is 30% of player height. A pebble is a distinct shape, not noise.
 - **Pathing:** Dirt paths are warm terracotta/salmon, carved into the green with soft edges.
+- **Lighting:** Warm "Golden Hour" directional light (amber/orange). Shadows should be soft and tinted purple/blue, never black.
 
 ## Starter prop kit (build first)
-Nature (Soft/Round)
-- **Trees:** Sphere clusters (puff balls), Balloon style, Palm-ish (thick smooth trunk).
+Nature (Soft/Round/Watercolor)
+- **Trees:** Sphere clusters (puff balls), Balloon style, Palm-ish (thick smooth trunk). Textures should feel like digital watercolor with soft gradients.
 - **Rocks:** River stones (smooth), gumdrops.
 - **Bushes:** Mounds, cloud shapes.
 - **Flowers:** Daisy (big center), Tulip (closed cup), distinct oversized.
