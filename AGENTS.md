@@ -278,6 +278,35 @@ After code changes:
 - Keep props chunky and readable from a top-down camera.
 - NPC text must be short and kid-friendly.
 
+## Image generation (concept art)
+
+The built-in `image_generate` and `image_nanobanana` tools require interactive confirmation and will fail in non-interactive mode.
+
+**Workaround**: Use the Gemini CLI directly with `--yolo` flag:
+
+```bash
+gemini --yolo -p '/generate "Your prompt here"'
+```
+
+**Workflow**:
+1. Generate images to `nanobanana-output/` using the command above
+2. Review generated images
+3. Move approved images to `docs/style-kit/examples/concepts/<category>/`
+
+**Concept art folder structure**:
+```
+docs/style-kit/examples/concepts/
+├── characters/    # Player and party member concepts
+├── npcs/          # Animal companions and friendly NPCs
+├── environments/  # Zone and scene concepts
+├── props/         # Interactable objects and set dressing
+├── collectibles/  # Stickers, gems, and collectible items
+├── ui/            # HUD, menus, and interface elements
+└── vfx/           # Particle effects and visual feedback
+```
+
+**Prompt guidelines**: Follow templates in `docs/style-kit/07_PROMPT_PACK.md` and match the aesthetic of existing examples in the concepts folder.
+
 ## How to use subagents
 
 - Use `@game-designer` for quest ideas and progression structure.
