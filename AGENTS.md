@@ -9,7 +9,7 @@
 
 - Linear is the source of truth for phases and planned work.
 - All work must map to a Linear issue in the current phase.
-- Bugs are tracked as GitHub Issues and synced into Linear via Linear's GitHub Issues Sync. :contentReference[oaicite:0]{index=0}
+- Bugs are tracked as GitHub Issues and synced into Linear via Linear's GitHub Issues Sync.
   - File a bug as a GitHub Issue.
   - Ensure it appears in Linear (sync), then schedule it into the right phase.
   - Do not track bugs only in Linear without a GitHub Issue.
@@ -25,10 +25,11 @@ Before modifying ANY file in the repository, agents MUST:
    - Use appropriate labels (e.g., `enhancement`, `bug`, `chore`, `docs`).
    - If a Linear issue already exists, reference it; otherwise create the GitHub Issue first.
 
-2. **Create a feature branch**
+2. **Create a worktree and feature branch (REQUIRED)**
+   - **ALWAYS use Worktrunk** to create a new worktree: `wt switch -c <branch-name>`
    - Branch from `main`.
    - Name format: `<type>/gh-<issue-number>-<short-description>` (e.g., `feat/gh-42-add-lantern`, `fix/gh-99-combat-crash`, `chore/gh-7-update-docs`).
-   - Use Worktrunk if available: `wt switch -c feat/gh-42-add-lantern`.
+   - **Work in the new worktree directory**, not the main checkout.
 
 3. **Make changes on the branch**
    - Commit with clear messages referencing the issue (e.g., `Add lantern scanning (#42)`).
@@ -37,14 +38,57 @@ Before modifying ANY file in the repository, agents MUST:
 4. **Open a Pull Request**
    - PR title should be descriptive but should **not** include the issue number (e.g., `feat: Add lantern scanning`).
    - Link the PR to the GitHub Issue in the PR description (e.g., `Closes #42` or `Fixes #42`).
-   - Wait for CI/review if configured.
 
-5. **Rebase and merge to main**
+5. **Wait for CI checks to pass**
+   - Monitor PR checks: `gh pr checks <pr-number> --watch`
+   - All required checks must pass before merging.
+   - If checks fail, see "Handling PR failures" below.
+
+6. **Rebase and merge to main**
    - Rebase from `main` before merging to ensure a linear history: `git fetch origin && git rebase origin/main`.
    - Always use **squash merge** to keep `main` history clean: `gh pr merge <pr-number> --squash --delete-branch`.
-   - Delete the branch after merge.
+   - The `--delete-branch` flag removes the remote branch automatically.
+
+7. **Clean up worktree**
+   - After merge completes, remove the local worktree: `wt remove <branch-name>`
+   - Verify cleanup: `wt list` should no longer show the branch.
 
 **Why this matters**: Untracked changes on `main` break history, make rollbacks hard, and bypass review. All work must be traceable.
+
+### Handling PR failures
+
+When CI checks fail or the PR cannot be merged:
+
+1. **Identify the failure**
+   - Run `gh pr checks <pr-number>` to see which checks failed.
+   - Run `gh pr view <pr-number>` to see review comments or merge conflicts.
+
+2. **Attempt to fix autonomously**
+   - For test failures: read the logs, fix the code, push a new commit.
+   - For lint/format failures: run the appropriate fix command and push.
+   - For merge conflicts: rebase on main and resolve conflicts.
+   - For review feedback: address comments and push fixes.
+
+3. **If autonomous fix fails, escalate**
+   - After 2-3 failed fix attempts, STOP further attempts.
+   - Document what was tried and what failed.
+   - Propose options to the user:
+     ```
+     PR #42 is failing and I cannot resolve it autonomously.
+     
+     **What failed**: [specific check/error]
+     **What I tried**: [list of fix attempts]
+     **Why it didn't work**: [explanation]
+     
+     **Options to move forward**:
+     1. [Option A] - [implications]
+     2. [Option B] - [implications]
+     3. [Manual intervention needed] - [what the user needs to do]
+     
+     Which approach would you like me to take?
+     ```
+
+4. **Never force-merge or skip checks** without explicit user approval.
 
 ## One issue = one branch = one PR
 
@@ -59,20 +103,80 @@ Before modifying ANY file in the repository, agents MUST:
   - `fix/gh-456-shop-crash`
 - PR title should be descriptive without the issue number; link the issue in the PR description instead (e.g., `Closes #456` or `Relates to TW-123`).
 
-## Worktrees (worktrunk)
+## Worktrees (worktrunk) — CRITICAL
 
-We use Worktrunk to keep one worktree per issue so parallel work never collides. :contentReference[oaicite:2]{index=2}
+**All work on non-main branches MUST happen inside a worktree. No exceptions.**
 
-Core commands (examples):
+We use Worktrunk to keep one worktree per issue so parallel work never collides.
 
-- Create and switch to a new worktree/branch:
-  - `wt switch -c feat/TW-123-blacklight-notes`
-- List worktrees:
-  - `wt list`
-- Remove a finished worktree:
-  - `wt remove feat/TW-123-blacklight-notes`
+### Pre-work checklist
 
-If you are using Opencode locally, run it inside the issue’s worktree.
+Before starting ANY work, verify your current state:
+
+```bash
+git branch --show-current   # Must be 'main' if starting new work
+wt list                     # See existing worktrees
+```
+
+If you are on `main` and need to start new work → create a worktree first.
+If you are already in a worktree for the correct issue → proceed.
+
+### Command reference
+
+| Action | Command |
+|--------|---------|
+| Create worktree + branch | `wt switch -c feat/gh-42-add-lantern` |
+| List all worktrees | `wt list` |
+| Switch to existing worktree | `wt switch feat/gh-42-add-lantern` |
+| Remove finished worktree | `wt remove feat/gh-42-add-lantern` |
+
+### Workflow example
+
+```bash
+# 1. Start from main checkout (or any worktree)
+git branch --show-current  # verify current branch
+
+# 2. Create worktree for new issue
+wt switch -c feat/gh-42-add-lantern
+
+# 3. Worktree created at: ~/Sites/project.feat-gh-42-add-lantern
+#    All work for this issue happens in that directory
+
+# 4. Make changes, commit, push, create PR
+git add . && git commit -m "Add lantern feature (#42)"
+git push -u origin feat/gh-42-add-lantern
+gh pr create --title "feat: Add lantern feature" --body "Closes #42"
+
+# 5. Wait for CI checks to pass
+gh pr checks <pr-number> --watch
+
+# 6. Rebase and squash merge
+git fetch origin && git rebase origin/main
+gh pr merge <pr-number> --squash --delete-branch
+
+# 7. Clean up worktree
+wt remove feat/gh-42-add-lantern
+```
+
+### Why worktrees are mandatory
+
+| Benefit | Explanation |
+|---------|-------------|
+| Parallel agents | Multiple agents can work on different issues simultaneously |
+| Clean main | Main worktree stays on `main`, ready for new work |
+| Isolation | Changes in one worktree cannot affect another |
+| Easy recovery | If something breaks, remove the worktree and start fresh |
+
+### Anti-patterns (BLOCKING)
+
+| Violation | Why it breaks things |
+|-----------|---------------------|
+| Branching directly in main worktree | Blocks other agents from starting new work on main |
+| Forgetting to create worktree | Changes end up on wrong branch or conflict with parallel work |
+| Not cleaning up after merge | Stale worktrees accumulate and cause confusion |
+| Working in wrong worktree | Changes go to wrong issue/PR |
+
+If you are using OpenCode locally, **always run it inside the issue's worktree directory**.
 
 ## Build workflow (TDD required)
 
@@ -90,7 +194,7 @@ For each issue:
 - Prefer pure C# classes for logic so they are easy to unit test.
 - Use Unity EditMode tests for pure logic and fast checks.
 - Use PlayMode tests only when the behavior requires scenes, GameObjects, input, or timing.
-- Avoid broad “integration soup” tests. Write small, targeted tests that match the acceptance criteria.
+- Avoid broad "integration soup" tests. Write small, targeted tests that match the acceptance criteria.
 
 ## PR process (Opencode review via GitHub Actions)
 
@@ -100,9 +204,9 @@ For each issue:
 
 ### Merge policy
 
-Merge the phase “as is” unless there is a serious problem.
+Merge the phase "as is" unless there is a serious problem.
 
-A “serious problem” is one of:
+A "serious problem" is one of:
 
 - Failing tests or broken build.
 - Breaking change to player flow, save model, or public APIs without explicit approval.
