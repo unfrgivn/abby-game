@@ -7,7 +7,7 @@ Ready-to-paste prompts for Gemini image generation. Copy the full prompt block i
 ## 1. Key Art: Cloverhollow Overview
 
 ```
-Sunny small-town neighborhood from above; a cozy house with a red roof, a path leading to a friendly school building, a green park with playground equipment, and a small arcade with a colorful awning. Late morning light, calm and inviting. A 10-year-old kid with a backpack walks on the path with a small orange kitten following. Stylized cozy 3D game art; top-down 3/4 view at ~60° tilt; chunky toy-like shapes; flat painted materials; minimal texture detail; bright but calm palette; soft sunlight; clean silhouettes; playful kid-imagination vibe; no realism; no gritty.
+Sunny small-town neighborhood from above; a cozy house with a red roof, a path leading to a friendly school building, a green park with playground equipment, and a small arcade with a colorful awning. Late morning light, calm and inviting. A 10-year-old kid with a backpack walks on the path with a small orange kitten following. Stylized cozy 3D game art; top-down 3/4 view at ~60° tilt; chunky toy-like shapes; digital watercolor texture style; soft colored outlines; flat painted materials with soft gradients; minimal texture detail; bright but calm palette; soft sunlight; clean silhouettes; playful kid-imagination vibe; no realism; no gritty.
 
 Palette: paper_white:#F5F3EE, warm_gray:#CFC8BD, deep_ink:#2D2A2A, sky:#7EC8FF, grass:#63C35C, grass_light:#A6E67E, dirt:#C9A06A, tree_leaf:#3DBB7A, tree_trunk:#B57B4B, sun_yellow:#FFD45A, coral:#FF6F61, purple:#7B6DFF
 
@@ -19,11 +19,11 @@ Negative: photorealistic, realistic skin, gritty, horror, dark, high-frequency t
 ## 2. Character Concept: Fae (Main Character)
 
 ```
-Stylized 3D character concept of a 10-year-old kid adventurer; big head (45% of height), small body, mitten hands, boot feet, simple dot eyes and small happy mouth. Wearing a casual hoodie, shorts, sneakers, and a backpack with stickers and a journal peeking out. Hair in messy ponytail. Friendly, curious expression. Top-down friendly proportions, readable from above. Soft lighting. Colors from palette only.
+Stylized 3D character concept of a 10-year-old kid adventurer; big head (50% of height), small body, mitten hands, boot feet, simple dot eyes and small happy mouth. Wearing a casual hoodie, shorts, sneakers, and a backpack with stickers and a journal peeking out. Hair in messy ponytail. Friendly, curious expression. Top-down friendly proportions, readable from above. Soft lighting. Colors from palette only.
 
 Palette: paper_white:#F5F3EE, warm_gray:#CFC8BD, deep_ink:#2D2A2A, sky:#7EC8FF, grass:#63C35C, dirt:#C9A06A, sun_yellow:#FFD45A, coral:#FF6F61, purple:#7B6DFF
 
-Stylized cozy 3D game art; chunky toy-like shapes; flat painted materials; minimal texture detail; bright but calm palette; soft sunlight; clean silhouettes; playful kid-imagination vibe; no realism; no gritty.
+Stylized cozy 3D game art; chunky toy-like shapes; digital watercolor texture style; soft colored outlines; flat painted materials; minimal texture detail; bright but calm palette; soft sunlight; clean silhouettes; playful kid-imagination vibe; no realism; no gritty.
 
 Negative: photorealistic, realistic skin, gritty, horror, dark, high-frequency texture, microdetail, noisy, film grain, text, watermark.
 ```
@@ -37,7 +37,7 @@ Stylized 3D character concept of a small orange kitten companion; big round head
 
 Palette: sun_yellow:#FFD45A, coral:#FF6F61, paper_white:#F5F3EE, deep_ink:#2D2A2A
 
-Stylized cozy 3D game art; top-down friendly proportions; flat painted materials; minimal texture detail; bright but calm palette; soft sunlight; clean silhouettes; playful kid-imagination vibe; no realism; no gritty.
+Stylized cozy 3D game art; top-down friendly proportions; digital watercolor texture style; soft colored outlines; digital watercolor texture style; soft colored outlines; flat painted materials; minimal texture detail; bright but calm palette; soft sunlight; clean silhouettes; playful kid-imagination vibe; no realism; no gritty.
 
 Negative: photorealistic, realistic fur, gritty, horror, dark, high-frequency texture, microdetail, noisy, text, watermark.
 ```
@@ -51,7 +51,7 @@ Stylized 3D character concept of a mischievous raccoon affected by "chaos magic"
 
 Palette: warm_gray:#CFC8BD, deep_ink:#2D2A2A, purple:#7B6DFF, coral:#FF6F61, paper_white:#F5F3EE
 
-Stylized cozy 3D game art; flat painted materials; minimal texture detail; bright but calm palette; soft sunlight; clean silhouettes; playful kid-imagination vibe; no realism; no gritty; no horror.
+Stylized cozy 3D game art; digital watercolor texture style; soft colored outlines; flat painted materials; minimal texture detail; bright but calm palette; soft sunlight; clean silhouettes; playful kid-imagination vibe; no realism; no gritty; no horror.
 
 Negative: photorealistic, scary, horror, dark, gritty, high-frequency texture, microdetail, noisy, aggressive, menacing, text, watermark.
 ```
@@ -65,7 +65,7 @@ Top-down 3/4 environment concept of a cozy family house interior: kid's bedroom 
 
 Palette: paper_white:#F5F3EE, warm_gray:#CFC8BD, sky_light:#CFEFFF, grass:#63C35C, dirt:#C9A06A, tree_trunk:#B57B4B, sun_yellow:#FFD45A, coral:#FF6F61, purple:#7B6DFF
 
-Stylized cozy 3D game art; top-down 3/4 view at ~60° tilt; chunky toy-like shapes; flat painted materials; minimal texture detail; bright but calm palette; soft sunlight; clean silhouettes; playful kid-imagination vibe; no realism; no gritty.
+Stylized cozy 3D game art; top-down 3/4 view at ~60° tilt; chunky toy-like shapes; digital watercolor texture style; soft colored outlines; flat painted materials; minimal texture detail; bright but calm palette; soft sunlight; clean silhouettes; playful kid-imagination vibe; no realism; no gritty.
 
 Negative: photorealistic, gritty, horror, dark, high-frequency texture, microdetail, noisy, text, watermark.
 ```
@@ -79,7 +79,7 @@ Top-down 3/4 environment concept of a friendly elementary school hallway: colorf
 
 Palette: paper_white:#F5F3EE, warm_gray:#CFC8BD, sky:#7EC8FF, grass:#63C35C, sun_yellow:#FFD45A, coral:#FF6F61, purple:#7B6DFF, deep_ink:#2D2A2A
 
-Stylized cozy 3D game art; top-down 3/4 view at ~60° tilt; chunky toy-like shapes; flat painted materials; minimal texture detail; bright but calm palette; soft sunlight; clean silhouettes; playful kid-imagination vibe; no realism; no gritty.
+Stylized cozy 3D game art; top-down 3/4 view at ~60° tilt; chunky toy-like shapes; digital watercolor texture style; soft colored outlines; flat painted materials; minimal texture detail; bright but calm palette; soft sunlight; clean silhouettes; playful kid-imagination vibe; no realism; no gritty.
 
 Negative: photorealistic, gritty, horror, dark, high-frequency texture, microdetail, noisy, text, watermark.
 ```
@@ -93,7 +93,7 @@ Top-down 3/4 environment concept of a sunny park with playground: swing set, sma
 
 Palette: grass:#63C35C, grass_light:#A6E67E, dirt:#C9A06A, tree_leaf:#3DBB7A, tree_trunk:#B57B4B, sky:#7EC8FF, sun_yellow:#FFD45A, coral:#FF6F61, paper_white:#F5F3EE
 
-Stylized cozy 3D game art; top-down 3/4 view at ~60° tilt; chunky toy-like shapes; flat painted materials; minimal texture detail; bright but calm palette; soft sunlight; clean silhouettes; playful kid-imagination vibe; no realism; no gritty.
+Stylized cozy 3D game art; top-down 3/4 view at ~60° tilt; chunky toy-like shapes; digital watercolor texture style; soft colored outlines; flat painted materials; minimal texture detail; bright but calm palette; soft sunlight; clean silhouettes; playful kid-imagination vibe; no realism; no gritty.
 
 Negative: photorealistic, gritty, horror, dark, high-frequency texture, microdetail, noisy, text, watermark.
 ```
@@ -107,7 +107,7 @@ Top-down 3/4 environment concept of a small cozy arcade interior: a colorful cla
 
 Palette: purple:#7B6DFF, coral:#FF6F61, sun_yellow:#FFD45A, sky:#7EC8FF, paper_white:#F5F3EE, deep_ink:#2D2A2A, warm_gray:#CFC8BD
 
-Stylized cozy 3D game art; top-down 3/4 view at ~60° tilt; chunky toy-like shapes; flat painted materials; minimal texture detail; bright but calm palette; soft colorful lighting; clean silhouettes; playful kid-imagination vibe; no realism; no gritty.
+Stylized cozy 3D game art; top-down 3/4 view at ~60° tilt; chunky toy-like shapes; digital watercolor texture style; soft colored outlines; flat painted materials; minimal texture detail; bright but calm palette; soft colorful lighting; clean silhouettes; playful kid-imagination vibe; no realism; no gritty.
 
 Negative: photorealistic, gritty, horror, dark, high-frequency texture, microdetail, noisy, text, watermark, logo.
 ```
@@ -121,7 +121,7 @@ Negative: photorealistic, gritty, horror, dark, high-frequency texture, microdet
 
 Palette: purple:#7B6DFF, sun_yellow:#FFD45A, coral:#FF6F61, paper_white:#F5F3EE, deep_ink:#2D2A2A
 
-Stylized cozy 3D game art; chunky toy-like shapes; flat painted materials; minimal texture detail; craft/DIY aesthetic; playful kid-imagination vibe; no realism; no gritty.
+Stylized cozy 3D game art; chunky toy-like shapes; digital watercolor texture style; soft colored outlines; flat painted materials; minimal texture detail; craft/DIY aesthetic; playful kid-imagination vibe; no realism; no gritty.
 
 Negative: photorealistic, gritty, horror, dark, high-frequency texture, microdetail, noisy, text, watermark.
 ```

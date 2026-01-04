@@ -4,14 +4,14 @@
 Kid imagination; playful exploration; calm energy; “everything is a friendly playground.”
 
 ## Non-negotiable style pillars
-1. **Chibi / Toy Proportions:** Big heads, small bodies, rounded limbs. No realistic proportions.
+1. **Chibi / SD Proportions:** 1:2 Head-to-Body ratio. Big heads, small bodies, rounded limbs.
 2. **Soft & Round:** Beveled edges, spherical foliage, smooth terrain. No sharp angles.
-3. **Flat + Gradient Materials:** Minimal noise. Use vertical gradients to ground objects.
+3. **Digital Watercolor & Cel-Shade:** Flat painted materials with soft gradients. Soft colored outlines (brown/purple) instead of harsh black.
 4. **Sticker & Craft Details:** Holographic stickers, tape, marker drawings, cardboard construction.
 5. **Calm Brightness:** Pastel-adjacent saturated colors. Soft sunlight. No grit.
 
 ## Global style stamp (append to prompts)
-Stylized cozy 3D game art; top-down 3/4 view at ~60° tilt; Chibi character proportions; soft round shapes; flat painted materials with gradients; holographic sticker details; bright playful palette; soft lighting; clean silhouettes; toy-like aesthetic; no realism; no grit.
+Stylized cozy 3D game art; top-down 3/4 view at ~60° tilt; Chibi SD character proportions (1:2 ratio); soft round shapes; digital watercolor texture style; cel-shaded with soft gradients; soft colored outlines; holographic sticker details; bright playful palette; soft lighting; clean silhouettes; toy-like aesthetic; no realism; no grit.
 
 ## Palette (do not expand early)
 Use the 16-color palette in `PALETTE.json`.

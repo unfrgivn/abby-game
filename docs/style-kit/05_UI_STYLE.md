@@ -17,7 +17,7 @@
 
 All icons should look like die-cut stickers.
 
--   **Outline:** Thick white outline (2-4px) around every icon.
+-   **Outline:** Double outline technique: Thick white border (3-4px) + thin dark brown outer stroke (1px) for separation.
 -   **Finish:** Subtle gloss highlight on the top half to suggest a vinyl sticker.
 -   **Shadow:** Soft drop shadow (offset y: 2px, blur: 4px, alpha: 20%) to lift it off the "paper".
 -   **Examples:**

@@ -5,8 +5,9 @@
 - Player height: 1.0 m (Classic Chibi)
 - Doorway props: ~1.5 m (Wide and accessible)
 
-## Player proportions (Chibi Style)
-- **Head:** ~45-50% of total height. Big and expressive.
+## Player proportions (Chibi SD Style)
+- **Ratio:** 1:2 Head-to-Body ratio.
+- **Head:** ~50% of total height. Big and expressive.
 - **Hair:** Chunky tufts, messy bun (Fae's signature). No individual strands.
 - **Body:** Small, compact torso.
 - **Limbs:** Rounded "noodle" limbs or soft cylinders. No sharp elbows/knees.
@@ -21,7 +22,9 @@ Prioritize silhouette smoothness.
 - **Small props:** 100–1k tris.
 
 ## Textures & Materials
-- **Default Material:** "Soft Plastic" / Matte Clay.
+- **Default Material:** "Digital Watercolor" / Soft Cel-Shade.
+  - **Technique:** Flat base colors with soft gradient overlays.
+  - **Outlines:** Colored outlines (brown/purple) inverted hull or rim shader. Avoid harsh black lines.
   - Roughness: High (0.8).
   - Metallic: 0.
 - **Fae's Backpack:** Special "Holo-Sparkle" shader.
