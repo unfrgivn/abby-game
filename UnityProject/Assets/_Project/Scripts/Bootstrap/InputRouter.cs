@@ -151,4 +151,5 @@ namespace WildsOfCloverhollow.Bootstrap
             
             OnInputModeChanged?.Invoke(mode);
         }
+    }
 }
