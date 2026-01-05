@@ -108,8 +108,8 @@ namespace WildsOfCloverhollow.Editor
             ground.transform.SetParent(sceneRoot.transform);
             ground.transform.localScale = new Vector3(10f, 1f, 10f);
             var groundRenderer = ground.GetComponent<Renderer>();
-            var groundMat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-            groundMat.color = new Color(0.3f, 0.6f, 0.3f);
+            
+            var groundMat = CreateOrLoadURPMaterial("Ground", new Color(0.3f, 0.6f, 0.3f));
             groundRenderer.sharedMaterial = groundMat;
             
             var playerSpawn = new GameObject("PlayerSpawnPoint");
@@ -360,6 +360,35 @@ namespace WildsOfCloverhollow.Editor
                     current = next;
                 }
             }
+        }
+        
+        private static Material CreateOrLoadURPMaterial(string name, Color color)
+        {
+            var matPath = $"Assets/_Project/Materials/{name}.mat";
+            EnsureDirectoryExists("Assets/_Project/Materials");
+            
+            var existingMat = AssetDatabase.LoadAssetAtPath<Material>(matPath);
+            if (existingMat != null)
+            {
+                existingMat.color = color;
+                EditorUtility.SetDirty(existingMat);
+                return existingMat;
+            }
+            
+            var urpLitShader = Shader.Find("Universal Render Pipeline/Lit");
+            if (urpLitShader == null)
+            {
+                urpLitShader = Shader.Find("Standard");
+            }
+            
+            var mat = new Material(urpLitShader);
+            mat.color = color;
+            mat.SetFloat("_Smoothness", 0.2f);
+            
+            AssetDatabase.CreateAsset(mat, matPath);
+            AssetDatabase.SaveAssets();
+            
+            return mat;
         }
     }
 }
