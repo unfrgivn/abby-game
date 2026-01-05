@@ -594,9 +594,9 @@ namespace WildsOfCloverhollow.Editor
             CreateTuningAssetIfMissing<WildsOfCloverhollow.AI.MaddieTuning>($"{tuningPath}/MaddieTuning.asset");
             CreateTuningAssetIfMissing<WildsOfCloverhollow.AI.RaccoonTuning>($"{tuningPath}/RaccoonTuning.asset");
             CreateTuningAssetIfMissing<WildsOfCloverhollow.Player.PlayerTuning>($"{tuningPath}/PlayerTuning.asset");
-            CreateTuningAssetIfMissing<WildsOfCloverhollow.Player.CombatTuning>($"{tuningPath}/CombatTuning.asset");
-            CreateTuningAssetIfMissing<WildsOfCloverhollow.Player.EnergyTuning>($"{tuningPath}/EnergyTuning.asset");
-            CreateTuningAssetIfMissing<WildsOfCloverhollow.Tools.LanternTuning>($"{tuningPath}/LanternTuning.asset");
+            CreateTuningAssetIfMissing<WildsOfCloverhollow.Combat.CombatTuning>($"{tuningPath}/CombatTuning.asset");
+            CreateTuningAssetIfMissing<WildsOfCloverhollow.Core.EnergyTuning>($"{tuningPath}/EnergyTuning.asset");
+            CreateTuningAssetIfMissing<WildsOfCloverhollow.Content.LanternTuning>($"{tuningPath}/LanternTuning.asset");
             CreateTuningAssetIfMissing<WildsOfCloverhollow.Minigames.ClawMachineTuning>($"{tuningPath}/ClawMachineTuning.asset");
 
             AssetDatabase.SaveAssets();
