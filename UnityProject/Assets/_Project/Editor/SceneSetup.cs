@@ -64,6 +64,7 @@ namespace WildsOfCloverhollow.Editor
             var journalPanel = CreatePanel("JournalPanel", uiRootGO.transform);
             var minigamePanel = CreatePanel("MinigamePanel", uiRootGO.transform);
             var debugPanel = CreateDebugOverlayPanel(uiRootGO.transform);
+            var controlsPanel = CreateControlsPanel(uiRootGO.transform);
             
             SerializedObject uiRootSO = new SerializedObject(uiRoot);
             uiRootSO.FindProperty("hudPanel").objectReferenceValue = hudPanel;
@@ -71,6 +72,7 @@ namespace WildsOfCloverhollow.Editor
             uiRootSO.FindProperty("journalPanel").objectReferenceValue = journalPanel;
             uiRootSO.FindProperty("minigamePanel").objectReferenceValue = minigamePanel;
             uiRootSO.FindProperty("debugOverlayPanel").objectReferenceValue = debugPanel;
+            uiRootSO.FindProperty("controlsPanel").objectReferenceValue = controlsPanel;
             uiRootSO.ApplyModifiedPropertiesWithoutUndo();
             
             SerializedObject inputRouterSO = new SerializedObject(inputRouter);
@@ -428,6 +430,22 @@ namespace WildsOfCloverhollow.Editor
             debugSO.FindProperty("closeButton").objectReferenceValue = closeBtn.GetComponent<Button>();
             debugSO.FindProperty("statusText").objectReferenceValue = statusText;
             debugSO.ApplyModifiedPropertiesWithoutUndo();
+            
+            return panel;
+        }
+        
+        private static GameObject CreateControlsPanel(Transform parent)
+        {
+            var panel = new GameObject("ControlsPanel");
+            panel.transform.SetParent(parent);
+            
+            var rectTransform = panel.AddComponent<RectTransform>();
+            rectTransform.anchorMin = Vector2.zero;
+            rectTransform.anchorMax = Vector2.one;
+            rectTransform.offsetMin = Vector2.zero;
+            rectTransform.offsetMax = Vector2.zero;
+            
+            panel.AddComponent<ControlsPanel>();
             
             return panel;
         }

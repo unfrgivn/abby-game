@@ -14,6 +14,7 @@ namespace WildsOfCloverhollow.UI
         [SerializeField] private GameObject journalPanel;
         [SerializeField] private GameObject minigamePanel;
         [SerializeField] private GameObject debugOverlayPanel;
+        [SerializeField] private GameObject controlsPanel;
         
         public static UIRoot Instance { get; private set; }
         
@@ -23,6 +24,7 @@ namespace WildsOfCloverhollow.UI
         public GameObject JournalPanel => journalPanel;
         public GameObject MinigamePanel => minigamePanel;
         public GameObject DebugOverlayPanel => debugOverlayPanel;
+        public GameObject ControlsPanel => controlsPanel;
         
         private void Awake()
         {
@@ -57,6 +59,9 @@ namespace WildsOfCloverhollow.UI
             
             // Debug overlay starts hidden (toggled with F1)
             SetPanelActive(debugOverlayPanel, false);
+            
+            // Controls panel starts hidden (toggled with Esc)
+            SetPanelActive(controlsPanel, false);
         }
         
         /// <summary>
