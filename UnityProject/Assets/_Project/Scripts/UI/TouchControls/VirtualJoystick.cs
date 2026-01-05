@@ -21,7 +21,7 @@ namespace WildsOfCloverhollow.UI
         private Vector2 startPosition;
         private Vector2 inputOrigin;
         private Canvas parentCanvas;
-        private Camera canvasCamera;
+        private UnityEngine.Camera canvasCamera;
 
         /// <summary>Joystick value normalized to -1..1 per axis.</summary>
         public Vector2 Value { get; private set; }
