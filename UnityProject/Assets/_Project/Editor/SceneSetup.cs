@@ -107,6 +107,10 @@ namespace WildsOfCloverhollow.Editor
             ground.name = "Ground";
             ground.transform.SetParent(sceneRoot.transform);
             ground.transform.localScale = new Vector3(10f, 1f, 10f);
+            var groundRenderer = ground.GetComponent<Renderer>();
+            var groundMat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            groundMat.color = new Color(0.3f, 0.6f, 0.3f);
+            groundRenderer.sharedMaterial = groundMat;
             
             var playerSpawn = new GameObject("PlayerSpawnPoint");
             playerSpawn.transform.SetParent(sceneRoot.transform);
@@ -169,16 +173,16 @@ namespace WildsOfCloverhollow.Editor
             ProjectSetup.CreateInputActions();
             ProjectSetup.CreatePrefabFolders();
 
-            CreateBootstrapScene();
-            CreateCloverhollowScene();
-
-            ContentSetup.CreateAllContentScenes();
-
             PrefabSetup.CreatePlayerPrefab();
             PrefabSetup.CreateRaccoonPrefab();
             PrefabSetup.CreateMaddiePrefab();
             PrefabSetup.CreatePickupPrefabs();
             PrefabSetup.CreateSpawnAnchorPrefab();
+
+            CreateBootstrapScene();
+            CreateCloverhollowScene();
+
+            ContentSetup.CreateAllContentScenes();
 
             ContentSetup.UpdateBuildSettingsAllScenes();
 
@@ -189,10 +193,7 @@ namespace WildsOfCloverhollow.Editor
             EditorSceneManager.OpenScene($"{ScenesPath}/Bootstrap.unity", OpenSceneMode.Single);
 
             UnityEngine.Debug.Log("=== Full Setup Complete! ===");
-            UnityEngine.Debug.Log("Next steps:");
-            UnityEngine.Debug.Log("  1. Press Play to test the game");
-            UnityEngine.Debug.Log("  2. Use menu 'Wilds of Cloverhollow/Content' to add anchors to other scenes");
-            UnityEngine.Debug.Log("  3. Drag Player prefab into Cloverhollow scene");
+            UnityEngine.Debug.Log("Press Play to test the game.");
         }
         
         private static GameObject CreatePanel(string name, Transform parent)
