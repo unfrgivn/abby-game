@@ -2,7 +2,8 @@
     "name": "WildsOfCloverhollow",
     "rootNamespace": "WildsOfCloverhollow",
     "references": [
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
