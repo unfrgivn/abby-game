@@ -129,15 +129,39 @@ namespace WildsOfCloverhollow.Editor
             UnityEngine.Debug.Log("Build settings configured with Bootstrap (0) and Cloverhollow (1).");
         }
         
-        [MenuItem("Wilds of Cloverhollow/Setup/Run Full Setup")]
+        [MenuItem("Wilds of Cloverhollow/Setup/Run Full Setup", priority = 0)]
         public static void RunFullSetup()
         {
+            UnityEngine.Debug.Log("=== Starting Full Project Setup ===");
+
+            ProjectSetup.ConfigureLayers();
+            ProjectSetup.CreateInputActions();
+            ProjectSetup.CreatePrefabFolders();
+
             CreateBootstrapScene();
             CreateCloverhollowScene();
-            ConfigureBuildSettings();
-            
-            EditorSceneManager.OpenScene($"{ScenesPath}/Bootstrap.unity");
-            UnityEngine.Debug.Log("Full setup complete! Bootstrap scene is now open.");
+
+            ContentSetup.CreateAllContentScenes();
+
+            PrefabSetup.CreatePlayerPrefab();
+            PrefabSetup.CreateRaccoonPrefab();
+            PrefabSetup.CreateMaddiePrefab();
+            PrefabSetup.CreatePickupPrefabs();
+            PrefabSetup.CreateSpawnAnchorPrefab();
+
+            ContentSetup.UpdateBuildSettingsAllScenes();
+
+            EditorSceneManager.OpenScene($"{ScenesPath}/Cloverhollow.unity", OpenSceneMode.Single);
+            ContentSetup.AddCloverhollowAnchors();
+            EditorSceneManager.SaveOpenScenes();
+
+            EditorSceneManager.OpenScene($"{ScenesPath}/Bootstrap.unity", OpenSceneMode.Single);
+
+            UnityEngine.Debug.Log("=== Full Setup Complete! ===");
+            UnityEngine.Debug.Log("Next steps:");
+            UnityEngine.Debug.Log("  1. Press Play to test the game");
+            UnityEngine.Debug.Log("  2. Use menu 'Wilds of Cloverhollow/Content' to add anchors to other scenes");
+            UnityEngine.Debug.Log("  3. Drag Player prefab into Cloverhollow scene");
         }
         
         private static GameObject CreatePanel(string name, Transform parent)
