@@ -57,7 +57,6 @@ namespace WildsOfCloverhollow.Editor
             var energyTuning = AssetDatabase.LoadAssetAtPath<EnergyTuning>($"{TuningPath}/EnergyTuning.asset");
             var combatTuning = AssetDatabase.LoadAssetAtPath<CombatTuning>($"{TuningPath}/CombatTuning.asset");
             var lanternTuning = AssetDatabase.LoadAssetAtPath<LanternTuning>($"{TuningPath}/LanternTuning.asset");
-            var noteDatabase = AssetDatabase.LoadAssetAtPath<NoteDatabase>($"{ContentPath}/NoteDatabase.asset");
 
             if (playerTuning != null)
             {
@@ -80,12 +79,7 @@ namespace WildsOfCloverhollow.Editor
                 so.ApplyModifiedPropertiesWithoutUndo();
             }
 
-            if (noteDatabase != null)
-            {
-                var so = new SerializedObject(scanner);
-                so.FindProperty("noteDatabase").objectReferenceValue = noteDatabase;
-                so.ApplyModifiedPropertiesWithoutUndo();
-            }
+
 
             if (energyTuning != null)
             {
