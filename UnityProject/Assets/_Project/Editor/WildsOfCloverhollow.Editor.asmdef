@@ -3,7 +3,8 @@
     "rootNamespace": "WildsOfCloverhollow.Editor",
     "references": [
         "WildsOfCloverhollow",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [
         "Editor"
