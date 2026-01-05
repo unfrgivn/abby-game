@@ -62,7 +62,7 @@ namespace WildsOfCloverhollow.UI
                 "R / East Button      Dodge",
                 "E / South Button     Interact",
                 "J                    Journal",
-                "L                    Lantern",
+                "Q                    Lantern",
                 "F1                   Debug Overlay",
                 "Esc                  This Menu"
             };
