@@ -195,13 +195,15 @@ namespace WildsOfCloverhollow.Editor
 
             CreateBootstrapScene();
             CreateCloverhollowScene();
+            
+            EnvironmentSetup.CreateEnvironmentBlockout();
+            EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), $"{ScenesPath}/Cloverhollow.unity");
 
             ContentSetup.CreateAllContentScenes();
 
             ContentSetup.UpdateBuildSettingsAllScenes();
 
             EditorSceneManager.OpenScene($"{ScenesPath}/Cloverhollow.unity", OpenSceneMode.Single);
-            EnvironmentSetup.CreateEnvironmentBlockout();
             ContentSetup.AddCloverhollowAnchors();
             EditorSceneManager.SaveOpenScenes();
 
