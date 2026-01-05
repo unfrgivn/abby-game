@@ -24,8 +24,8 @@ namespace WildsOfCloverhollow.Editor
             string prefabPath = $"{PrefabsPath}/Characters/Player.prefab";
             if (AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath) != null)
             {
-                Debug.Log($"[PrefabSetup] Player prefab already exists at {prefabPath} (skipped)");
-                return;
+                AssetDatabase.DeleteAsset(prefabPath);
+                Debug.Log($"[PrefabSetup] Deleted existing Player prefab to recreate with proper references");
             }
 
             var playerGO = new GameObject("Player");
@@ -45,9 +45,10 @@ namespace WildsOfCloverhollow.Editor
             var playerCombat = playerGO.AddComponent<PlayerCombat>();
             var interactor = playerGO.AddComponent<Interactor>();
             var scanner = playerGO.AddComponent<BlacklightScanner>();
-            playerGO.AddComponent<CandyConsumption>();
+            var candyConsumption = playerGO.AddComponent<CandyConsumption>();
 
             var playerTuning = AssetDatabase.LoadAssetAtPath<PlayerTuning>($"{TuningPath}/PlayerTuning.asset");
+            var energyTuning = AssetDatabase.LoadAssetAtPath<EnergyTuning>($"{TuningPath}/EnergyTuning.asset");
             var combatTuning = AssetDatabase.LoadAssetAtPath<CombatTuning>($"{TuningPath}/CombatTuning.asset");
             var lanternTuning = AssetDatabase.LoadAssetAtPath<LanternTuning>($"{TuningPath}/LanternTuning.asset");
             var noteDatabase = AssetDatabase.LoadAssetAtPath<NoteDatabase>($"{ContentPath}/NoteDatabase.asset");
@@ -77,6 +78,13 @@ namespace WildsOfCloverhollow.Editor
             {
                 var so = new SerializedObject(scanner);
                 so.FindProperty("noteDatabase").objectReferenceValue = noteDatabase;
+                so.ApplyModifiedPropertiesWithoutUndo();
+            }
+
+            if (energyTuning != null)
+            {
+                var so = new SerializedObject(candyConsumption);
+                so.FindProperty("energyTuning").objectReferenceValue = energyTuning;
                 so.ApplyModifiedPropertiesWithoutUndo();
             }
 
