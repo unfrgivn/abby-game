@@ -18,6 +18,7 @@ namespace WildsOfCloverhollow.Camera
         [Header("Input Settings")]
         [SerializeField] private float horizontalSpeed = 200f;
         [SerializeField] private float verticalSpeed = 200f;
+        [SerializeField] private float mouseSensitivity = 0.3f;
         [SerializeField] private bool invertY = false;
         [SerializeField] private bool requireMouseHold = true;
 
@@ -124,20 +125,24 @@ namespace WildsOfCloverhollow.Camera
 
         private void UpdateAnglesFromInput()
         {
-            Vector2 inputToApply = Vector2.zero;
-            bool hasValidInput = false;
+            float yMultiplier = invertY ? -1f : 1f;
             
+            // Gamepad: use deltaTime for consistent feel across frame rates
             if (Gamepad.current != null)
             {
                 Vector2 gamepadInput = Gamepad.current.rightStick.ReadValue();
                 if (gamepadInput.sqrMagnitude > 0.01f)
                 {
-                    inputToApply = gamepadInput * 3f;
-                    hasValidInput = true;
+                    lastInputTime = Time.time;
+                    horizontalAngle += gamepadInput.x * horizontalSpeed * Time.deltaTime;
+                    verticalAngle -= gamepadInput.y * verticalSpeed * yMultiplier * Time.deltaTime;
+                    verticalAngle = Mathf.Clamp(verticalAngle, minVerticalAngle, maxVerticalAngle);
+                    return;
                 }
             }
             
-            if (!hasValidInput && Mouse.current != null)
+            // Mouse: delta is already per-frame, don't multiply by deltaTime
+            if (Mouse.current != null)
             {
                 isMouseHeld = Mouse.current.rightButton.isPressed || 
                               Mouse.current.middleButton.isPressed ||
@@ -145,23 +150,16 @@ namespace WildsOfCloverhollow.Camera
                 
                 if (!requireMouseHold || isMouseHeld)
                 {
-                    Vector2 mouseDelta = Mouse.current.delta.ReadValue() * 0.1f;
-                    if (mouseDelta.sqrMagnitude > 0.001f)
+                    Vector2 mouseDelta = Mouse.current.delta.ReadValue();
+                    if (mouseDelta.sqrMagnitude > 0.01f)
                     {
-                        inputToApply = mouseDelta;
-                        hasValidInput = true;
+                        lastInputTime = Time.time;
+                        horizontalAngle += mouseDelta.x * mouseSensitivity;
+                        verticalAngle -= mouseDelta.y * mouseSensitivity * yMultiplier;
+                        verticalAngle = Mathf.Clamp(verticalAngle, minVerticalAngle, maxVerticalAngle);
                     }
                 }
             }
-            
-            if (!hasValidInput) return;
-            
-            lastInputTime = Time.time;
-            float yMultiplier = invertY ? -1f : 1f;
-
-            horizontalAngle += inputToApply.x * horizontalSpeed * Time.deltaTime;
-            verticalAngle -= inputToApply.y * verticalSpeed * yMultiplier * Time.deltaTime;
-            verticalAngle = Mathf.Clamp(verticalAngle, minVerticalAngle, maxVerticalAngle);
         }
 
         private void UpdateAutoRecenter()
