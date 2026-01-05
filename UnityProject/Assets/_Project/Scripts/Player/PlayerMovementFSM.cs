@@ -66,9 +66,9 @@ namespace WildsOfCloverhollow.Player
         {
             SubscribeToInput();
 
-            if (cameraTransform == null && Camera.main != null)
+            if (cameraTransform == null && UnityEngine.Camera.main != null)
             {
-                cameraTransform = Camera.main.transform;
+                cameraTransform = UnityEngine.Camera.main.transform;
             }
         }
 
