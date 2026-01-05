@@ -109,7 +109,7 @@ namespace WildsOfCloverhollow.Camera
                 {
                     lastInputTime = Time.time;
                     horizontalAngle -= scroll.x * scrollSensitivity;
-                    verticalAngle += scroll.y * scrollSensitivity * yMultiplier;
+                    verticalAngle -= scroll.y * scrollSensitivity * yMultiplier;
                     verticalAngle = Mathf.Clamp(verticalAngle, minVerticalAngle, maxVerticalAngle);
                 }
             }
