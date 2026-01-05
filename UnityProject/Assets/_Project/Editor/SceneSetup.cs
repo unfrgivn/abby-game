@@ -201,6 +201,7 @@ namespace WildsOfCloverhollow.Editor
             ContentSetup.UpdateBuildSettingsAllScenes();
 
             EditorSceneManager.OpenScene($"{ScenesPath}/Cloverhollow.unity", OpenSceneMode.Single);
+            EnvironmentSetup.CreateEnvironmentBlockout();
             ContentSetup.AddCloverhollowAnchors();
             EditorSceneManager.SaveOpenScenes();
 
