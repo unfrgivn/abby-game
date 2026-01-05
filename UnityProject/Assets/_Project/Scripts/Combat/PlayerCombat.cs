@@ -21,6 +21,7 @@ namespace WildsOfCloverhollow.Combat
         [SerializeField] private CombatTuning tuning;
         [SerializeField] private AttackHitbox attackHitbox;
         [SerializeField] private PlayerController playerController;
+        [SerializeField] private PlayerMovementFSM movementFSM;
 
         [Header("Visual Feedback")]
         [SerializeField] private Renderer playerRenderer;
@@ -45,6 +46,11 @@ namespace WildsOfCloverhollow.Combat
             if (playerController == null)
             {
                 playerController = GetComponent<PlayerController>();
+            }
+
+            if (movementFSM == null)
+            {
+                movementFSM = GetComponent<PlayerMovementFSM>();
             }
 
             if (attackHitbox != null)
@@ -156,10 +162,7 @@ namespace WildsOfCloverhollow.Combat
                 attackHitbox.Activate(transform, tuning.AttackDamage);
             }
 
-            if (playerController != null)
-            {
-                playerController.enabled = false;
-            }
+            SetMovementEnabled(false);
         }
 
         private void UpdateAttacking()
@@ -187,10 +190,7 @@ namespace WildsOfCloverhollow.Combat
                 attackHitbox.Deactivate();
             }
 
-            if (playerController != null)
-            {
-                playerController.enabled = true;
-            }
+            SetMovementEnabled(true);
 
             bool canContinueCombo = stateTimer > -tuning.AttackComboWindow && currentComboHit < tuning.MaxComboHits;
             if (!canContinueCombo)
@@ -224,10 +224,7 @@ namespace WildsOfCloverhollow.Combat
             isInvulnerable = true;
             dodgeCooldownTimer = tuning.DodgeCooldown + stateTimer;
 
-            if (playerController != null)
-            {
-                playerController.enabled = false;
-            }
+            SetMovementEnabled(false);
         }
 
         private Vector3 GetDodgeDirection()
@@ -271,10 +268,7 @@ namespace WildsOfCloverhollow.Combat
             currentState = PlayerCombatState.Idle;
             isInvulnerable = false;
 
-            if (playerController != null)
-            {
-                playerController.enabled = true;
-            }
+            SetMovementEnabled(true);
         }
 
         public void ApplyDamage(int amount, Vector3 sourcePosition)
@@ -310,10 +304,7 @@ namespace WildsOfCloverhollow.Combat
             knockbackDir.y = 0f;
             knockbackVelocity = knockbackDir * tuning.KnockbackForce;
 
-            if (playerController != null)
-            {
-                playerController.enabled = false;
-            }
+            SetMovementEnabled(false);
 
             FlashDamageVisual();
         }
@@ -334,10 +325,7 @@ namespace WildsOfCloverhollow.Combat
         {
             currentState = PlayerCombatState.Idle;
 
-            if (playerController != null)
-            {
-                playerController.enabled = true;
-            }
+            SetMovementEnabled(true);
         }
 
         private void EnterTiredState()
@@ -349,10 +337,7 @@ namespace WildsOfCloverhollow.Combat
                 attackHitbox.Deactivate();
             }
 
-            if (playerController != null)
-            {
-                playerController.enabled = false;
-            }
+            SetMovementEnabled(false);
         }
 
         private void FlashDamageVisual()
@@ -382,9 +367,19 @@ namespace WildsOfCloverhollow.Combat
                 attackHitbox.Deactivate();
             }
 
+            SetMovementEnabled(true);
+        }
+
+        private void SetMovementEnabled(bool enabled)
+        {
+            if (movementFSM != null)
+            {
+                movementFSM.SetMovementEnabled(enabled);
+            }
+
             if (playerController != null)
             {
-                playerController.enabled = true;
+                playerController.enabled = enabled;
             }
         }
     }
