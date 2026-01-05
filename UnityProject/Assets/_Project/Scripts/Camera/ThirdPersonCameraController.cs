@@ -18,7 +18,7 @@ namespace WildsOfCloverhollow.Camera
         [SerializeField] private float horizontalSpeed = 200f;
         [SerializeField] private float verticalSpeed = 200f;
         [SerializeField] private float scrollSensitivity = 2f;
-        [SerializeField] private bool invertY = false;
+        [SerializeField] private bool invertY = true;
 
         [Header("Smoothing")]
         [SerializeField] private float positionSmoothTime = 0.1f;
