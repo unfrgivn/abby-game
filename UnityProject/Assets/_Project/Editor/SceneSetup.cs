@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using WildsOfCloverhollow.Bootstrap;
+using WildsOfCloverhollow.Core;
 using WildsOfCloverhollow.UI;
 using WildsOfCloverhollow.DevTools;
 
@@ -25,6 +26,7 @@ namespace WildsOfCloverhollow.Editor
             
             var bootstrapper = persistentRoot.AddComponent<Bootstrapper>();
             
+            var gameStateManager = persistentRoot.AddComponent<GameStateManager>();
             var inputRouter = persistentRoot.AddComponent<InputRouter>();
             var playerInput = persistentRoot.AddComponent<PlayerInput>();
             
@@ -109,6 +111,35 @@ namespace WildsOfCloverhollow.Editor
             var playerSpawn = new GameObject("PlayerSpawnPoint");
             playerSpawn.transform.SetParent(sceneRoot.transform);
             playerSpawn.transform.position = new Vector3(0f, 0f, 0f);
+            
+            var cameraRig = new GameObject("CameraRig");
+            cameraRig.transform.SetParent(sceneRoot.transform);
+            
+            var mainCamera = new GameObject("Main Camera");
+            mainCamera.transform.SetParent(cameraRig.transform);
+            mainCamera.tag = "MainCamera";
+            var camera = mainCamera.AddComponent<Camera>();
+            camera.clearFlags = CameraClearFlags.SolidColor;
+            camera.backgroundColor = new Color(0.4f, 0.6f, 0.8f);
+            mainCamera.transform.position = new Vector3(0f, 15f, -10f);
+            mainCamera.transform.rotation = Quaternion.Euler(55f, 0f, 0f);
+            mainCamera.AddComponent<AudioListener>();
+            
+            var playerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Project/Prefabs/Characters/Player.prefab");
+            if (playerPrefab != null)
+            {
+                var player = (GameObject)PrefabUtility.InstantiatePrefab(playerPrefab);
+                player.transform.position = Vector3.zero;
+                UnityEngine.Debug.Log("Player prefab instantiated in scene.");
+            }
+            else
+            {
+                var playerPlaceholder = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+                playerPlaceholder.name = "Player (Placeholder)";
+                playerPlaceholder.transform.SetParent(sceneRoot.transform);
+                playerPlaceholder.transform.position = new Vector3(0f, 1f, 0f);
+                UnityEngine.Debug.LogWarning("Player prefab not found. Created placeholder capsule.");
+            }
             
             EnsureDirectoryExists(ScenesPath);
             EditorSceneManager.SaveScene(scene, $"{ScenesPath}/Cloverhollow.unity");
