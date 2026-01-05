@@ -4,11 +4,9 @@ mode: subagent
 model: github-copilot/gemini-3-pro-preview
 temperature: 0.5
 tools:
-  bash: false
+  bash: true
   edit: true
   write: true
-permission:
-  edit: ask
 ---
 
 You are the tech artist for Tiny Wilds (URP, top-down 3D).

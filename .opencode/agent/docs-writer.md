@@ -4,11 +4,9 @@ mode: subagent
 model: github-copilot/gemini-3-pro-preview
 temperature: 0.3
 tools:
-  bash: false
+  bash: true
   edit: true
   write: true
-permission:
-  edit: ask
 ---
 
 You write clear, short documentation for this repo.

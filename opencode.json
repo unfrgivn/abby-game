@@ -1,9 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "instructions": [
-    "spec.md",
-    "docs/*.md"
-  ],
+  "instructions": ["spec.md", "docs/*.md"],
   "agent": {
     "plan": {
       "tools": {
@@ -11,6 +8,13 @@
         "edit": false,
         "bash": false
       }
+    }
+  },
+  "permission": {
+    "bash": {
+      "*": "allow",
+      "mv *": "ask",
+      "rm *": "ask"
     }
   }
 }

@@ -4,7 +4,7 @@ mode: subagent
 model: github-copilot/gemini-3-pro-preview
 temperature: 0.7
 tools:
-  bash: false
+  bash: true
   edit: false
   write: true
 ---

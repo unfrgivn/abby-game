@@ -5,13 +5,8 @@ model: github-copilot/claude-opus-4.5
 temperature: 0.2
 tools:
   bash: true
-  edit: false
+  edit: true
   write: true
-permission:
-  bash:
-    "git status": allow
-    "git diff": allow
-    "*": ask
 ---
 
 You are QA for Tiny Wilds.

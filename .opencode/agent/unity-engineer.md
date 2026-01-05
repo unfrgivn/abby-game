@@ -7,13 +7,6 @@ tools:
   bash: true
   edit: true
   write: true
-permission:
-  bash:
-    "git status": allow
-    "git diff": allow
-    "git log*": allow
-    "*": ask
-  edit: ask
 ---
 
 You are the Unity engineer for Tiny Wilds.
