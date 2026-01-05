@@ -16,6 +16,7 @@ namespace WildsOfCloverhollow.Editor
         private const string PrefabsPath = "Assets/_Project/Prefabs";
         private const string TuningPath = "Assets/_Project/ScriptableObjects/Tuning";
         private const string ContentPath = "Assets/_Project/ScriptableObjects/Content";
+        private const string MaterialsPath = "Assets/_Project/Materials";
 
         [MenuItem("Wilds of Cloverhollow/Setup/4. Create Player Prefab", priority = 40)]
         public static void CreatePlayerPrefab()
@@ -36,6 +37,9 @@ namespace WildsOfCloverhollow.Editor
             capsule.transform.SetParent(playerGO.transform);
             capsule.transform.localPosition = new Vector3(0f, 1f, 0f);
             Object.DestroyImmediate(capsule.GetComponent<Collider>());
+            
+            var playerMat = GetOrCreateURPMaterial("Player", new Color(0.85f, 0.7f, 0.55f));
+            capsule.GetComponent<MeshRenderer>().sharedMaterial = playerMat;
 
             var cc = playerGO.AddComponent<CharacterController>();
             cc.height = 2f;
@@ -114,8 +118,8 @@ namespace WildsOfCloverhollow.Editor
             string prefabPath = $"{PrefabsPath}/Enemies/ChaosRaccoon.prefab";
             if (AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath) != null)
             {
-                Debug.Log($"[PrefabSetup] Raccoon prefab already exists at {prefabPath} (skipped)");
-                return;
+                AssetDatabase.DeleteAsset(prefabPath);
+                Debug.Log($"[PrefabSetup] Deleted existing Raccoon prefab to recreate with proper references");
             }
 
             var raccoonGO = new GameObject("ChaosRaccoon");
@@ -127,6 +131,9 @@ namespace WildsOfCloverhollow.Editor
             body.transform.localPosition = new Vector3(0f, 0.5f, 0f);
             body.transform.localScale = new Vector3(0.6f, 0.4f, 0.8f);
             Object.DestroyImmediate(body.GetComponent<Collider>());
+            
+            var raccoonMat = GetOrCreateURPMaterial("Raccoon", new Color(0.4f, 0.35f, 0.3f));
+            body.GetComponent<MeshRenderer>().sharedMaterial = raccoonMat;
 
             var collider = raccoonGO.AddComponent<CapsuleCollider>();
             collider.height = 0.8f;
@@ -160,8 +167,8 @@ namespace WildsOfCloverhollow.Editor
             string prefabPath = $"{PrefabsPath}/Characters/Maddie.prefab";
             if (AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath) != null)
             {
-                Debug.Log($"[PrefabSetup] Maddie prefab already exists at {prefabPath} (skipped)");
-                return;
+                AssetDatabase.DeleteAsset(prefabPath);
+                Debug.Log($"[PrefabSetup] Deleted existing Maddie prefab to recreate with proper references");
             }
 
             var maddieGO = new GameObject("Maddie");
@@ -172,6 +179,9 @@ namespace WildsOfCloverhollow.Editor
             body.transform.localPosition = new Vector3(0f, 0.25f, 0f);
             body.transform.localScale = new Vector3(0.4f, 0.3f, 0.5f);
             Object.DestroyImmediate(body.GetComponent<Collider>());
+            
+            var maddieMat = GetOrCreateURPMaterial("Maddie", new Color(1f, 0.6f, 0.2f));
+            body.GetComponent<MeshRenderer>().sharedMaterial = maddieMat;
 
             var follower = maddieGO.AddComponent<MaddieFollower>();
             var assist = maddieGO.AddComponent<MaddieAssist>();
@@ -209,8 +219,8 @@ namespace WildsOfCloverhollow.Editor
             string prefabPath = $"{PrefabsPath}/Pickups/{name}.prefab";
             if (AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath) != null)
             {
-                Debug.Log($"[PrefabSetup] {name} prefab already exists (skipped)");
-                return;
+                AssetDatabase.DeleteAsset(prefabPath);
+                Debug.Log($"[PrefabSetup] Deleted existing {name} prefab to recreate");
             }
 
             var pickupGO = new GameObject(name);
@@ -223,13 +233,8 @@ namespace WildsOfCloverhollow.Editor
             visual.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
             Object.DestroyImmediate(visual.GetComponent<Collider>());
 
-            var renderer = visual.GetComponent<Renderer>();
-            if (renderer != null)
-            {
-                var mat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-                mat.color = color;
-                renderer.sharedMaterial = mat;
-            }
+            var pickupMat = GetOrCreateURPMaterial(name, color);
+            visual.GetComponent<MeshRenderer>().sharedMaterial = pickupMat;
 
             var collider = pickupGO.AddComponent<BoxCollider>();
             collider.size = new Vector3(0.5f, 0.5f, 0.5f);
@@ -252,8 +257,8 @@ namespace WildsOfCloverhollow.Editor
             string prefabPath = $"{PrefabsPath}/World/SpawnAnchor.prefab";
             if (AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath) != null)
             {
-                Debug.Log($"[PrefabSetup] SpawnAnchor prefab already exists (skipped)");
-                return;
+                AssetDatabase.DeleteAsset(prefabPath);
+                Debug.Log($"[PrefabSetup] Deleted existing SpawnAnchor prefab to recreate");
             }
 
             var anchorGO = new GameObject("SpawnAnchor");
@@ -264,6 +269,26 @@ namespace WildsOfCloverhollow.Editor
             Object.DestroyImmediate(anchorGO);
 
             Debug.Log($"[PrefabSetup] Created SpawnAnchor prefab at {prefabPath}");
+        }
+
+        private static Material GetOrCreateURPMaterial(string name, Color color)
+        {
+            ProjectSetup.EnsureDirectoryExists(MaterialsPath);
+            string matPath = $"{MaterialsPath}/{name}.mat";
+
+            var existingMat = AssetDatabase.LoadAssetAtPath<Material>(matPath);
+            if (existingMat != null) return existingMat;
+
+            var shader = Shader.Find("Universal Render Pipeline/Lit");
+            if (shader == null) shader = Shader.Find("Standard");
+
+            var mat = new Material(shader);
+            mat.SetColor("_BaseColor", color);
+            mat.SetFloat("_Smoothness", 0.3f);
+
+            AssetDatabase.CreateAsset(mat, matPath);
+            AssetDatabase.SaveAssets();
+            return mat;
         }
     }
 }
