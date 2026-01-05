@@ -17,7 +17,7 @@ Pick a Unity LTS version and record it in two places:
 Recommended: use an LTS line and do not upgrade during M0/M1.
 
 Fill in here once chosen:
-- Unity version: <SET ME, e.g. 2022.3.x or 2023.2.x LTS>
+- Unity version: 6000.3.2f1
 
 ## 3. Project path conventions
 This scaffold assumes:
