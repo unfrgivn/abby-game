@@ -40,6 +40,11 @@ namespace WildsOfCloverhollow.World
 
         public Transform Transform => transform;
 
+        public void SetAmount(int amount)
+        {
+            customAmount = amount;
+        }
+
         private int GemAmount
         {
             get
