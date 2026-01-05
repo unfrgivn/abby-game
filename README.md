@@ -1,4 +1,4 @@
-# Abby's Adventure (Working Title)
+# Wilds of Cloverhollow
 
 This repository contains the Unity project and design documents for a cozy, top-down 3D adventure game. The project is built with Unity (URP) and is designed to be developed with the help of AI agents.
 
