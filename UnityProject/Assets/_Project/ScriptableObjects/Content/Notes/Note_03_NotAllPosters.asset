@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0, type: 3}
+  m_Name: Note_03_NotAllPosters
+  m_EditorClassIdentifier: 
+  noteId: f41b557b-e6a7-46f2-b225-e0b39b94f71f
+  title: Not All Posters
+  bodyText: Some notes are fake. The glowing one points the right way.
+  iconKey: icon_school
+  doodleSprite: {fileID: 0}
+  placementHint: "SchoolInterior - hallway bulletin board poster (near entrance)"
