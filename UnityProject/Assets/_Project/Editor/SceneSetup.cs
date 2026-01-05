@@ -129,6 +129,7 @@ namespace WildsOfCloverhollow.Editor
             mainCamera.transform.position = new Vector3(0f, 15f, -10f);
             mainCamera.transform.rotation = Quaternion.Euler(55f, 0f, 0f);
             mainCamera.AddComponent<AudioListener>();
+            mainCamera.AddComponent<WildsOfCloverhollow.Camera.CameraFollow>();
             
             var playerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Project/Prefabs/Characters/Player.prefab");
             if (playerPrefab != null)

@@ -31,6 +31,7 @@ namespace WildsOfCloverhollow.Editor
             }
 
             var playerGO = new GameObject("Player");
+            playerGO.tag = "Player";
 
             var capsule = GameObject.CreatePrimitive(PrimitiveType.Capsule);
             capsule.name = "Model";
