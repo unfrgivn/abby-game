@@ -62,11 +62,74 @@ namespace WildsOfCloverhollow.Bootstrap
             }
         }
         
+        private void OnEnable()
+        {
+            if (playerInput != null)
+            {
+                playerInput.onActionTriggered += HandleActionTriggered;
+            }
+        }
+        
+        private void OnDisable()
+        {
+            if (playerInput != null)
+            {
+                playerInput.onActionTriggered -= HandleActionTriggered;
+            }
+        }
+        
         private void OnDestroy()
         {
             if (Instance == this)
             {
                 Instance = null;
+            }
+        }
+        
+        private void HandleActionTriggered(InputAction.CallbackContext context)
+        {
+            switch (context.action.name)
+            {
+                case "Move":
+                    if (context.performed || context.canceled)
+                        OnMove?.Invoke(context.ReadValue<Vector2>());
+                    break;
+                case "Interact":
+                    if (context.performed)
+                        OnInteract?.Invoke();
+                    break;
+                case "Attack":
+                    if (context.performed)
+                        OnAttack?.Invoke();
+                    break;
+                case "Dodge":
+                    if (context.performed)
+                        OnDodge?.Invoke();
+                    break;
+                case "Lantern":
+                    if (context.performed)
+                        OnLantern?.Invoke();
+                    break;
+                case "Journal":
+                    if (context.performed)
+                        OnJournal?.Invoke();
+                    break;
+                case "Pause":
+                    if (context.performed)
+                        OnPause?.Invoke();
+                    break;
+                case "Navigate":
+                    if (context.performed || context.canceled)
+                        OnNavigate?.Invoke(context.ReadValue<Vector2>());
+                    break;
+                case "Submit":
+                    if (context.performed)
+                        OnSubmit?.Invoke();
+                    break;
+                case "Cancel":
+                    if (context.performed)
+                        OnCancel?.Invoke();
+                    break;
             }
         }
         
@@ -88,95 +151,4 @@ namespace WildsOfCloverhollow.Bootstrap
             
             OnInputModeChanged?.Invoke(mode);
         }
-        
-        // Input System message handlers (called by PlayerInput component)
-        
-        #region Gameplay Actions
-        
-        public void OnMoveInput(InputAction.CallbackContext context)
-        {
-            if (context.performed || context.canceled)
-            {
-                OnMove?.Invoke(context.ReadValue<Vector2>());
-            }
-        }
-        
-        public void OnInteractInput(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                OnInteract?.Invoke();
-            }
-        }
-        
-        public void OnAttackInput(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                OnAttack?.Invoke();
-            }
-        }
-        
-        public void OnDodgeInput(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                OnDodge?.Invoke();
-            }
-        }
-        
-        public void OnLanternInput(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                OnLantern?.Invoke();
-            }
-        }
-        
-        public void OnJournalInput(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                OnJournal?.Invoke();
-            }
-        }
-        
-        public void OnPauseInput(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                OnPause?.Invoke();
-            }
-        }
-        
-        #endregion
-        
-        #region UI Actions
-        
-        public void OnNavigateInput(InputAction.CallbackContext context)
-        {
-            if (context.performed || context.canceled)
-            {
-                OnNavigate?.Invoke(context.ReadValue<Vector2>());
-            }
-        }
-        
-        public void OnSubmitInput(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                OnSubmit?.Invoke();
-            }
-        }
-        
-        public void OnCancelInput(InputAction.CallbackContext context)
-        {
-            if (context.performed)
-            {
-                OnCancel?.Invoke();
-            }
-        }
-        
-        #endregion
-    }
 }

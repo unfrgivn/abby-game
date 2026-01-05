@@ -36,7 +36,7 @@ namespace WildsOfCloverhollow.Editor
             {
                 playerInput.actions = inputActions;
                 playerInput.defaultActionMap = "Gameplay";
-                playerInput.notificationBehavior = PlayerNotifications.SendMessages;
+                playerInput.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
             }
             else
             {
@@ -144,6 +144,18 @@ namespace WildsOfCloverhollow.Editor
                 playerPlaceholder.transform.SetParent(sceneRoot.transform);
                 playerPlaceholder.transform.position = new Vector3(0f, 1f, 0f);
                 UnityEngine.Debug.LogWarning("Player prefab not found. Created placeholder capsule.");
+            }
+            
+            var maddiePrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Project/Prefabs/Characters/Maddie.prefab");
+            if (maddiePrefab != null)
+            {
+                var maddie = (GameObject)PrefabUtility.InstantiatePrefab(maddiePrefab);
+                maddie.transform.position = new Vector3(1f, 0f, -1f);
+                UnityEngine.Debug.Log("Maddie prefab instantiated in scene.");
+            }
+            else
+            {
+                UnityEngine.Debug.LogWarning("Maddie prefab not found. Companion will not appear.");
             }
             
             EnsureDirectoryExists(ScenesPath);
