@@ -286,6 +286,10 @@ namespace WildsOfCloverhollow.Editor
             root.layer = LayerMask.NameToLayer("BlacklightReveal");
 
             var persistentId = root.AddComponent<PersistentId>();
+            var persistentIdSO = new SerializedObject(persistentId);
+            persistentIdSO.FindProperty("id").stringValue = System.Guid.NewGuid().ToString();
+            persistentIdSO.ApplyModifiedPropertiesWithoutUndo();
+            
             var noteReveal = root.AddComponent<NoteReveal>();
 
             var collider = root.AddComponent<SphereCollider>();
@@ -354,6 +358,10 @@ namespace WildsOfCloverhollow.Editor
             root.layer = LayerMask.NameToLayer("Interactable");
 
             var persistentId = root.AddComponent<PersistentId>();
+            var persistentIdSO = new SerializedObject(persistentId);
+            persistentIdSO.FindProperty("id").stringValue = System.Guid.NewGuid().ToString();
+            persistentIdSO.ApplyModifiedPropertiesWithoutUndo();
+            
             var hiddenDoor = root.AddComponent<HiddenDoor>();
 
             var doorCollider = root.AddComponent<BoxCollider>();
@@ -380,6 +388,9 @@ namespace WildsOfCloverhollow.Editor
             
             var hiddenDoorReveal = uvRevealArea.AddComponent<HiddenDoorReveal>();
             var uvPersistentId = uvRevealArea.AddComponent<PersistentId>();
+            var uvPersistentIdSO = new SerializedObject(uvPersistentId);
+            uvPersistentIdSO.FindProperty("id").stringValue = System.Guid.NewGuid().ToString();
+            uvPersistentIdSO.ApplyModifiedPropertiesWithoutUndo();
 
             var uvSymbolVisual = new GameObject("UVSymbolVisual");
             uvSymbolVisual.transform.SetParent(uvRevealArea.transform);

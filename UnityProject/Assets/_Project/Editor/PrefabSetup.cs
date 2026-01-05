@@ -318,7 +318,11 @@ namespace WildsOfCloverhollow.Editor
             }
 
             var anchorGO = new GameObject("SpawnAnchor");
-            anchorGO.AddComponent<PersistentId>();
+            var persistentId = anchorGO.AddComponent<PersistentId>();
+            var persistentIdSO = new SerializedObject(persistentId);
+            persistentIdSO.FindProperty("id").stringValue = System.Guid.NewGuid().ToString();
+            persistentIdSO.ApplyModifiedPropertiesWithoutUndo();
+            
             anchorGO.AddComponent<SpawnAnchor>();
 
             PrefabUtility.SaveAsPrefabAsset(anchorGO, prefabPath);
