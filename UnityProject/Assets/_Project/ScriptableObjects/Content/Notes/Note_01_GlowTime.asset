@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0, type: 3}
+  m_Name: Note_01_GlowTime
+  m_EditorClassIdentifier: 
+  noteId: 05d763c1-0a81-46fc-9e99-4acb426c0b25
+  title: Glow Time
+  bodyText: If you can't see it, shine the light. Start with the road to school.
+  iconKey: icon_home
+  doodleSprite: {fileID: 0}
+  placementHint: "Fae's bedroom wall poster OR journal page on desk"
