@@ -19,8 +19,11 @@ namespace WildsOfCloverhollow.AI
         [Tooltip("Stop moving when this close to target position")]
         [SerializeField] private float minDistance = 1f;
 
-        [Tooltip("Teleport to player if further than this distance")]
-        [SerializeField] private float teleportDistance = 15f;
+        [Tooltip("Start speeding up when further than this distance")]
+        [SerializeField] private float catchUpStartDistance = 6f;
+
+        [Tooltip("Maximum catch-up speed multiplier")]
+        [SerializeField] private float catchUpSpeedMultiplier = 3f;
 
         [Tooltip("Smoothing factor for movement (higher = snappier)")]
         [SerializeField] private float followSmoothness = 8f;
@@ -55,7 +58,8 @@ namespace WildsOfCloverhollow.AI
         public float FollowSpeed => followSpeed;
         public float FollowDistance => followDistance;
         public float MinDistance => minDistance;
-        public float TeleportDistance => teleportDistance;
+        public float CatchUpStartDistance => catchUpStartDistance;
+        public float CatchUpSpeedMultiplier => catchUpSpeedMultiplier;
         public float FollowSmoothness => followSmoothness;
         public float FollowAngleOffset => followAngleOffset;
 

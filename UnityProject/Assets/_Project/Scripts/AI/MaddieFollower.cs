@@ -57,8 +57,6 @@ namespace WildsOfCloverhollow.AI
             {
                 UpdateFollowing();
             }
-
-            CheckTeleportDistance();
         }
 
         private void FindPlayer()
@@ -75,24 +73,26 @@ namespace WildsOfCloverhollow.AI
             Vector3 targetPosition = GetFollowTargetPosition();
             float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
 
-            // Stop if close enough
             if (distanceToTarget < tuning.MinDistance)
             {
                 currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, tuning.FollowSmoothness * Time.deltaTime);
                 return;
             }
 
-            // Calculate desired velocity
-            Vector3 directionToTarget = (targetPosition - transform.position).normalized;
-            Vector3 desiredVelocity = directionToTarget * tuning.FollowSpeed;
+            float speed = tuning.FollowSpeed;
+            if (distanceToTarget > tuning.CatchUpStartDistance)
+            {
+                float catchUpFactor = Mathf.InverseLerp(tuning.CatchUpStartDistance, tuning.CatchUpStartDistance * 2f, distanceToTarget);
+                speed *= Mathf.Lerp(1f, tuning.CatchUpSpeedMultiplier, catchUpFactor);
+            }
 
-            // Smooth velocity change (spring-like behavior)
+            Vector3 directionToTarget = (targetPosition - transform.position).normalized;
+            Vector3 desiredVelocity = directionToTarget * speed;
+
             currentVelocity = Vector3.Lerp(currentVelocity, desiredVelocity, tuning.FollowSmoothness * Time.deltaTime);
 
-            // Apply movement
             transform.position += currentVelocity * Time.deltaTime;
 
-            // Face movement direction
             if (currentVelocity.sqrMagnitude > 0.01f)
             {
                 Vector3 horizontalVelocity = new Vector3(currentVelocity.x, 0f, currentVelocity.z);
@@ -124,20 +124,9 @@ namespace WildsOfCloverhollow.AI
             return targetPos;
         }
 
-        private void CheckTeleportDistance()
-        {
-            if (playerTarget == null) return;
-
-            float distanceToPlayer = Vector3.Distance(transform.position, playerTarget.position);
-            if (distanceToPlayer > tuning.TeleportDistance)
-            {
-                TeleportToPlayer();
-            }
-        }
-
         /// <summary>
         /// Instantly teleport Maddie to the player's follow position.
-        /// Called when too far away or during scene transitions.
+        /// Called during scene transitions.
         /// </summary>
         public void TeleportToPlayer()
         {
@@ -166,15 +155,12 @@ namespace WildsOfCloverhollow.AI
         {
             if (tuning == null) return;
 
-            // Draw follow distance
             Gizmos.color = Color.cyan;
             Gizmos.DrawWireSphere(transform.position, tuning.MinDistance);
 
-            // Draw teleport distance
-            Gizmos.color = new Color(1f, 0.5f, 0f, 0.3f);
-            Gizmos.DrawWireSphere(transform.position, tuning.TeleportDistance);
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, tuning.CatchUpStartDistance);
 
-            // Draw target position if player exists
             if (playerTarget != null)
             {
                 Vector3 targetPos = GetFollowTargetPosition();

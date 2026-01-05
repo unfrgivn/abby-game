@@ -15,7 +15,8 @@ MonoBehaviour:
   followSpeed: 5
   followDistance: 2
   minDistance: 1
-  teleportDistance: 15
+  catchUpStartDistance: 6
+  catchUpSpeedMultiplier: 3
   followSmoothness: 8
   followAngleOffset: 30
   assistDamage: 5
