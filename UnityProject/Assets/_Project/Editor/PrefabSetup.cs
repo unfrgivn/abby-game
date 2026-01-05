@@ -42,6 +42,15 @@ namespace WildsOfCloverhollow.Editor
             var playerMat = GetOrCreateURPMaterial("Player", new Color(0.85f, 0.7f, 0.55f));
             capsule.GetComponent<MeshRenderer>().sharedMaterial = playerMat;
 
+            var nose = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            nose.name = "FrontIndicator";
+            nose.transform.SetParent(capsule.transform);
+            nose.transform.localPosition = new Vector3(0f, 0.3f, 0.5f);
+            nose.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+            Object.DestroyImmediate(nose.GetComponent<Collider>());
+            var noseMat = GetOrCreateURPMaterial("PlayerNose", new Color(0.9f, 0.5f, 0.4f));
+            nose.GetComponent<MeshRenderer>().sharedMaterial = noseMat;
+
             var cc = playerGO.AddComponent<CharacterController>();
             cc.height = 2f;
             cc.radius = 0.5f;
