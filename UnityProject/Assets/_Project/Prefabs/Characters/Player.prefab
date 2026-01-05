@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2827573469491279831
+--- !u!1 &559929366933587794
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3380554346286387218}
-  - component: {fileID: 1280114601882622610}
-  - component: {fileID: 5347673205501658150}
+  - component: {fileID: 492279209526757875}
+  m_Layer: 0
+  m_Name: LanternEffect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &492279209526757875
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559929366933587794}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1345009661926456062}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2338818838156326516
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2692384567788362790}
+  - component: {fileID: 7530600042376389796}
+  - component: {fileID: 4096922759080836955}
   m_Layer: 0
   m_Name: AttackHitbox
   m_TagString: Untagged
@@ -18,28 +49,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!4 &3380554346286387218
+--- !u!4 &2692384567788362790
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2827573469491279831}
+  m_GameObject: {fileID: 2338818838156326516}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 249452853939163626}
+  m_Father: {fileID: 1345009661926456062}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1280114601882622610
+--- !u!135 &7530600042376389796
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2827573469491279831}
+  m_GameObject: {fileID: 2338818838156326516}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -54,20 +85,20 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.8
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5347673205501658150
+--- !u!114 &4096922759080836955
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2827573469491279831}
+  m_GameObject: {fileID: 2338818838156326516}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 109e5694ed532402abac165557a61d88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: WildsOfCloverhollow::WildsOfCloverhollow.Combat.AttackHitbox
   damage: 10
---- !u!1 &5377042505659466146
+--- !u!1 &3400509557677300265
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -75,9 +106,174 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 789542068901868284}
-  - component: {fileID: 3066700774426695609}
-  - component: {fileID: 1651451943458978425}
+  - component: {fileID: 1345009661926456062}
+  - component: {fileID: 7621542066891328354}
+  - component: {fileID: 5824277281934369402}
+  - component: {fileID: 2294528592288435994}
+  - component: {fileID: 5269822727365496885}
+  - component: {fileID: 3241535193516116239}
+  - component: {fileID: 5787133472926483004}
+  - component: {fileID: 2614300617737700857}
+  m_Layer: 0
+  m_Name: Player
+  m_TagString: Player
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1345009661926456062
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3400509557677300265}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6472688417478747612}
+  - {fileID: 2692384567788362790}
+  - {fileID: 492279209526757875}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!143 &7621542066891328354
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3400509557677300265}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &5824277281934369402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3400509557677300265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ff38268e09c347d0b251df716314c25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: WildsOfCloverhollow::WildsOfCloverhollow.Player.PlayerController
+  tuning: {fileID: 11400000, guid: 536d461c4b29444caa636d442bb5f815, type: 2}
+--- !u!114 &2294528592288435994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3400509557677300265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5020a9ba97d524d2490e92b220e34022, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: WildsOfCloverhollow::WildsOfCloverhollow.Player.PlayerMovementFSM
+  tuning: {fileID: 11400000, guid: 536d461c4b29444caa636d442bb5f815, type: 2}
+  cameraTransform: {fileID: 0}
+--- !u!114 &5269822727365496885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3400509557677300265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dd4ed99811d04b38a811b80da5ea0c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: WildsOfCloverhollow::WildsOfCloverhollow.Combat.PlayerCombat
+  tuning: {fileID: 11400000, guid: 70ca062b74186430d93bc8ba2498b5b1, type: 2}
+  attackHitbox: {fileID: 4096922759080836955}
+  playerController: {fileID: 5824277281934369402}
+  movementFSM: {fileID: 0}
+  playerRenderer: {fileID: 1646403145806139442}
+--- !u!114 &3241535193516116239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3400509557677300265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7df9ed3be31ab4a1d8ccd7eb87367890, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: WildsOfCloverhollow::WildsOfCloverhollow.Interaction.Interactor
+  detectionRadius: 2.5
+  interactableLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  scanInterval: 0.1
+  distanceWeight: 1
+  angleWeight: 0.5
+  maxInteractionAngle: 120
+  inputBufferDuration: 0.15
+--- !u!114 &5787133472926483004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3400509557677300265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ad09876b8a6c484c912f5198ba7a24d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: WildsOfCloverhollow::WildsOfCloverhollow.Tools.BlacklightScanner
+  tuning: {fileID: 11400000, guid: 557d5722d201f41acbac7d283d2ec21b, type: 2}
+  scanOrigin: {fileID: 1345009661926456062}
+  lanternVisualEffect: {fileID: 559929366933587794}
+  revealableLayer:
+    serializedVersion: 2
+    m_Bits: 512
+--- !u!114 &2614300617737700857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3400509557677300265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7f3a2b5c6d7e8f9a0b1c2d3e4f5a6b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: WildsOfCloverhollow::WildsOfCloverhollow.Player.CandyConsumption
+  energyTuning: {fileID: 11400000, guid: 8b4c0d9e2f3a5b6c7d8e9f0a1b2c3d4e, type: 2}
+  audioSource: {fileID: 0}
+  consumeSound: {fileID: 0}
+  consumeVFX: {fileID: 0}
+--- !u!1 &6372208745730704516
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6472688417478747612}
+  - component: {fileID: 4920267127842225739}
+  - component: {fileID: 1646403145806139442}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -85,36 +281,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &789542068901868284
+--- !u!4 &6472688417478747612
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5377042505659466146}
+  m_GameObject: {fileID: 6372208745730704516}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 249452853939163626}
+  m_Father: {fileID: 1345009661926456062}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3066700774426695609
+--- !u!33 &4920267127842225739
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5377042505659466146}
+  m_GameObject: {fileID: 6372208745730704516}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &1651451943458978425
+--- !u!23 &1646403145806139442
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5377042505659466146}
+  m_GameObject: {fileID: 6372208745730704516}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -157,199 +353,3 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &5872122328060759124
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 249452853939163626}
-  - component: {fileID: 3837678725983295399}
-  - component: {fileID: 6551049700289336648}
-  - component: {fileID: 8622540467214776419}
-  - component: {fileID: 7179714538878593020}
-  - component: {fileID: 7661617382630023715}
-  - component: {fileID: 6379146240075625566}
-  - component: {fileID: 9160108146373908457}
-  m_Layer: 0
-  m_Name: Player
-  m_TagString: Player
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &249452853939163626
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5872122328060759124}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 789542068901868284}
-  - {fileID: 3380554346286387218}
-  - {fileID: 3686934254804160860}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!143 &3837678725983295399
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5872122328060759124}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &6551049700289336648
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5872122328060759124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ff38268e09c347d0b251df716314c25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: WildsOfCloverhollow::WildsOfCloverhollow.Player.PlayerController
-  tuning: {fileID: 11400000, guid: 536d461c4b29444caa636d442bb5f815, type: 2}
---- !u!114 &8622540467214776419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5872122328060759124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5020a9ba97d524d2490e92b220e34022, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: WildsOfCloverhollow::WildsOfCloverhollow.Player.PlayerMovementFSM
-  tuning: {fileID: 11400000, guid: 536d461c4b29444caa636d442bb5f815, type: 2}
-  cameraTransform: {fileID: 0}
---- !u!114 &7179714538878593020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5872122328060759124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1dd4ed99811d04b38a811b80da5ea0c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: WildsOfCloverhollow::WildsOfCloverhollow.Combat.PlayerCombat
-  tuning: {fileID: 11400000, guid: 70ca062b74186430d93bc8ba2498b5b1, type: 2}
-  attackHitbox: {fileID: 5347673205501658150}
-  playerController: {fileID: 6551049700289336648}
-  movementFSM: {fileID: 0}
-  playerRenderer: {fileID: 1651451943458978425}
---- !u!114 &7661617382630023715
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5872122328060759124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7df9ed3be31ab4a1d8ccd7eb87367890, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: WildsOfCloverhollow::WildsOfCloverhollow.Interaction.Interactor
-  detectionRadius: 2.5
-  interactableLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  scanInterval: 0.1
-  distanceWeight: 1
-  angleWeight: 0.5
-  maxInteractionAngle: 120
-  inputBufferDuration: 0.15
---- !u!114 &6379146240075625566
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5872122328060759124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ad09876b8a6c484c912f5198ba7a24d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: WildsOfCloverhollow::WildsOfCloverhollow.Tools.BlacklightScanner
-  tuning: {fileID: 11400000, guid: 557d5722d201f41acbac7d283d2ec21b, type: 2}
-  scanOrigin: {fileID: 249452853939163626}
-  lanternVisualEffect: {fileID: 8253887263950500853}
-  revealableLayer:
-    serializedVersion: 2
-    m_Bits: 512
---- !u!114 &9160108146373908457
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5872122328060759124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7f3a2b5c6d7e8f9a0b1c2d3e4f5a6b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: WildsOfCloverhollow::WildsOfCloverhollow.Player.CandyConsumption
-  energyTuning: {fileID: 11400000, guid: 8b4c0d9e2f3a5b6c7d8e9f0a1b2c3d4e, type: 2}
-  audioSource: {fileID: 0}
-  consumeSound: {fileID: 0}
-  consumeVFX: {fileID: 0}
---- !u!1 &8253887263950500853
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3686934254804160860}
-  m_Layer: 0
-  m_Name: LanternEffect
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &3686934254804160860
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8253887263950500853}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 249452853939163626}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

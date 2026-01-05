@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using WildsOfCloverhollow.Bootstrap;
 
 namespace WildsOfCloverhollow.Camera
 {
@@ -18,9 +17,8 @@ namespace WildsOfCloverhollow.Camera
         [Header("Input Settings")]
         [SerializeField] private float horizontalSpeed = 200f;
         [SerializeField] private float verticalSpeed = 200f;
-        [SerializeField] private float mouseSensitivity = 0.3f;
+        [SerializeField] private float scrollSensitivity = 2f;
         [SerializeField] private bool invertY = false;
-        [SerializeField] private bool requireMouseHold = true;
 
         [Header("Smoothing")]
         [SerializeField] private float positionSmoothTime = 0.1f;
@@ -37,10 +35,8 @@ namespace WildsOfCloverhollow.Camera
 
         private float horizontalAngle;
         private float verticalAngle;
-        private Vector2 lookInput;
         private float lastInputTime;
         private Vector3 currentVelocity;
-        private bool isMouseHeld;
 
         public Transform Target => target;
         public float HorizontalAngle => horizontalAngle;
@@ -58,41 +54,6 @@ namespace WildsOfCloverhollow.Camera
             if (target != null)
             {
                 horizontalAngle = target.eulerAngles.y;
-            }
-
-            SubscribeToInput();
-        }
-
-        private void OnEnable()
-        {
-            SubscribeToInput();
-        }
-
-        private void OnDisable()
-        {
-            UnsubscribeFromInput();
-        }
-
-        private void SubscribeToInput()
-        {
-            if (InputRouter.Instance == null) return;
-
-            InputRouter.Instance.OnLook -= HandleLook;
-            InputRouter.Instance.OnLook += HandleLook;
-        }
-
-        private void UnsubscribeFromInput()
-        {
-            if (InputRouter.Instance == null) return;
-            InputRouter.Instance.OnLook -= HandleLook;
-        }
-
-        private void HandleLook(Vector2 input)
-        {
-            lookInput = input;
-            if (input.sqrMagnitude > 0.01f)
-            {
-                lastInputTime = Time.time;
             }
         }
 
@@ -127,7 +88,6 @@ namespace WildsOfCloverhollow.Camera
         {
             float yMultiplier = invertY ? -1f : 1f;
             
-            // Gamepad: use deltaTime for consistent feel across frame rates
             if (Gamepad.current != null)
             {
                 Vector2 gamepadInput = Gamepad.current.rightStick.ReadValue();
@@ -141,23 +101,15 @@ namespace WildsOfCloverhollow.Camera
                 }
             }
             
-            // Mouse: delta is already per-frame, don't multiply by deltaTime
             if (Mouse.current != null)
             {
-                isMouseHeld = Mouse.current.rightButton.isPressed || 
-                              Mouse.current.middleButton.isPressed ||
-                              Mouse.current.leftButton.isPressed;
-                
-                if (!requireMouseHold || isMouseHeld)
+                Vector2 scroll = Mouse.current.scroll.ReadValue();
+                if (scroll.sqrMagnitude > 0.01f)
                 {
-                    Vector2 mouseDelta = Mouse.current.delta.ReadValue();
-                    if (mouseDelta.sqrMagnitude > 0.01f)
-                    {
-                        lastInputTime = Time.time;
-                        horizontalAngle += mouseDelta.x * mouseSensitivity;
-                        verticalAngle -= mouseDelta.y * mouseSensitivity * yMultiplier;
-                        verticalAngle = Mathf.Clamp(verticalAngle, minVerticalAngle, maxVerticalAngle);
-                    }
+                    lastInputTime = Time.time;
+                    horizontalAngle += scroll.x * scrollSensitivity;
+                    verticalAngle -= scroll.y * scrollSensitivity * yMultiplier;
+                    verticalAngle = Mathf.Clamp(verticalAngle, minVerticalAngle, maxVerticalAngle);
                 }
             }
         }
