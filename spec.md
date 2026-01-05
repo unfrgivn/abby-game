@@ -1,6 +1,6 @@
 # Wilds of Cloverhollow
 
-Lil Gator-style, top-down 3D cozy adventure with tool-driven puzzles and simple real-time combat
+Lil Gator-style 3D cozy adventure with third-person camera, playground movement, tool-driven puzzles, and simple real-time combat
 
 ## 1. Vision
 
@@ -111,14 +111,17 @@ PoC must include:
 
 Camera:
 
-- Perspective
-- Tilt: 55 to 65 degrees downward
-- Soft follow with slight look-ahead
-- Avoid tall occluders; prefer low fences and short trees
+- Third-person orbital camera behind and above player
+- Player can orbit camera with right stick or mouse drag
+- Soft follow with collision avoidance (camera pulls in when hitting walls)
+- Auto-recenter option when moving without camera input
+- Default pitch around 30-45 degrees; adjustable within limits
 
 Input:
 
 - Touch-first with optional keyboard and mouse
+- Left stick/WASD: movement relative to camera facing
+- Right stick/mouse drag: orbit camera
 - Combat buttons: Attack, Dodge
 - Tool button: Blacklight Lantern toggles on/off or hold-to-scan (final choice made during implementation)
 - Flute opens animal selection menu (later milestone)

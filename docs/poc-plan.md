@@ -349,18 +349,24 @@ Tasks
    - Park area
    - Road to Arcade entrance
    - Blocked future paths with playful signage
-2. CameraRig using Cinemachine:
-   - Tilt 55–65 degrees
-   - Soft follow + look-ahead
-3. PlayerController:
-   - Choose CharacterController for PoC (recommended for fewer physics surprises)
+2. Third-person orbital camera (ThirdPersonCameraController):
+   - Orbits behind and above player
+   - Right stick/mouse drag to orbit horizontally and vertically
+   - Collision avoidance (camera pulls in when hitting walls)
+   - Auto-recenter to player facing when moving without camera input
+   - Default pitch 30-45 degrees; clamp vertical look within limits
+3. PlayerMovementFSM (state machine):
+   - States: Grounded, Airborne, Climbing, Gliding, Sliding
+   - Movement relative to camera facing direction
    - Smooth accel/decel; keep movement on ground plane
    - Facing based on movement direction
+   - Jump, sprint, dodge integrated into state machine
 
 Acceptance criteria
 
 - Movement feels stable and predictable.
-- Camera never clips into ground; player stays centered.
+- Camera orbits smoothly; collision prevents clipping through walls.
+- Player moves relative to camera facing (not world axes).
 - Runs at stable frame rate with placeholder assets.
 
 ---

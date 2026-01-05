@@ -48,6 +48,7 @@ namespace WildsOfCloverhollow.Editor
             cc.center = new Vector3(0f, 1f, 0f);
 
             var playerController = playerGO.AddComponent<PlayerController>();
+            var playerMovementFSM = playerGO.AddComponent<PlayerMovementFSM>();
             var playerCombat = playerGO.AddComponent<PlayerCombat>();
             var interactor = playerGO.AddComponent<Interactor>();
             var scanner = playerGO.AddComponent<BlacklightScanner>();
@@ -63,6 +64,10 @@ namespace WildsOfCloverhollow.Editor
                 var so = new SerializedObject(playerController);
                 so.FindProperty("tuning").objectReferenceValue = playerTuning;
                 so.ApplyModifiedPropertiesWithoutUndo();
+                
+                var fsmSO = new SerializedObject(playerMovementFSM);
+                fsmSO.FindProperty("tuning").objectReferenceValue = playerTuning;
+                fsmSO.ApplyModifiedPropertiesWithoutUndo();
             }
 
             if (combatTuning != null)
