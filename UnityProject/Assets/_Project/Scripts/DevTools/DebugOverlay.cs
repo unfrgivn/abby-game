@@ -1,13 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
-using WildsOfCloverhollow.Bootstrap;
+using WildsOfCloverhollow.Core;
+using WildsOfCloverhollow.Save;
 
 namespace WildsOfCloverhollow.DevTools
 {
-    /// <summary>
-    /// Developer tools overlay with buttons for common debug actions.
-    /// Toggle visibility with F1 key or on-screen button.
-    /// </summary>
     public class DebugOverlay : MonoBehaviour
     {
         [Header("Button References")]
@@ -23,23 +20,53 @@ namespace WildsOfCloverhollow.DevTools
         [Header("Status Display")]
         [SerializeField] private Text statusText;
         
-        // Placeholder values for debug state (will be replaced by GameState later)
-        private int debugGems;
-        private int debugCandyBars;
-        private bool debugLanternUnlocked;
-        
         private void Awake()
         {
             SetupButtons();
         }
+
+        private void OnEnable()
+        {
+            SubscribeToStateEvents();
+            UpdateStatusDisplay();
+        }
+
+        private void OnDisable()
+        {
+            UnsubscribeFromStateEvents();
+        }
         
         private void Update()
         {
-            // Toggle debug overlay with F1 key
             if (Input.GetKeyDown(KeyCode.F1))
             {
                 ToggleVisibility();
             }
+        }
+
+        private void SubscribeToStateEvents()
+        {
+            var state = GameStateManager.Current;
+            if (state != null)
+            {
+                state.OnInventoryChanged += UpdateStatusDisplay;
+                state.OnStoryFlagAdded += OnStoryFlagChanged;
+            }
+        }
+
+        private void UnsubscribeFromStateEvents()
+        {
+            var state = GameStateManager.Current;
+            if (state != null)
+            {
+                state.OnInventoryChanged -= UpdateStatusDisplay;
+                state.OnStoryFlagAdded -= OnStoryFlagChanged;
+            }
+        }
+
+        private void OnStoryFlagChanged(string flag)
+        {
+            UpdateStatusDisplay();
         }
         
         private void SetupButtons()
@@ -78,65 +105,118 @@ namespace WildsOfCloverhollow.DevTools
         
         private void UpdateStatusDisplay()
         {
-            if (statusText != null)
+            if (statusText == null) return;
+
+            var state = GameStateManager.Current;
+            if (state != null)
             {
-                statusText.text = $"Gems: {debugGems} | Candy: {debugCandyBars} | Lantern: {(debugLanternUnlocked ? "Yes" : "No")}";
+                statusText.text = $"Gems: {state.gems} | Candy: {state.candyBars} | Lantern: {(state.IsLanternUnlocked ? "Yes" : "No")} | Energy: {state.currentEnergy}/{state.maxEnergy}";
+            }
+            else
+            {
+                statusText.text = "GameState not initialized";
             }
         }
         
         private void LogAction(string action)
         {
-            UnityEngine.Debug.Log($"[DebugOverlay] {action}");
+            Debug.Log($"[DebugOverlay] {action}");
         }
-        
-        // Button handlers - these are stubs that will be connected to actual systems later
         
         private void OnSaveClicked()
         {
-            LogAction("Save requested (stub - SaveSystem not implemented)");
-            // TODO: Call SaveSystem.Save()
+            if (SaveSystem.Instance != null)
+            {
+                if (SaveSystem.Instance.Save())
+                {
+                    LogAction("Game saved successfully");
+                }
+                else
+                {
+                    LogAction("Save failed!");
+                }
+            }
+            else
+            {
+                LogAction("SaveSystem not found");
+            }
         }
         
         private void OnLoadClicked()
         {
-            LogAction("Load requested (stub - SaveSystem not implemented)");
-            // TODO: Call SaveSystem.Load()
+            if (SaveSystem.Instance != null)
+            {
+                if (SaveSystem.Instance.Load())
+                {
+                    LogAction("Game loaded successfully");
+                    UpdateStatusDisplay();
+                }
+                else
+                {
+                    LogAction("Load failed!");
+                }
+            }
+            else
+            {
+                LogAction("SaveSystem not found");
+            }
         }
         
         private void OnTeleportHomeClicked()
         {
-            LogAction("Teleport Home requested (stub - Player/SceneDirector not implemented)");
-            // TODO: Teleport player to home bed anchor
+            if (RespawnSystem.Instance != null)
+            {
+                RespawnSystem.Instance.TeleportHome();
+                LogAction("Teleporting home...");
+            }
+            else
+            {
+                LogAction("RespawnSystem not found");
+            }
         }
         
         private void OnGrantCandyClicked()
         {
-            debugCandyBars += 1;
-            LogAction($"Granted +1 Candy Bar. Total: {debugCandyBars}");
-            UpdateStatusDisplay();
-            // TODO: Update GameState.inventory.candyBars
+            var state = GameStateManager.Current;
+            if (state != null)
+            {
+                state.AddCandyBars(1);
+                LogAction($"Granted +1 Candy Bar. Total: {state.candyBars}");
+            }
         }
         
         private void OnGrantGemsClicked()
         {
-            debugGems += 10;
-            LogAction($"Granted +10 Gems. Total: {debugGems}");
-            UpdateStatusDisplay();
-            // TODO: Update GameState.inventory.gems
+            var state = GameStateManager.Current;
+            if (state != null)
+            {
+                state.AddGems(10);
+                LogAction($"Granted +10 Gems. Total: {state.gems}");
+            }
         }
         
         private void OnToggleLanternClicked()
         {
-            debugLanternUnlocked = !debugLanternUnlocked;
-            LogAction($"Lantern Unlocked: {debugLanternUnlocked}");
-            UpdateStatusDisplay();
-            // TODO: Toggle GameState.storyFlags.Contains("Tool.Lantern.Unlocked")
+            var state = GameStateManager.Current;
+            if (state != null)
+            {
+                if (state.IsLanternUnlocked)
+                {
+                    state.RemoveStoryFlag("Tool.Lantern.Unlocked");
+                    LogAction("Lantern locked");
+                }
+                else
+                {
+                    state.UnlockLantern();
+                    LogAction("Lantern unlocked");
+                }
+                UpdateStatusDisplay();
+            }
         }
         
         private void OnSpawnRaccoonClicked()
         {
-            LogAction("Spawn Raccoon requested (stub - Raccoon prefab not implemented)");
-            // TODO: Instantiate raccoon prefab near player
+            LogAction("Spawn Raccoon (stub - Raccoon prefab not implemented)");
         }
         
         private void OnCloseClicked()

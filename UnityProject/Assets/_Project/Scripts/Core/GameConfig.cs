@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CloverWilds.Core
+namespace WildsOfCloverhollow.Core
 {
     /// <summary>
     /// Game-wide configuration for scenes, anchors, and startup settings.
