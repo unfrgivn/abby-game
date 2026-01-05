@@ -53,7 +53,7 @@ namespace WildsOfCloverhollow.Camera
 
             if (target != null)
             {
-                horizontalAngle = target.eulerAngles.y;
+                horizontalAngle = target.eulerAngles.y + 180f;
             }
         }
 
@@ -122,7 +122,7 @@ namespace WildsOfCloverhollow.Camera
 
             if (shouldRecenter)
             {
-                float targetAngle = target.eulerAngles.y;
+                float targetAngle = target.eulerAngles.y + 180f;
                 horizontalAngle = Mathf.LerpAngle(horizontalAngle, targetAngle, Time.deltaTime / recenterTime);
             }
         }
