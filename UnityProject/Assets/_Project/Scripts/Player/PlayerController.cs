@@ -69,11 +69,30 @@ namespace WildsOfCloverhollow.Player
 
         private void UpdateMovement()
         {
-            // Convert 2D input to 3D movement direction (XZ plane)
-            Vector3 targetDirection = new Vector3(inputDirection.x, 0f, inputDirection.y).normalized;
+            Vector3 targetDirection = Vector3.zero;
+            
+            if (inputDirection.sqrMagnitude > 0.01f)
+            {
+                Transform cameraTransform = UnityEngine.Camera.main?.transform;
+                if (cameraTransform != null)
+                {
+                    Vector3 cameraForward = cameraTransform.forward;
+                    Vector3 cameraRight = cameraTransform.right;
+                    cameraForward.y = 0f;
+                    cameraRight.y = 0f;
+                    cameraForward.Normalize();
+                    cameraRight.Normalize();
+                    
+                    targetDirection = (cameraForward * inputDirection.y + cameraRight * inputDirection.x).normalized;
+                }
+                else
+                {
+                    targetDirection = new Vector3(inputDirection.x, 0f, inputDirection.y).normalized;
+                }
+            }
+            
             Vector3 targetVelocity = targetDirection * tuning.MoveSpeed;
 
-            // Smooth acceleration/deceleration
             float accelerationRate = targetDirection.magnitude > 0.1f 
                 ? tuning.Acceleration 
                 : tuning.Deceleration;
@@ -84,17 +103,15 @@ namespace WildsOfCloverhollow.Player
                 accelerationRate * Time.deltaTime
             );
 
-            // Apply gravity
             if (characterController.isGrounded)
             {
-                verticalVelocity = -2f; // Small downward force to keep grounded
+                verticalVelocity = -2f;
             }
             else
             {
                 verticalVelocity += tuning.Gravity * Time.deltaTime;
             }
 
-            // Combine horizontal and vertical movement
             Vector3 motion = currentVelocity + Vector3.up * verticalVelocity;
             characterController.Move(motion * Time.deltaTime);
         }
