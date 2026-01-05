@@ -115,8 +115,35 @@ namespace WildsOfCloverhollow.Editor
 
             var lanternEffectGO = new GameObject("LanternEffect");
             lanternEffectGO.transform.SetParent(playerGO.transform);
-            lanternEffectGO.transform.localPosition = Vector3.zero;
+            lanternEffectGO.transform.localPosition = new Vector3(0.5f, 0.8f, 0.3f);
             lanternEffectGO.SetActive(false);
+
+            var lanternBody = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            lanternBody.name = "LanternBody";
+            lanternBody.transform.SetParent(lanternEffectGO.transform);
+            lanternBody.transform.localPosition = Vector3.zero;
+            lanternBody.transform.localScale = new Vector3(0.15f, 0.25f, 0.15f);
+            Object.DestroyImmediate(lanternBody.GetComponent<BoxCollider>());
+
+            var lanternGlow = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            lanternGlow.name = "LanternGlow";
+            lanternGlow.transform.SetParent(lanternEffectGO.transform);
+            lanternGlow.transform.localPosition = new Vector3(0f, 0.2f, 0f);
+            lanternGlow.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+            Object.DestroyImmediate(lanternGlow.GetComponent<SphereCollider>());
+            var glowRenderer = lanternGlow.GetComponent<MeshRenderer>();
+            var glowMaterial = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
+            glowMaterial.color = new Color(0.5f, 0f, 1f, 1f);
+            glowRenderer.sharedMaterial = glowMaterial;
+
+            var lanternLight = new GameObject("LanternLight");
+            lanternLight.transform.SetParent(lanternEffectGO.transform);
+            lanternLight.transform.localPosition = new Vector3(0f, 0.2f, 0f);
+            var pointLight = lanternLight.AddComponent<Light>();
+            pointLight.type = LightType.Point;
+            pointLight.color = new Color(0.6f, 0.2f, 1f, 1f);
+            pointLight.intensity = 2f;
+            pointLight.range = 5f;
 
             {
                 var so = new SerializedObject(playerCombat);
