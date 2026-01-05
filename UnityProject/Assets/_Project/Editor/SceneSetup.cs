@@ -123,7 +123,7 @@ namespace WildsOfCloverhollow.Editor
             var mainCamera = new GameObject("Main Camera");
             mainCamera.transform.SetParent(cameraRig.transform);
             mainCamera.tag = "MainCamera";
-            var camera = mainCamera.AddComponent<Camera>();
+            var camera = mainCamera.AddComponent<UnityEngine.Camera>();
             camera.clearFlags = CameraClearFlags.SolidColor;
             camera.backgroundColor = new Color(0.4f, 0.6f, 0.8f);
             mainCamera.transform.position = new Vector3(0f, 15f, -10f);
@@ -135,7 +135,7 @@ namespace WildsOfCloverhollow.Editor
             if (playerPrefab != null)
             {
                 var player = (GameObject)PrefabUtility.InstantiatePrefab(playerPrefab);
-                player.transform.position = Vector3.zero;
+                player.transform.position = new Vector3(-60f, 0f, 75f);
                 UnityEngine.Debug.Log("Player prefab instantiated in scene.");
             }
             else
@@ -151,7 +151,7 @@ namespace WildsOfCloverhollow.Editor
             if (maddiePrefab != null)
             {
                 var maddie = (GameObject)PrefabUtility.InstantiatePrefab(maddiePrefab);
-                maddie.transform.position = new Vector3(1f, 0f, -1f);
+                maddie.transform.position = new Vector3(-58f, 0f, 74f);
                 UnityEngine.Debug.Log("Maddie prefab instantiated in scene.");
             }
             else
