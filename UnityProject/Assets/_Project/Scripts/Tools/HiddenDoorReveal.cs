@@ -40,6 +40,7 @@ namespace WildsOfCloverhollow.Tools
         
         public bool IsRevealed => isRevealed;
         public float RevealProgress => revealProgress;
+        public bool IsRevealInProgress => hasStartedReveal;
         
         private void Awake()
         {

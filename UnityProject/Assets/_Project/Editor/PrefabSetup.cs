@@ -102,8 +102,47 @@ namespace WildsOfCloverhollow.Editor
             var hitboxCollider = hitboxGO.AddComponent<SphereCollider>();
             hitboxCollider.radius = 0.8f;
             hitboxCollider.isTrigger = true;
-            hitboxGO.AddComponent<AttackHitbox>();
+            var attackHitbox = hitboxGO.AddComponent<AttackHitbox>();
             hitboxGO.SetActive(false);
+
+            var lanternEffectGO = new GameObject("LanternEffect");
+            lanternEffectGO.transform.SetParent(playerGO.transform);
+            lanternEffectGO.transform.localPosition = Vector3.zero;
+            lanternEffectGO.SetActive(false);
+
+            {
+                var so = new SerializedObject(playerCombat);
+                so.FindProperty("attackHitbox").objectReferenceValue = attackHitbox;
+                so.FindProperty("playerController").objectReferenceValue = playerController;
+                so.FindProperty("playerRenderer").objectReferenceValue = capsule.GetComponent<MeshRenderer>();
+                so.ApplyModifiedPropertiesWithoutUndo();
+            }
+
+            {
+                var so = new SerializedObject(scanner);
+                so.FindProperty("scanOrigin").objectReferenceValue = playerGO.transform;
+                so.FindProperty("lanternVisualEffect").objectReferenceValue = lanternEffectGO;
+                var revealableLayerProp = so.FindProperty("revealableLayer");
+                if (revealableLayerProp != null)
+                {
+                    int blacklightLayer = LayerMask.NameToLayer("BlacklightReveal");
+                    if (blacklightLayer >= 0)
+                        revealableLayerProp.intValue = 1 << blacklightLayer;
+                }
+                so.ApplyModifiedPropertiesWithoutUndo();
+            }
+
+            {
+                var so = new SerializedObject(interactor);
+                var interactableLayerProp = so.FindProperty("interactableLayer");
+                if (interactableLayerProp != null)
+                {
+                    int interactableLayer = LayerMask.NameToLayer("Interactable");
+                    if (interactableLayer >= 0)
+                        interactableLayerProp.intValue = 1 << interactableLayer;
+                }
+                so.ApplyModifiedPropertiesWithoutUndo();
+            }
 
             PrefabUtility.SaveAsPrefabAsset(playerGO, prefabPath);
             Object.DestroyImmediate(playerGO);

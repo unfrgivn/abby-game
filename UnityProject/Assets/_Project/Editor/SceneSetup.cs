@@ -202,6 +202,9 @@ namespace WildsOfCloverhollow.Editor
 
             ContentSetup.CreateAllContentScenes();
 
+            ContentSetup.CreateContentDatabases();
+            ContentSetup.CreateContentPrefabs();
+
             ContentSetup.UpdateBuildSettingsAllScenes();
 
             EditorSceneManager.OpenScene($"{ScenesPath}/Cloverhollow.unity", OpenSceneMode.Single);

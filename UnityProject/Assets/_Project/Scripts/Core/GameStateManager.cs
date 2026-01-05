@@ -48,7 +48,10 @@ namespace WildsOfCloverhollow.Core
             instance = this;
             gameState = new GameState();
             
-            Debug.Log("[GameStateManager] Initialized with fresh GameState.");
+            // PoC: Auto-unlock lantern at start so players can test immediately
+            gameState.UnlockLantern();
+            
+            Debug.Log("[GameStateManager] Initialized with fresh GameState (lantern unlocked for PoC).");
         }
 
         private void OnDestroy()
