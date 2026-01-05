@@ -2,6 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using WildsOfCloverhollow.Player;
 using WildsOfCloverhollow.Combat;
+using WildsOfCloverhollow.Content;
 using WildsOfCloverhollow.Interaction;
 using WildsOfCloverhollow.Tools;
 using WildsOfCloverhollow.AI;
