@@ -185,6 +185,7 @@ namespace WildsOfCloverhollow.Editor
             ProjectSetup.ConfigureLayers();
             ProjectSetup.CreateInputActions();
             ProjectSetup.CreatePrefabFolders();
+            ProjectSetup.CreateTuningAssets();
 
             PrefabSetup.CreatePlayerPrefab();
             PrefabSetup.CreateRaccoonPrefab();
