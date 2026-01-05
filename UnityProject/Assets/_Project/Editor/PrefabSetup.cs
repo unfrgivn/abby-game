@@ -7,6 +7,7 @@ using WildsOfCloverhollow.Interaction;
 using WildsOfCloverhollow.Tools;
 using WildsOfCloverhollow.AI;
 using WildsOfCloverhollow.World;
+using WildsOfCloverhollow.Core;
 
 namespace WildsOfCloverhollow.Editor
 {
