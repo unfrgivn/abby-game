@@ -185,7 +185,7 @@ namespace WildsOfCloverhollow.Editor
 
             var follower = maddieGO.AddComponent<MaddieFollower>();
             var assist = maddieGO.AddComponent<MaddieAssist>();
-            maddieGO.AddComponent<MaddieVFX>();
+            var vfx = maddieGO.AddComponent<MaddieVFX>();
 
             var maddieTuning = AssetDatabase.LoadAssetAtPath<MaddieTuning>($"{TuningPath}/MaddieTuning.asset");
             if (maddieTuning != null)
@@ -197,6 +197,14 @@ namespace WildsOfCloverhollow.Editor
                 var assistSO = new SerializedObject(assist);
                 assistSO.FindProperty("tuning").objectReferenceValue = maddieTuning;
                 assistSO.ApplyModifiedPropertiesWithoutUndo();
+
+                var vfxSO = new SerializedObject(vfx);
+                vfxSO.FindProperty("tuning").objectReferenceValue = maddieTuning;
+                vfxSO.ApplyModifiedPropertiesWithoutUndo();
+            }
+            else
+            {
+                Debug.LogWarning("[PrefabSetup] MaddieTuning.asset not found. Run 'Create Tuning Assets' first.");
             }
 
             PrefabUtility.SaveAsPrefabAsset(maddieGO, prefabPath);
