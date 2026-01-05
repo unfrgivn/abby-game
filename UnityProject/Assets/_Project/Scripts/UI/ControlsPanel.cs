@@ -5,17 +5,19 @@ namespace WildsOfCloverhollow.UI
 {
     public class ControlsPanel : MonoBehaviour
     {
+        private bool isVisible;
+
         private void Update()
         {
             if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
             {
-                gameObject.SetActive(!gameObject.activeSelf);
+                isVisible = !isVisible;
             }
         }
 
         private void OnGUI()
         {
-            if (!gameObject.activeSelf) return;
+            if (!isVisible) return;
 
             float boxWidth = 400f;
             float boxHeight = 320f;

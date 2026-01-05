@@ -59,9 +59,6 @@ namespace WildsOfCloverhollow.UI
             
             // Debug overlay starts hidden (toggled with F1)
             SetPanelActive(debugOverlayPanel, false);
-            
-            // Controls panel starts hidden (toggled with Esc)
-            SetPanelActive(controlsPanel, false);
         }
         
         /// <summary>
