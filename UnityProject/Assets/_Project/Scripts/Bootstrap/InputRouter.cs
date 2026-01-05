@@ -21,8 +21,21 @@ namespace WildsOfCloverhollow.Bootstrap
         
         private InputMode currentMode = InputMode.Gameplay;
         
-        // Gameplay events
+        // Gameplay events - Movement
         public event Action<Vector2> OnMove;
+        public event Action<Vector2> OnLook;
+        
+        // Gameplay events - Platformer actions
+        public event Action OnJumpPressed;
+        public event Action OnJumpReleased;
+        public event Action OnGrabPressed;
+        public event Action OnGrabReleased;
+        public event Action OnSprintPressed;
+        public event Action OnSprintReleased;
+        public event Action OnCrouchPressed;
+        public event Action OnCrouchReleased;
+        
+        // Gameplay events - Combat and tools
         public event Action OnInteract;
         public event Action OnAttack;
         public event Action OnDodge;
@@ -37,6 +50,14 @@ namespace WildsOfCloverhollow.Bootstrap
         
         // Mode change event
         public event Action<InputMode> OnInputModeChanged;
+        
+        // Input state for hold detection
+        public bool IsJumpHeld { get; private set; }
+        public bool IsGrabHeld { get; private set; }
+        public bool IsSprintHeld { get; private set; }
+        public bool IsCrouchHeld { get; private set; }
+        public Vector2 MoveInput { get; private set; }
+        public Vector2 LookInput { get; private set; }
         
         public InputMode CurrentMode => currentMode;
         
@@ -92,40 +113,112 @@ namespace WildsOfCloverhollow.Bootstrap
             {
                 case "Move":
                     if (context.performed || context.canceled)
-                        OnMove?.Invoke(context.ReadValue<Vector2>());
+                    {
+                        MoveInput = context.ReadValue<Vector2>();
+                        OnMove?.Invoke(MoveInput);
+                    }
                     break;
+                    
+                case "Look":
+                    if (context.performed || context.canceled)
+                    {
+                        LookInput = context.ReadValue<Vector2>();
+                        OnLook?.Invoke(LookInput);
+                    }
+                    break;
+                    
+                case "Jump":
+                    if (context.started)
+                    {
+                        IsJumpHeld = true;
+                        OnJumpPressed?.Invoke();
+                    }
+                    else if (context.canceled)
+                    {
+                        IsJumpHeld = false;
+                        OnJumpReleased?.Invoke();
+                    }
+                    break;
+                    
+                case "Grab":
+                    if (context.started)
+                    {
+                        IsGrabHeld = true;
+                        OnGrabPressed?.Invoke();
+                    }
+                    else if (context.canceled)
+                    {
+                        IsGrabHeld = false;
+                        OnGrabReleased?.Invoke();
+                    }
+                    break;
+                    
+                case "Sprint":
+                    if (context.started)
+                    {
+                        IsSprintHeld = true;
+                        OnSprintPressed?.Invoke();
+                    }
+                    else if (context.canceled)
+                    {
+                        IsSprintHeld = false;
+                        OnSprintReleased?.Invoke();
+                    }
+                    break;
+                    
+                case "Crouch":
+                    if (context.started)
+                    {
+                        IsCrouchHeld = true;
+                        OnCrouchPressed?.Invoke();
+                    }
+                    else if (context.canceled)
+                    {
+                        IsCrouchHeld = false;
+                        OnCrouchReleased?.Invoke();
+                    }
+                    break;
+                    
                 case "Interact":
                     if (context.performed)
                         OnInteract?.Invoke();
                     break;
+                    
                 case "Attack":
                     if (context.performed)
                         OnAttack?.Invoke();
                     break;
+                    
                 case "Dodge":
                     if (context.performed)
                         OnDodge?.Invoke();
                     break;
+                    
                 case "Lantern":
                     if (context.performed)
                         OnLantern?.Invoke();
                     break;
+                    
                 case "Journal":
                     if (context.performed)
                         OnJournal?.Invoke();
                     break;
+                    
                 case "Pause":
                     if (context.performed)
                         OnPause?.Invoke();
                     break;
+                    
                 case "Navigate":
                     if (context.performed || context.canceled)
                         OnNavigate?.Invoke(context.ReadValue<Vector2>());
                     break;
+                    
                 case "Submit":
                     if (context.performed)
                         OnSubmit?.Invoke();
                     break;
+                    
                 case "Cancel":
                     if (context.performed)
                         OnCancel?.Invoke();
