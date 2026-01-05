@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using WildsOfCloverhollow.Bootstrap;
 
 namespace WildsOfCloverhollow.Camera
@@ -10,14 +11,15 @@ namespace WildsOfCloverhollow.Camera
 
         [Header("Orbit Settings")]
         [SerializeField] private float distance = 8f;
-        [SerializeField] private float minVerticalAngle = -20f;
-        [SerializeField] private float maxVerticalAngle = 60f;
-        [SerializeField] private float defaultVerticalAngle = 30f;
+        [SerializeField] private float minVerticalAngle = -30f;
+        [SerializeField] private float maxVerticalAngle = 80f;
+        [SerializeField] private float defaultVerticalAngle = 35f;
 
         [Header("Input Settings")]
         [SerializeField] private float horizontalSpeed = 200f;
-        [SerializeField] private float verticalSpeed = 100f;
+        [SerializeField] private float verticalSpeed = 200f;
         [SerializeField] private bool invertY = false;
+        [SerializeField] private bool requireMouseHold = true;
 
         [Header("Smoothing")]
         [SerializeField] private float positionSmoothTime = 0.1f;
@@ -37,6 +39,7 @@ namespace WildsOfCloverhollow.Camera
         private Vector2 lookInput;
         private float lastInputTime;
         private Vector3 currentVelocity;
+        private bool isMouseHeld;
 
         public Transform Target => target;
         public float HorizontalAngle => horizontalAngle;
@@ -121,10 +124,43 @@ namespace WildsOfCloverhollow.Camera
 
         private void UpdateAnglesFromInput()
         {
+            Vector2 inputToApply = Vector2.zero;
+            bool hasValidInput = false;
+            
+            if (Gamepad.current != null)
+            {
+                Vector2 gamepadInput = Gamepad.current.rightStick.ReadValue();
+                if (gamepadInput.sqrMagnitude > 0.01f)
+                {
+                    inputToApply = gamepadInput * 3f;
+                    hasValidInput = true;
+                }
+            }
+            
+            if (!hasValidInput && Mouse.current != null)
+            {
+                isMouseHeld = Mouse.current.rightButton.isPressed || 
+                              Mouse.current.middleButton.isPressed ||
+                              Mouse.current.leftButton.isPressed;
+                
+                if (!requireMouseHold || isMouseHeld)
+                {
+                    Vector2 mouseDelta = Mouse.current.delta.ReadValue() * 0.1f;
+                    if (mouseDelta.sqrMagnitude > 0.001f)
+                    {
+                        inputToApply = mouseDelta;
+                        hasValidInput = true;
+                    }
+                }
+            }
+            
+            if (!hasValidInput) return;
+            
+            lastInputTime = Time.time;
             float yMultiplier = invertY ? -1f : 1f;
 
-            horizontalAngle += lookInput.x * horizontalSpeed * Time.deltaTime;
-            verticalAngle -= lookInput.y * verticalSpeed * yMultiplier * Time.deltaTime;
+            horizontalAngle += inputToApply.x * horizontalSpeed * Time.deltaTime;
+            verticalAngle -= inputToApply.y * verticalSpeed * yMultiplier * Time.deltaTime;
             verticalAngle = Mathf.Clamp(verticalAngle, minVerticalAngle, maxVerticalAngle);
         }
 
