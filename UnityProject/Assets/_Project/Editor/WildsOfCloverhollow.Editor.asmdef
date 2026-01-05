@@ -1,0 +1,19 @@
+{
+    "name": "WildsOfCloverhollow.Editor",
+    "rootNamespace": "WildsOfCloverhollow.Editor",
+    "references": [
+        "WildsOfCloverhollow",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
