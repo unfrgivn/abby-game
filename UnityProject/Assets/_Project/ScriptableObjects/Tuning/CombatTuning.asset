@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0, type: 3}
+  m_Script: {fileID: 11500000, guid: 51bb0b725b03944e68c6b96ba0c47ff3, type: 3}
   m_Name: CombatTuning
   m_EditorClassIdentifier: 
   attackDamage: 10
