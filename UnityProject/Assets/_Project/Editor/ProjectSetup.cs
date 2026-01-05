@@ -585,7 +585,38 @@ namespace WildsOfCloverhollow.Editor
 }";
         }
 
-        [MenuItem("Wilds of Cloverhollow/Setup/3. Create Prefab Folders", priority = 30)]
+        [MenuItem("Wilds of Cloverhollow/Setup/3. Create Tuning Assets", priority = 25)]
+        public static void CreateTuningAssets()
+        {
+            const string tuningPath = "Assets/_Project/ScriptableObjects/Tuning";
+            EnsureDirectoryExists(tuningPath);
+
+            CreateTuningAssetIfMissing<WildsOfCloverhollow.AI.MaddieTuning>($"{tuningPath}/MaddieTuning.asset");
+            CreateTuningAssetIfMissing<WildsOfCloverhollow.AI.RaccoonTuning>($"{tuningPath}/RaccoonTuning.asset");
+            CreateTuningAssetIfMissing<WildsOfCloverhollow.Player.PlayerTuning>($"{tuningPath}/PlayerTuning.asset");
+            CreateTuningAssetIfMissing<WildsOfCloverhollow.Player.CombatTuning>($"{tuningPath}/CombatTuning.asset");
+            CreateTuningAssetIfMissing<WildsOfCloverhollow.Player.EnergyTuning>($"{tuningPath}/EnergyTuning.asset");
+            CreateTuningAssetIfMissing<WildsOfCloverhollow.Tools.LanternTuning>($"{tuningPath}/LanternTuning.asset");
+            CreateTuningAssetIfMissing<WildsOfCloverhollow.Minigames.ClawMachineTuning>($"{tuningPath}/ClawMachineTuning.asset");
+
+            AssetDatabase.SaveAssets();
+            Debug.Log("[ProjectSetup] Tuning assets verified/created");
+        }
+
+        private static void CreateTuningAssetIfMissing<T>(string path) where T : ScriptableObject
+        {
+            if (AssetDatabase.LoadAssetAtPath<T>(path) != null)
+            {
+                Debug.Log($"  {typeof(T).Name} already exists (skipped)");
+                return;
+            }
+
+            var asset = ScriptableObject.CreateInstance<T>();
+            AssetDatabase.CreateAsset(asset, path);
+            Debug.Log($"  Created {typeof(T).Name} at {path}");
+        }
+
+        [MenuItem("Wilds of Cloverhollow/Setup/4. Create Prefab Folders", priority = 30)]
         public static void CreatePrefabFolders()
         {
             EnsureDirectoryExists(PrefabsFolderPath);

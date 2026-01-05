@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &325668628475681696
+--- !u!1 &4182237331970478007
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8216172177800860417}
-  - component: {fileID: 3126105260948792315}
-  - component: {fileID: 6244164969631905722}
+  - component: {fileID: 236495185206140581}
+  - component: {fileID: 6483712316348378752}
+  - component: {fileID: 2582569631012416460}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -18,36 +18,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8216172177800860417
+--- !u!4 &236495185206140581
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 325668628475681696}
+  m_GameObject: {fileID: 4182237331970478007}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.25, z: 0}
   m_LocalScale: {x: 0.4, y: 0.3, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 252643053912586745}
+  m_Father: {fileID: 1136923724066289046}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3126105260948792315
+--- !u!33 &6483712316348378752
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 325668628475681696}
+  m_GameObject: {fileID: 4182237331970478007}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &6244164969631905722
+--- !u!23 &2582569631012416460
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 325668628475681696}
+  m_GameObject: {fileID: 4182237331970478007}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -90,7 +90,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &2698588944745494262
+--- !u!1 &8231089372920918888
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -98,10 +98,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 252643053912586745}
-  - component: {fileID: 7251784259872241528}
-  - component: {fileID: 5978124863886330229}
-  - component: {fileID: 2207273537185707213}
+  - component: {fileID: 1136923724066289046}
+  - component: {fileID: 5914128852830856962}
+  - component: {fileID: 4827371140507998837}
+  - component: {fileID: 544331770739755544}
   m_Layer: 0
   m_Name: Maddie
   m_TagString: Untagged
@@ -109,42 +109,42 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &252643053912586745
+--- !u!4 &1136923724066289046
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2698588944745494262}
+  m_GameObject: {fileID: 8231089372920918888}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8216172177800860417}
+  - {fileID: 236495185206140581}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7251784259872241528
+--- !u!114 &5914128852830856962
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2698588944745494262}
+  m_GameObject: {fileID: 8231089372920918888}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d68f01d5ac734571847e7d567c91996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: WildsOfCloverhollow::WildsOfCloverhollow.AI.MaddieFollower
   tuning: {fileID: 0}
---- !u!114 &5978124863886330229
+--- !u!114 &4827371140507998837
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2698588944745494262}
+  m_GameObject: {fileID: 8231089372920918888}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b614fafa52f64895a66486533d33f93, type: 3}
@@ -152,13 +152,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: WildsOfCloverhollow::WildsOfCloverhollow.AI.MaddieAssist
   tuning: {fileID: 0}
   vfx: {fileID: 0}
---- !u!114 &2207273537185707213
+--- !u!114 &544331770739755544
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2698588944745494262}
+  m_GameObject: {fileID: 8231089372920918888}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50158f05823b3426f85d9d019eca2a1c, type: 3}
