@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using TMPro;
 using WildsOfCloverhollow.Bootstrap;
 using WildsOfCloverhollow.Core;
 using WildsOfCloverhollow.UI;
@@ -58,7 +59,7 @@ namespace WildsOfCloverhollow.Editor
             
             var uiRoot = uiRootGO.AddComponent<UIRoot>();
             
-            var hudPanel = CreatePanel("HUDPanel", uiRootGO.transform);
+            var hudPanel = CreateHUDPanel(uiRootGO.transform);
             var promptPanel = CreatePanel("InteractionPromptPanel", uiRootGO.transform);
             var journalPanel = CreatePanel("JournalPanel", uiRootGO.transform);
             var minigamePanel = CreatePanel("MinigamePanel", uiRootGO.transform);
@@ -194,6 +195,129 @@ namespace WildsOfCloverhollow.Editor
 
             UnityEngine.Debug.Log("=== Full Setup Complete! ===");
             UnityEngine.Debug.Log("Press Play to test the game.");
+        }
+        
+        private static GameObject CreateHUDPanel(Transform parent)
+        {
+            var panel = new GameObject("HUDPanel");
+            panel.transform.SetParent(parent);
+            
+            var rectTransform = panel.AddComponent<RectTransform>();
+            rectTransform.anchorMin = Vector2.zero;
+            rectTransform.anchorMax = Vector2.one;
+            rectTransform.offsetMin = Vector2.zero;
+            rectTransform.offsetMax = Vector2.zero;
+            
+            // Top-left: Energy display (bar style for simplicity)
+            var energyContainer = new GameObject("EnergyContainer");
+            energyContainer.transform.SetParent(panel.transform);
+            var energyRect = energyContainer.AddComponent<RectTransform>();
+            energyRect.anchorMin = new Vector2(0f, 1f);
+            energyRect.anchorMax = new Vector2(0f, 1f);
+            energyRect.pivot = new Vector2(0f, 1f);
+            energyRect.anchoredPosition = new Vector2(20f, -20f);
+            energyRect.sizeDelta = new Vector2(200f, 30f);
+            
+            // Energy bar background
+            var energyBg = new GameObject("EnergyBarBackground");
+            energyBg.transform.SetParent(energyContainer.transform);
+            var energyBgRect = energyBg.AddComponent<RectTransform>();
+            energyBgRect.anchorMin = Vector2.zero;
+            energyBgRect.anchorMax = Vector2.one;
+            energyBgRect.offsetMin = Vector2.zero;
+            energyBgRect.offsetMax = Vector2.zero;
+            var energyBgImage = energyBg.AddComponent<Image>();
+            energyBgImage.color = new Color(0.2f, 0.2f, 0.2f, 0.8f);
+            
+            // Energy bar fill
+            var energyFill = new GameObject("EnergyBarFill");
+            energyFill.transform.SetParent(energyContainer.transform);
+            var energyFillRect = energyFill.AddComponent<RectTransform>();
+            energyFillRect.anchorMin = Vector2.zero;
+            energyFillRect.anchorMax = Vector2.one;
+            energyFillRect.offsetMin = new Vector2(2f, 2f);
+            energyFillRect.offsetMax = new Vector2(-2f, -2f);
+            var energyFillImage = energyFill.AddComponent<Image>();
+            energyFillImage.color = new Color(0.2f, 0.8f, 0.2f, 1f);
+            energyFillImage.type = Image.Type.Filled;
+            energyFillImage.fillMethod = Image.FillMethod.Horizontal;
+            energyFillImage.fillAmount = 1f;
+            
+            // Add EnergyHUD component
+            var energyHUD = energyContainer.AddComponent<EnergyHUD>();
+            SerializedObject energyHUDSO = new SerializedObject(energyHUD);
+            energyHUDSO.FindProperty("displayMode").enumValueIndex = 1; // Bar mode
+            energyHUDSO.FindProperty("energyBarFill").objectReferenceValue = energyFillImage;
+            energyHUDSO.FindProperty("energyBarBackground").objectReferenceValue = energyBgImage;
+            energyHUDSO.ApplyModifiedPropertiesWithoutUndo();
+            
+            // Top-right: Inventory display
+            var inventoryContainer = new GameObject("InventoryContainer");
+            inventoryContainer.transform.SetParent(panel.transform);
+            var invRect = inventoryContainer.AddComponent<RectTransform>();
+            invRect.anchorMin = new Vector2(1f, 1f);
+            invRect.anchorMax = new Vector2(1f, 1f);
+            invRect.pivot = new Vector2(1f, 1f);
+            invRect.anchoredPosition = new Vector2(-20f, -20f);
+            invRect.sizeDelta = new Vector2(200f, 80f);
+            
+            var invLayout = inventoryContainer.AddComponent<VerticalLayoutGroup>();
+            invLayout.spacing = 5f;
+            invLayout.childAlignment = TextAnchor.UpperRight;
+            invLayout.childControlWidth = false;
+            invLayout.childControlHeight = false;
+            
+            // Gem row
+            var gemRow = CreateInventoryRow("GemRow", inventoryContainer.transform, "Gems: 0", new Color(0f, 0.8f, 0.8f));
+            var gemText = gemRow.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+            
+            // Candy row
+            var candyRow = CreateInventoryRow("CandyRow", inventoryContainer.transform, "Candy: 0", new Color(0.8f, 0.4f, 0.2f));
+            var candyText = candyRow.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+            
+            // Use candy button
+            var useCandyBtn = CreateButton("UseCandyButton", inventoryContainer.transform, "Use Candy");
+            var useCandyBtnRect = useCandyBtn.GetComponent<RectTransform>();
+            useCandyBtnRect.sizeDelta = new Vector2(120f, 30f);
+            var useCandyBtnText = useCandyBtn.GetComponentInChildren<Text>();
+            
+            // Add InventoryHUD component
+            var inventoryHUD = inventoryContainer.AddComponent<InventoryHUD>();
+            SerializedObject invHUDSO = new SerializedObject(inventoryHUD);
+            invHUDSO.FindProperty("gemCountText").objectReferenceValue = gemText;
+            invHUDSO.FindProperty("candyCountText").objectReferenceValue = candyText;
+            invHUDSO.FindProperty("useCandyButton").objectReferenceValue = useCandyBtn.GetComponent<Button>();
+            invHUDSO.ApplyModifiedPropertiesWithoutUndo();
+            
+            return panel;
+        }
+        
+        private static GameObject CreateInventoryRow(string name, Transform parent, string defaultText, Color textColor)
+        {
+            var row = new GameObject(name);
+            row.transform.SetParent(parent);
+            var rowRect = row.AddComponent<RectTransform>();
+            rowRect.sizeDelta = new Vector2(150f, 25f);
+            
+            var layoutElement = row.AddComponent<LayoutElement>();
+            layoutElement.preferredHeight = 25f;
+            layoutElement.preferredWidth = 150f;
+            
+            var textGO = new GameObject("Text");
+            textGO.transform.SetParent(row.transform);
+            var textRect = textGO.AddComponent<RectTransform>();
+            textRect.anchorMin = Vector2.zero;
+            textRect.anchorMax = Vector2.one;
+            textRect.offsetMin = Vector2.zero;
+            textRect.offsetMax = Vector2.zero;
+            
+            var tmp = textGO.AddComponent<TMPro.TextMeshProUGUI>();
+            tmp.text = defaultText;
+            tmp.fontSize = 20;
+            tmp.color = textColor;
+            tmp.alignment = TMPro.TextAlignmentOptions.Right;
+            
+            return row;
         }
         
         private static GameObject CreatePanel(string name, Transform parent)
