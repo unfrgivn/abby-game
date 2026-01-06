@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="NoteDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/NoteDef.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "school_locker_note"
+title = "Locker Doodle"
+body = "Someone drew a little raccoon here with invisible ink! It's wearing a tiny crown."
+icon_path = ""

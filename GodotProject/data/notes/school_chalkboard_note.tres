@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="NoteDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/NoteDef.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "school_chalkboard_note"
+title = "Chalkboard Secret"
+body = "Hidden message: 'The door behind the bookshelf opens at dusk.' Wait... there's no bookshelf here!"
+icon_path = ""
