@@ -1,153 +1,53 @@
-# PoC Manual Regression Checklist
+# PoC regression checklist (macOS + iOS)
 
-Run this checklist before shipping any PoC milestone.
+Use this checklist before merging major changes and before shipping a PoC build.
 
-## Pre-requisites
+## 1) Boot + basic navigation
+- [ ] Game launches to the expected start scene
+- [ ] Player can move (WASD + joystick)
+- [ ] Interact button works on touch and mouse/controller
+- [ ] Scene transitions (House ↔ School ↔ Park ↔ Arcade) work without errors
 
-- [ ] Unity project opens without errors
-- [ ] All scenes in build settings: Bootstrap, Cloverhollow, SchoolInterior, ArcadeInterior
-- [ ] Bootstrap scene set as index 0
+## 2) Lantern + hidden content
+- [ ] Lantern toggles/holds as designed
+- [ ] Hidden notes reveal when scanned and stay discovered after leaving the scene
+- [ ] Hidden doors reveal when scanned and become interactable
+- [ ] Hidden doors remain unlocked after save/load
 
-## Core Loop
+## 3) Journal
+- [ ] Journal opens/closes reliably
+- [ ] Newly discovered notes appear in the journal
+- [ ] Opening journal during/after scene transitions does not break UI focus
 
-### Spawn and Movement
-- [ ] Game starts at home bed anchor in Cloverhollow
-- [ ] Player can move in all directions smoothly
-- [ ] Camera follows player with appropriate offset
-- [ ] Player stops cleanly when input released
+## 4) Sticker Book
+- [ ] Sticker Book opens/closes reliably
+- [ ] New game grants starter stickers
+- [ ] Player can equip exactly 4 stickers
+- [ ] Equipped loadout persists after save/load
 
-### Interaction System
-- [ ] Interaction prompt appears when near interactables
-- [ ] Prompt disappears when walking away
-- [ ] Correct interactable selected when multiple nearby
-- [ ] Interact button triggers the interaction
+## 5) Battles
+- [ ] Visible encounter reliably starts the correct battle
+- [ ] Command menu: Stickers / Items / Defend / Run all respond
+- [ ] Using a sticker applies the correct effect and starts cooldown
+- [ ] Stickers on cooldown are disabled and communicate cooldown clearly
+- [ ] Victory returns to overworld and grants rewards
+- [ ] First win grants the reward sticker exactly once
+- [ ] Loss triggers tired respawn rules and does not corrupt save
+- [ ] Run returns to overworld near the encounter (no soft-lock)
 
-### Blacklight Lantern
-- [ ] Lantern toggle on/off works
-- [ ] Lantern visual feedback visible when active
-- [ ] Hidden notes reveal after scanning
-- [ ] Note popup displays title and body text
-- [ ] Notes added to journal after discovery
-- [ ] Hidden doors reveal after scanning
-- [ ] Revealed doors become interactable
-- [ ] Revealed state persists after save/load
+## 6) Arcade claw machine
+- [ ] Claw machine triggers the mini-game
+- [ ] Rewards are granted and reflected in inventory/currency
+- [ ] Multiple plays do not duplicate unique rewards unintentionally
 
-### Journal
-- [ ] Journal panel opens and closes
-- [ ] Discovered notes listed in journal
-- [ ] New notes highlighted until viewed
-- [ ] Note details viewable from list
+## 7) Save/load integrity
+- [ ] Save anywhere does not freeze or crash
+- [ ] Reload restores current scene + player position (or safe fallback)
+- [ ] Reload restores notes/doors discovery state
+- [ ] Reload restores sticker inventory + loadout
+- [ ] Reload restores currency
 
-### Energy and Candy
-- [ ] Energy bar displays current/max
-- [ ] Taking damage reduces energy
-- [ ] Candy bar count displays correctly
-- [ ] Consuming candy restores energy
-- [ ] Cannot consume candy when at full energy
-- [ ] Cannot consume candy when count is zero
-
-### Combat
-- [ ] Light attack triggers attack animation
-- [ ] Attack combo chains (2-3 hits)
-- [ ] Dodge roll moves player
-- [ ] Dodge has invulnerability frames
-- [ ] Dodge has cooldown
-- [ ] Player hurt state triggers on damage
-
-### Chaos Raccoon
-- [ ] Raccoon spawns from encounter trigger
-- [ ] Raccoon telegraphs before swiping
-- [ ] Raccoon swipe deals damage
-- [ ] Raccoon dash-past behavior works
-- [ ] Raccoon takes damage from player attacks
-- [ ] Raccoon defeat triggers appropriate feedback
-
-### Maddie Companion
-- [ ] Maddie follows player smoothly
-- [ ] Maddie does not block player movement
-- [ ] Maddie assists in combat on cooldown
-- [ ] Maddie assist deals damage to enemies
-
-### Tired and Respawn
-- [ ] Energy reaching zero triggers tired state
-- [ ] Tired outdoors respawns at home bed
-- [ ] Tired in school respawns at school entrance
-- [ ] Tired in arcade respawns at arcade entrance
-- [ ] Energy restored to 50% on respawn
-
-### Arcade Claw Machine
-- [ ] Claw machine interactable in arcade
-- [ ] Minigame UI opens on interact
-- [ ] Marker oscillates left-right
-- [ ] Drop button stops marker
-- [ ] Prize awarded based on accuracy
-- [ ] Gems and candy bars added to inventory
-- [ ] Minigame can be replayed
-
-### Save System
-- [ ] Save completes without errors
-- [ ] Save file created in correct location
-- [ ] Load restores player position
-- [ ] Load restores player rotation/facing
-- [ ] Load restores inventory (gems, candy)
-- [ ] Load restores energy state
-- [ ] Load restores discovered notes
-- [ ] Load restores revealed doors
-- [ ] Load restores story flags
-- [ ] Corrupted save falls back to home bed safely
-
-### Scene Transitions
-- [ ] Entering school loads SchoolInterior
-- [ ] Exiting school returns to Cloverhollow
-- [ ] Entering arcade loads ArcadeInterior
-- [ ] Exiting arcade returns to Cloverhollow
-- [ ] Fade transition visible during loads
-- [ ] Player spawns at correct anchor after transition
-
-## Content Verification
-
-### Notes (check all 8)
-- [ ] Note 1: "Glow Time" near home
-- [ ] Note 2: "Follow Me" on road to school
-- [ ] Note 3: "Not All Posters" in school hallway
-- [ ] Note 4: "Star Corner" near art room
-- [ ] Note 5: "Snack Stash" in hidden room
-- [ ] Note 6: "Trash Bandit" in park
-- [ ] Note 7: "Paw Gate" near hedge
-- [ ] Note 8: "Prize Machine" in arcade
-
-### Hidden Doors (check both)
-- [ ] School "Star Closet" reveals and opens
-- [ ] Park "Paw Hedge Gate" reveals and opens
-
-### Anchors
-- [ ] Home Bed anchor exists and works
-- [ ] School Entrance anchor exists and works
-- [ ] Arcade Entrance anchor exists and works
-
-## Platform Checks
-
-### Desktop
-- [ ] Keyboard input works (WASD, E, Space, etc.)
-- [ ] Mouse can click UI buttons
-
-### Touch (if testing on device)
-- [ ] Virtual joystick moves player
-- [ ] Touch buttons respond correctly
-- [ ] UI panels respond to touch
-
-## Debug Overlay (dev builds only)
-- [ ] Toggle overlay works (F1 or on-screen button)
-- [ ] Save button saves game
-- [ ] Load button loads game
-- [ ] Teleport Home works
-- [ ] Grant Candy adds candy
-- [ ] Grant Gems adds gems
-- [ ] Toggle Lantern unlocks/locks lantern
-- [ ] Spawn Raccoon creates raccoon near player
-
-## Performance (target: iPad)
-- [ ] Stable 30+ FPS during exploration
-- [ ] No frame drops during combat
-- [ ] No frame drops during scene transitions
-- [ ] No visible GC spikes in profiler
+## 8) Mobile UX sanity
+- [ ] Tap targets are not cramped; mis-taps are rare
+- [ ] UI scales correctly on iPhone and iPad
+- [ ] Battle UI remains readable at smallest supported size

@@ -1,7 +1,7 @@
 # 03 Asset Spec (3D)
 
 ## Units and scale
-- 1 Unity unit = 1 meter
+- 1 world unit = 1 meter (Godot default scale)
 - Player height: 1.0 m (Classic Chibi)
 - Doorway props: ~1.5 m (Wide and accessible)
 
