@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <rect width="128" height="128" fill="#4a7c59"/>
+  <circle cx="64" cy="64" r="40" fill="#8fbc8f"/>
+  <text x="64" y="72" text-anchor="middle" font-size="24" fill="#2d4a3e" font-family="sans-serif">🍀</text>
+</svg>
