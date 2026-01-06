@@ -4,6 +4,11 @@ extends CharacterBody3D
 
 @export var move_speed: float = 5.0
 
+
+func _ready() -> void:
+	add_to_group("player")
+
+
 func _physics_process(delta: float) -> void:
 	var input_dir := Vector2.ZERO
 	

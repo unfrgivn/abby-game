@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://world_scene"]
+[gd_scene load_steps=10 format=3 uid="uid://world_scene"]
 
 [ext_resource type="Script" path="res://scripts/overworld/Player.gd" id="1_player"]
 [ext_resource type="Script" path="res://scripts/overworld/FollowCamera.gd" id="2_camera"]
+[ext_resource type="Script" path="res://scripts/overworld/EncounterTrigger.gd" id="3_encounter"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_ground"]
 size = Vector3(20, 0.2, 20)
@@ -16,6 +17,13 @@ size = Vector3(20, 0.2, 20)
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
 radius = 0.3
 height = 1.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_raccoon"]
+radius = 0.4
+height = 0.8
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_encounter"]
+radius = 1.0
 
 [node name="World" type="Node3D"]
 
@@ -50,3 +58,16 @@ transform = Transform3D(1, 0, 0, 0, 0.5, 0.866, 0, -0.866, 0.5, 0, 12, 10)
 current = true
 script = ExtResource("2_camera")
 target_path = NodePath("../Player")
+
+[node name="ChaosRaccoon1" type="Area3D" parent="." groups=["encounters"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.4, 3)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("3_encounter")
+encounter_id = "park_raccoon_01"
+
+[node name="Mesh" type="MeshInstance3D" parent="ChaosRaccoon1"]
+mesh = SubResource("SphereMesh_raccoon")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ChaosRaccoon1"]
+shape = SubResource("SphereShape3D_encounter")
