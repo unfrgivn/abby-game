@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://world_scene"]
+[gd_scene load_steps=17 format=3 uid="uid://world_scene"]
 
 [ext_resource type="Script" path="res://scripts/overworld/Player.gd" id="1_player"]
 [ext_resource type="Script" path="res://scripts/overworld/FollowCamera.gd" id="2_camera"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/overworld/LanternScanner.gd" id="4_lantern"]
 [ext_resource type="Script" path="res://scripts/overworld/HiddenNote.gd" id="5_hidden_note"]
 [ext_resource type="Resource" path="res://data/notes/park_bench_note.tres" id="6_note_def"]
+[ext_resource type="Script" path="res://scripts/arcade/ClawMachine.gd" id="7_claw"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_ground"]
 size = Vector3(20, 0.2, 20)
@@ -33,6 +34,12 @@ size = Vector3(0.3, 0.4, 0.05)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_note"]
 size = Vector3(0.5, 0.5, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_claw"]
+size = Vector3(1.0, 1.5, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_claw"]
+size = Vector3(1.5, 1.5, 1.5)
 
 [node name="World" type="Node3D"]
 
@@ -96,3 +103,15 @@ mesh = SubResource("BoxMesh_note")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HiddenNote_ParkBench"]
 shape = SubResource("BoxShape3D_note")
+
+[node name="ClawMachine" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.75, -3)
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("7_claw")
+
+[node name="Mesh" type="MeshInstance3D" parent="ClawMachine"]
+mesh = SubResource("BoxMesh_claw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ClawMachine"]
+shape = SubResource("BoxShape3D_claw")

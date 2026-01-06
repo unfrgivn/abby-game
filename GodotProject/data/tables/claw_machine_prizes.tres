@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PrizeTable" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/PrizeTable.gd" id="1"]
+[ext_resource type="Resource" path="res://data/tables/claw_prize_gems_5.tres" id="2"]
+[ext_resource type="Resource" path="res://data/tables/claw_prize_gems_10.tres" id="3"]
+[ext_resource type="Resource" path="res://data/tables/claw_prize_candy.tres" id="4"]
+[ext_resource type="Resource" path="res://data/tables/claw_prize_gems_25.tres" id="5"]
+
+[resource]
+script = ExtResource("1")
+entries = [ExtResource("2"), ExtResource("3"), ExtResource("4"), ExtResource("5")]
