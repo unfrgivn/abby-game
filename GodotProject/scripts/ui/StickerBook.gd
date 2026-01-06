@@ -61,14 +61,14 @@ func _refresh_inventory() -> void:
 		return
 	
 	for sticker_id in game_state.owned_stickers:
-		var sticker_def: StickerDef = data_registry.get_sticker(sticker_id)
+		var sticker_def: Resource = data_registry.get_sticker(sticker_id)
 		if sticker_def:
 			var btn := _create_sticker_button(sticker_def)
 			inventory_grid.add_child(btn)
 
 
 ## Create a button for a sticker in inventory
-func _create_sticker_button(sticker_def: StickerDef) -> Button:
+func _create_sticker_button(sticker_def: Resource) -> Button:
 	var btn := Button.new()
 	btn.custom_minimum_size = STICKER_BUTTON_SIZE
 	btn.text = sticker_def.name
@@ -77,7 +77,7 @@ func _create_sticker_button(sticker_def: StickerDef) -> Button:
 	# Check if equipped
 	var game_state: Node = get_node_or_null("/root/GameState")
 	if game_state and sticker_def.id in game_state.equipped_stickers:
-		var slot := game_state.equipped_stickers.find(sticker_def.id)
+		var slot: int = game_state.equipped_stickers.find(sticker_def.id)
 		btn.text += "\n[Slot %d]" % (slot + 1)
 	
 	btn.pressed.connect(_on_inventory_sticker_pressed.bind(sticker_def.id))
@@ -95,7 +95,7 @@ func _refresh_loadout() -> void:
 	for i in range(4):
 		var sticker_id: String = game_state.equipped_stickers[i]
 		if sticker_id != "":
-			var sticker_def: StickerDef = data_registry.get_sticker(sticker_id)
+			var sticker_def: Resource = data_registry.get_sticker(sticker_id)
 			if sticker_def:
 				loadout_slots[i].text = sticker_def.name
 			else:
@@ -116,7 +116,7 @@ func _show_detail_panel(sticker_id: String) -> void:
 	if not data_registry:
 		return
 	
-	var sticker_def: StickerDef = data_registry.get_sticker(sticker_id)
+	var sticker_def: Resource = data_registry.get_sticker(sticker_id)
 	if not sticker_def:
 		return
 	
