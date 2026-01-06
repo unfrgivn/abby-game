@@ -1,33 +1,194 @@
-[gd_scene load_steps=2 format=3 uid="uid://battle_scene"]
+[gd_scene load_steps=3 format=3 uid="uid://battle_scene"]
 
 [ext_resource type="Script" path="res://scripts/battle/BattleDirector.gd" id="1_director"]
+[ext_resource type="Script" path="res://scripts/ui/BattleHUD.gd" id="2_hud"]
 
 [node name="BattleScene" type="Node"]
 script = ExtResource("1_director")
 
-[node name="BattleHUD" type="CanvasLayer" parent="."]
-
-[node name="Panel" type="Panel" parent="BattleHUD"]
+[node name="BattleHUD" type="Control" parent="."]
+script = ExtResource("2_hud")
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="DebugLabel" type="Label" parent="BattleHUD/Panel"]
+[node name="Background" type="ColorRect" parent="BattleHUD"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -50.0
-offset_right = 150.0
-offset_bottom = 50.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "BATTLE SCENE
-(Press Escape to exit)"
+color = Color(0.15, 0.18, 0.22, 1)
+
+[node name="PlayerPanel" type="PanelContainer" parent="BattleHUD"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -120.0
+offset_right = 220.0
+offset_bottom = -20.0
+grow_vertical = 0
+
+[node name="VBox" type="VBoxContainer" parent="BattleHUD/PlayerPanel"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="BattleHUD/PlayerPanel/VBox"]
+layout_mode = 2
+text = "Fae"
 horizontal_alignment = 1
-vertical_alignment = 1
+
+[node name="PlayerHPBar" type="ProgressBar" parent="BattleHUD/PlayerPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 10.0
+offset_top = 35.0
+offset_right = 190.0
+offset_bottom = 60.0
+max_value = 50.0
+value = 50.0
+show_percentage = false
+
+[node name="PlayerHPLabel" type="Label" parent="BattleHUD/PlayerPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 10.0
+offset_top = 65.0
+offset_right = 190.0
+offset_bottom = 88.0
+text = "50 / 50"
+horizontal_alignment = 1
+
+[node name="EnemyPanel" type="PanelContainer" parent="BattleHUD"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -220.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 120.0
+grow_horizontal = 0
+
+[node name="EnemyNameLabel" type="Label" parent="BattleHUD/EnemyPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 10.0
+offset_top = 8.0
+offset_right = 190.0
+offset_bottom = 28.0
+text = "Enemy"
+horizontal_alignment = 1
+
+[node name="EnemyHPBar" type="ProgressBar" parent="BattleHUD/EnemyPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 10.0
+offset_top = 35.0
+offset_right = 190.0
+offset_bottom = 60.0
+max_value = 25.0
+value = 25.0
+show_percentage = false
+
+[node name="EnemyHPLabel" type="Label" parent="BattleHUD/EnemyPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 10.0
+offset_top = 65.0
+offset_right = 190.0
+offset_bottom = 88.0
+text = "25 / 25"
+horizontal_alignment = 1
+
+[node name="CommandPanel" type="PanelContainer" parent="BattleHUD"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -180.0
+offset_right = 160.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBox" type="VBoxContainer" parent="BattleHUD/CommandPanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="StickerLabel" type="Label" parent="BattleHUD/CommandPanel/VBox"]
+layout_mode = 2
+text = "Stickers"
+horizontal_alignment = 1
+
+[node name="StickerGrid" type="GridContainer" parent="BattleHUD/CommandPanel"]
+layout_mode = 2
+offset_left = 10.0
+offset_top = 30.0
+offset_right = 310.0
+offset_bottom = 100.0
+columns = 2
+
+[node name="Sticker1" type="Button" parent="BattleHUD/CommandPanel/StickerGrid"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(145, 44)
+layout_mode = 2
+text = "Sticker 1"
+
+[node name="Sticker2" type="Button" parent="BattleHUD/CommandPanel/StickerGrid"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(145, 44)
+layout_mode = 2
+text = "Sticker 2"
+
+[node name="Sticker3" type="Button" parent="BattleHUD/CommandPanel/StickerGrid"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(145, 44)
+layout_mode = 2
+text = "Sticker 3"
+
+[node name="Sticker4" type="Button" parent="BattleHUD/CommandPanel/StickerGrid"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(145, 44)
+layout_mode = 2
+text = "Sticker 4"
+
+[node name="ActionButtons" type="HBoxContainer" parent="BattleHUD/CommandPanel"]
+layout_mode = 2
+offset_left = 10.0
+offset_top = 110.0
+offset_right = 310.0
+offset_bottom = 150.0
+alignment = 1
+
+[node name="DefendButton" type="Button" parent="BattleHUD/CommandPanel/ActionButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 36)
+layout_mode = 2
+text = "Defend"
+
+[node name="RunButton" type="Button" parent="BattleHUD/CommandPanel/ActionButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 36)
+layout_mode = 2
+text = "Run"
+
+[node name="EventLog" type="RichTextLabel" parent="BattleHUD"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 350.0
+offset_bottom = 180.0
+bbcode_enabled = true
+text = ""
+scroll_following = true
