@@ -17,6 +17,7 @@ const STARTER_STICKERS := ["bonk", "glitter_bandage", "pocket_sand"]
 func _ready() -> void:
 	print("[Main] Bootstrap ready.")
 	
+	process_mode = PROCESS_MODE_ALWAYS
 	_setup_new_game_if_needed()
 	
 	# Load initial world scene via SceneRouter
@@ -68,15 +69,17 @@ func _toggle_journal() -> void:
 	if _sticker_book and _sticker_book.visible:
 		_sticker_book.hide()
 	
-	if _journal and _journal.visible:
-		_journal.toggle()
-		return
-	
 	if not _journal:
 		_journal = JOURNAL_SCENE.instantiate()
 		add_child(_journal)
+		_journal.closed.connect(_on_journal_closed)
 	
 	_journal.toggle()
+	get_tree().paused = _journal.visible
+
+
+func _on_journal_closed() -> void:
+	get_tree().paused = false
 
 
 ## Toggle Sticker Book UI

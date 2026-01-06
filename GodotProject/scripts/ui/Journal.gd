@@ -1,6 +1,8 @@
 extends Control
 ## Journal - UI panel showing discovered notes from Blacklight Lantern scanning.
 
+signal closed()
+
 @onready var note_list: ItemList = $Panel/VBox/NoteList
 @onready var note_title: Label = $Panel/VBox/DetailPanel/Title
 @onready var note_body: RichTextLabel = $Panel/VBox/DetailPanel/Body
@@ -19,21 +21,18 @@ func _ready() -> void:
 func _setup_ui() -> void:
 	if note_list:
 		note_list.item_selected.connect(_on_note_selected)
-
-
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("journal"):
-		toggle()
+	
+	var close_btn := get_node_or_null("Panel/VBox/CloseButton")
+	if close_btn:
+		close_btn.pressed.connect(toggle)
 
 
 func toggle() -> void:
 	visible = not visible
 	if visible:
 		refresh()
-		# Pause game while journal is open
-		get_tree().paused = true
 	else:
-		get_tree().paused = false
+		closed.emit()
 
 
 func refresh() -> void:
