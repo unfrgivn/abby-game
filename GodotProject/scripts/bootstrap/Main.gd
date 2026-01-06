@@ -6,6 +6,10 @@ extends Node
 var _sticker_book: Control = null
 const STICKER_BOOK_SCENE := preload("res://scenes/ui/StickerBook.tscn")
 
+## Journal UI (lazy loaded)
+var _journal: Control = null
+const JOURNAL_SCENE := preload("res://scenes/ui/Journal.tscn")
+
 ## Starter stickers granted on new game
 const STARTER_STICKERS := ["bonk", "glitter_bandage", "pocket_sand"]
 
@@ -45,8 +49,12 @@ func _setup_new_game_if_needed() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	# Press J to open Sticker Book / Journal
+	# J key opens Journal
 	if event.is_action_pressed("journal"):
+		_toggle_journal()
+	
+	# I key opens Sticker Book
+	if event.is_action_pressed("open_sticker_book"):
 		_toggle_sticker_book()
 	
 	# Debug: Press B to start a test battle
@@ -54,8 +62,29 @@ func _input(event: InputEvent) -> void:
 		_debug_start_battle()
 
 
+## Toggle Journal UI
+func _toggle_journal() -> void:
+	# Close sticker book if open
+	if _sticker_book and _sticker_book.visible:
+		_sticker_book.hide()
+	
+	if _journal and _journal.visible:
+		_journal.toggle()
+		return
+	
+	if not _journal:
+		_journal = JOURNAL_SCENE.instantiate()
+		add_child(_journal)
+	
+	_journal.toggle()
+
+
 ## Toggle Sticker Book UI
 func _toggle_sticker_book() -> void:
+	# Close journal if open
+	if _journal and _journal.visible:
+		_journal.toggle()
+	
 	if _sticker_book and _sticker_book.visible:
 		_sticker_book.hide()
 		return
