@@ -14,7 +14,7 @@
     "bash": {
       "*": "allow",
       "mv *": "ask",
-      "rm *": "ask"
+      "rm *": "ask",
       "rm -f *.gdkeep": "allow"
     }
   }
