@@ -13,6 +13,7 @@ config_version=5
 GameState="*res://scripts/core/GameState.gd"
 SaveSystem="*res://scripts/core/SaveSystem.gd"
 SceneRouter="*res://scripts/core/SceneRouter.gd"
+DataRegistry="*res://scripts/core/DataRegistry.gd"
 
 [application]
 

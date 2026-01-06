@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EncounterDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/EncounterDef.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "park_raccoon_01"
+enemy_ids = ["chaos_raccoon"]
+first_win_sticker_reward_id = "raccoon_dash"
+gems_reward = 10

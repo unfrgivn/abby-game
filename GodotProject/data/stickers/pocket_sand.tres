@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="StickerDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/StickerDef.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "pocket_sand"
+name = "Pocket Sand"
+description = "Throw sand in the enemy's eyes! Reduces their accuracy for a turn."
+type = "Utility"
+targeting = "SingleEnemy"
+power = 5
+cooldown_turns = 2
