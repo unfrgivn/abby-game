@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://world_scene"]
+[gd_scene load_steps=7 format=3 uid="uid://world_scene"]
 
 [ext_resource type="Script" path="res://scripts/overworld/Player.gd" id="1_player"]
 [ext_resource type="Script" path="res://scripts/overworld/FollowCamera.gd" id="2_camera"]
@@ -7,6 +7,13 @@
 size = Vector3(20, 0.2, 20)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_player"]
+radius = 0.3
+height = 1.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
+size = Vector3(20, 0.2, 20)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
 radius = 0.3
 height = 1.0
 
@@ -19,7 +26,7 @@ mesh = SubResource("BoxMesh_ground")
 [node name="GroundCollider" type="StaticBody3D" parent="Ground"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/GroundCollider"]
-shape = BoxShape3D.new()
+shape = SubResource("BoxShape3D_ground")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.866, -0.354, 0.354, 0, 0.707, 0.707, -0.5, -0.612, 0.612, 5, 10, 5)
@@ -36,7 +43,7 @@ script = ExtResource("1_player")
 mesh = SubResource("CapsuleMesh_player")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
-shape = CapsuleShape3D.new()
+shape = SubResource("CapsuleShape3D_player")
 
 [node name="FollowCamera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.5, 0.866, 0, -0.866, 0.5, 0, 12, 10)

@@ -1,6 +1,5 @@
 extends Node
-class_name DataRegistry
-## Loads and provides access to all game data resources.
+## DataRegistry - Loads and provides access to all game data resources.
 ## Scans data folders on startup and indexes by ID.
 
 var _stickers: Dictionary = {}  # id -> StickerDef
@@ -53,8 +52,8 @@ func _load_resources_from_folder(folder_path: String, expected_class: String) ->
 	return result
 
 
-## Get a sticker by ID
-func get_sticker(sticker_id: String) -> StickerDef:
+## Get a sticker by ID. Returns null if not found.
+func get_sticker(sticker_id: String) -> Resource:
 	return _stickers.get(sticker_id, null)
 
 
@@ -66,13 +65,13 @@ func get_all_sticker_ids() -> Array[String]:
 	return ids
 
 
-## Get an enemy by ID
-func get_enemy(enemy_id: String) -> EnemyDef:
+## Get an enemy by ID. Returns null if not found.
+func get_enemy(enemy_id: String) -> Resource:
 	return _enemies.get(enemy_id, null)
 
 
-## Get an encounter by ID
-func get_encounter(encounter_id: String) -> EncounterDef:
+## Get an encounter by ID. Returns null if not found.
+func get_encounter(encounter_id: String) -> Resource:
 	return _encounters.get(encounter_id, null)
 
 
