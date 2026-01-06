@@ -16,7 +16,7 @@ Pick a Godot 4.x version and record it in two places:
 Recommended: choose a stable 4.x release and do not upgrade during M0/M1.
 
 Fill in here once chosen:
-- Godot version: 4.x.x
+- Godot version: **4.3** (stable)
 
 ## 3) Project path conventions
 This scaffold assumes:

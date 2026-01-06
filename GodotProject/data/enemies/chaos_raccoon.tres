@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EnemyDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/EnemyDef.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "chaos_raccoon"
+name = "Chaos Raccoon"
+max_hp = 25
+speed = 6
+attack_power = 8
+ai_pattern = "Random"

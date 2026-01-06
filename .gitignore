@@ -1,35 +1,26 @@
-# Unity generated
-[Ll]ibrary/
-[Tt]emp/
-[Oo]bj/
-[Bb]uild/
-[Bb]uilds/
-[Ll]ogs/
-[Uu]ser[Ss]ettings/
-[Mm]emoryCaptures/
-[Rr]ecordings/
-Asset[Ss]tore[Tt]ools/
+# Godot 4 generated
+.godot/
+
+# Godot export artifacts
+*.import
+export_presets.cfg.user
+
+# Build outputs
+builds/
+*.x86_64
+*.x86_32
+*.arm64
+*.arm32
 
 # Visual Studio / Rider / IDEs
 .vs/
 .vscode/
 .idea/
 *.csproj
-*.unityproj
 *.sln
 *.suo
 *.user
 *.userprefs
-*.pidb
-*.booproj
-*.svd
-*.pdb
-*.mdb
-*.opendb
-*.VC.db
-
-# Unity meta files (keep these in version control, but ignore OS-generated)
-# *.meta  # DO NOT ignore - Unity needs these
 
 # OS generated
 .DS_Store
@@ -40,30 +31,6 @@ Asset[Ss]tore[Tt]ools/
 ehthumbs.db
 Thumbs.db
 desktop.ini
-
-# Crashlytics
-crashlytics-build.properties
-sysinfo.txt
-
-# Unity packages (optional - uncomment if you don't want to track)
-# Packages/
-
-# Code coverage
-[Cc]ode[Cc]overage/
-
-# Plastic SCM
-*.private.0
-*.private
-.plastic
-.plastic/
-
-# Unity test results
-TestResults*.xml
-
-# Gradle (Android builds)
-*.gradle
-.gradle/
-local.properties
 
 # iOS builds
 *.xcworkspace/
@@ -80,13 +47,6 @@ Pods/
 *.so
 *.dylib
 
-# Addressables
-[Aa]ddressables*/
-ServerData/
-
-# TextMeshPro
-Assets/TextMesh Pro/
-
 # AI image generation outputs
 nanobanana-output/
 
@@ -101,3 +61,7 @@ __WIP__/
 *.local
 credentials.json
 secrets.json
+
+# Mono/.NET (if using C# in Godot)
+.mono/
+data_*/

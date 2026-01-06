@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="StickerDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/StickerDef.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "bonk"
+name = "Bonk"
+description = "A simple but effective bonk on the head. Deals moderate damage."
+type = "Attack"
+targeting = "SingleEnemy"
+power = 15
+cooldown_turns = 0
