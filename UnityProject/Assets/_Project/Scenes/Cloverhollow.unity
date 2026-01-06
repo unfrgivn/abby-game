@@ -2286,27 +2286,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 358105491}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61eff771285894352937eab87f5c0090, type: 3}
+  m_Script: {fileID: 11500000, guid: 79d523735eea945f4b2c288d2418d3e1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: WildsOfCloverhollow::WildsOfCloverhollow.Camera.ThirdPersonCameraController
+  m_EditorClassIdentifier: WildsOfCloverhollow::WildsOfCloverhollow.Camera.TopDownCameraController
   target: {fileID: 0}
+  height: 12
   distance: 8
-  minVerticalAngle: -30
-  maxVerticalAngle: 80
-  defaultVerticalAngle: 35
-  horizontalSpeed: 200
-  verticalSpeed: 200
-  scrollSensitivity: 2
-  invertY: 1
-  positionSmoothTime: 0.1
-  rotationSmoothTime: 0.05
-  enableAutoRecenter: 1
-  recenterWaitTime: 2
-  recenterTime: 1
-  collisionLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  collisionRadius: 0.3
+  followSpeed: 8
+  lookAheadDistance: 2
 --- !u!81 &358105494
 AudioListener:
   m_ObjectHideFlags: 0

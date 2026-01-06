@@ -131,13 +131,7 @@ namespace WildsOfCloverhollow.Editor
             mainCamera.transform.position = new Vector3(0f, 15f, -10f);
             mainCamera.transform.rotation = Quaternion.Euler(55f, 0f, 0f);
             mainCamera.AddComponent<AudioListener>();
-            var cameraController = mainCamera.AddComponent<WildsOfCloverhollow.Camera.ThirdPersonCameraController>();
-            
-            SerializedObject cameraSO = new SerializedObject(cameraController);
-            int defaultLayer = LayerMask.GetMask("Default");
-            int groundLayer = LayerMask.GetMask("Ground");
-            cameraSO.FindProperty("collisionLayers").intValue = defaultLayer | groundLayer;
-            cameraSO.ApplyModifiedPropertiesWithoutUndo();
+            var cameraController = mainCamera.AddComponent<WildsOfCloverhollow.Camera.TopDownCameraController>();
             
             var playerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Project/Prefabs/Characters/Player.prefab");
             if (playerPrefab != null)

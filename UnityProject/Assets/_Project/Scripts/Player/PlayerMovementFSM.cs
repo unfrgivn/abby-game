@@ -1,5 +1,6 @@
 using UnityEngine;
 using WildsOfCloverhollow.Bootstrap;
+using WildsOfCloverhollow.Camera;
 
 namespace WildsOfCloverhollow.Player
 {
@@ -17,7 +18,6 @@ namespace WildsOfCloverhollow.Player
     {
         [Header("References")]
         [SerializeField] private PlayerTuning tuning;
-        [SerializeField] private Transform cameraTransform;
 
         private CharacterController controller;
         private MovementState currentState = MovementState.Grounded;
@@ -65,11 +65,6 @@ namespace WildsOfCloverhollow.Player
         private void Start()
         {
             SubscribeToInput();
-
-            if (cameraTransform == null && UnityEngine.Camera.main != null)
-            {
-                cameraTransform = UnityEngine.Camera.main.transform;
-            }
         }
 
         private void SubscribeToInput()
@@ -324,7 +319,7 @@ namespace WildsOfCloverhollow.Player
 
         private void UpdateGrounded()
         {
-            Vector3 targetVelocity = GetCameraRelativeInput() * tuning.MoveSpeed;
+            Vector3 targetVelocity = GetScreenRelativeInput() * tuning.MoveSpeed;
 
             if (isSprinting && moveInput.sqrMagnitude > 0.1f)
             {
@@ -345,7 +340,7 @@ namespace WildsOfCloverhollow.Player
 
         private void UpdateAirborne()
         {
-            Vector3 targetVelocity = GetCameraRelativeInput() * tuning.MoveSpeed * tuning.AirControlMultiplier;
+            Vector3 targetVelocity = GetScreenRelativeInput() * tuning.MoveSpeed * tuning.AirControlMultiplier;
 
             if (isSprinting)
             {
@@ -380,7 +375,7 @@ namespace WildsOfCloverhollow.Player
 
         private void UpdateGliding()
         {
-            Vector3 targetVelocity = GetCameraRelativeInput() * tuning.MoveSpeed * tuning.GlideSpeedBoost;
+            Vector3 targetVelocity = GetScreenRelativeInput() * tuning.MoveSpeed * tuning.GlideSpeedBoost;
 
             float accelRate = tuning.Acceleration * tuning.AirControlMultiplier;
             velocity.x = Mathf.MoveTowards(velocity.x, targetVelocity.x, accelRate * Time.deltaTime);
@@ -423,21 +418,15 @@ namespace WildsOfCloverhollow.Player
             }
         }
 
-        private Vector3 GetCameraRelativeInput()
+        /// <summary>
+        /// Convert input to world-space movement direction.
+        /// Uses screen-relative controls: up on stick = toward top of screen (+Z world).
+        /// </summary>
+        private Vector3 GetScreenRelativeInput()
         {
-            if (cameraTransform == null)
-            {
-                return new Vector3(moveInput.x, 0f, moveInput.y);
-            }
-
-            Vector3 forward = cameraTransform.forward;
-            Vector3 right = cameraTransform.right;
-            forward.y = 0f;
-            right.y = 0f;
-            forward.Normalize();
-            right.Normalize();
-
-            return (forward * moveInput.y + right * moveInput.x).normalized * moveInput.magnitude;
+            // Fixed top-down camera: input maps directly to world XZ plane
+            // Up on stick = +Z (toward top of screen), Right on stick = +X
+            return TopDownCameraController.InputToWorldDirection(moveInput);
         }
 
         private bool TryConsumeJump()
