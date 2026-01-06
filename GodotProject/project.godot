@@ -14,6 +14,7 @@ GameState="*res://scripts/core/GameState.gd"
 SaveSystem="*res://scripts/core/SaveSystem.gd"
 SceneRouter="*res://scripts/core/SceneRouter.gd"
 DataRegistry="*res://scripts/core/DataRegistry.gd"
+Autotest="*res://scripts/testing/Autotest.gd"
 
 [application]
 
