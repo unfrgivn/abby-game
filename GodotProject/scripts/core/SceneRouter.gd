@@ -16,6 +16,11 @@ const SCENES := {
 var _current_scene: Node = null
 var _current_scene_name: String = ""
 
+## Public getter for current scene name
+var current_scene_name: String:
+	get:
+		return _current_scene_name
+
 ## State for returning from battle
 var _pre_battle_scene: String = ""
 var _pre_battle_position: Vector3 = Vector3.ZERO

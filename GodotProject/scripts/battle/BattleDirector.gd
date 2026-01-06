@@ -3,19 +3,22 @@ class_name BattleDirector
 ## BattleDirector - Bridges EncounterDef → BattleState → BattleHUD.
 ## Manages battle flow, player input, enemy AI, and scene transitions.
 
+const BattleStateClass = preload("res://scripts/battle/BattleState.gd")
+
 const PLAYER_MAX_HP := 50
 const PLAYER_SPEED := 10
 
 var _encounter_id: String = ""
-var _encounter_def: EncounterDef = null
-var _battle_state: BattleState = null
-var _hud: BattleHUD = null
+var _encounter_def: Resource = null  # EncounterDef
+var _battle_state: RefCounted = null  # BattleState
+var _hud: Control = null  # BattleHUD
 
-var _equipped_stickers: Array[StickerDef] = []
+var _equipped_stickers: Array[Resource] = []  # Array of StickerDef
 var _is_processing_turn := false
 
 
 func _ready() -> void:
+	add_to_group("battle")
 	_hud = $BattleHUD
 	
 	# Get encounter from SceneRouter
@@ -49,7 +52,7 @@ func _load_equipped_stickers() -> void:
 		# Fallback: use starter stickers for debug
 		for id in ["bonk", "glitter_bandage", "pocket_sand", ""]:
 			if id != "":
-				var sticker := data_registry.get_sticker(id) if data_registry else null
+				var sticker: Resource = data_registry.get_sticker(id) if data_registry else null
 				_equipped_stickers.append(sticker)
 			else:
 				_equipped_stickers.append(null)
@@ -57,14 +60,14 @@ func _load_equipped_stickers() -> void:
 	
 	for sticker_id in game_state.equipped_stickers:
 		if sticker_id != "":
-			var sticker := data_registry.get_sticker(sticker_id)
+			var sticker: Resource = data_registry.get_sticker(sticker_id)
 			_equipped_stickers.append(sticker)
 		else:
 			_equipped_stickers.append(null)
 
 
 func _start_battle() -> void:
-	_battle_state = BattleState.new()
+	_battle_state = BattleStateClass.new()
 	
 	# Build enemy list from encounter
 	var enemies: Array[Dictionary] = []
@@ -72,7 +75,7 @@ func _start_battle() -> void:
 	
 	if _encounter_def and data_registry:
 		for enemy_id in _encounter_def.enemy_ids:
-			var enemy_def := data_registry.get_enemy(enemy_id)
+			var enemy_def: Resource = data_registry.get_enemy(enemy_id)
 			if enemy_def:
 				enemies.append({
 					"id": enemy_id,
@@ -104,7 +107,7 @@ func _start_battle() -> void:
 	_hud.clear_log()
 	_hud.log_event("Battle started!")
 	
-	var first := _battle_state.get_current_combatant_id()
+	var first: String = _battle_state.get_current_combatant_id()
 	if first == "player":
 		_hud.log_event("Your turn!")
 		_hud.set_commands_enabled(true)
@@ -116,20 +119,20 @@ func _start_battle() -> void:
 
 func _update_hud() -> void:
 	# Update HP bars
-	var player := _battle_state.get_player()
+	var player = _battle_state.get_player()
 	if player:
 		_hud.set_player_hp(player.current_hp, player.max_hp)
 	
-	var enemies := _battle_state.get_enemies()
+	var enemies: Array = _battle_state.get_enemies()
 	if not enemies.is_empty():
-		var enemy := enemies[0]
+		var enemy = enemies[0]
 		_hud.set_enemy_hp(enemy.current_hp, enemy.max_hp, enemy.name)
 	
 	# Update sticker buttons
 	for i in range(4):
-		var sticker: StickerDef = _equipped_stickers[i] if i < _equipped_stickers.size() else null
+		var sticker: Resource = _equipped_stickers[i] if i < _equipped_stickers.size() else null
 		if sticker:
-			var cooldown := player.get_cooldown(sticker.id) if player else 0
+			var cooldown: int = player.get_cooldown(sticker.id) if player else 0
 			_hud.set_sticker_slot(i, sticker.name, cooldown)
 		else:
 			_hud.set_sticker_slot(i, "", 0)
@@ -141,7 +144,7 @@ func _on_sticker_selected(slot: int) -> void:
 	if not _battle_state.is_player_turn():
 		return
 	
-	var sticker: StickerDef = _equipped_stickers[slot] if slot < _equipped_stickers.size() else null
+	var sticker: Resource = _equipped_stickers[slot] if slot < _equipped_stickers.size() else null
 	if not sticker:
 		return
 	
@@ -149,11 +152,11 @@ func _on_sticker_selected(slot: int) -> void:
 	_hud.set_commands_enabled(false)
 	
 	# Find target enemy
-	var enemies := _battle_state.get_enemies()
-	var target_id := enemies[0].id if not enemies.is_empty() else ""
+	var enemies: Array = _battle_state.get_enemies()
+	var target_id: String = enemies[0].id if not enemies.is_empty() else ""
 	
 	# Use sticker
-	var result := _battle_state.use_sticker(
+	var result: Dictionary = _battle_state.use_sticker(
 		"player",
 		sticker.id,
 		sticker.power,
@@ -220,17 +223,17 @@ func _do_enemy_turn() -> void:
 	if _battle_state.is_battle_over():
 		return
 	
-	var current_id := _battle_state.get_current_combatant_id()
-	var combatant := _battle_state.get_combatant(current_id)
+	var current_id: String = _battle_state.get_current_combatant_id()
+	var combatant = _battle_state.get_combatant(current_id)
 	
 	if combatant and not combatant.is_player:
 		# Simple AI: attack player
 		var data_registry: Node = get_node_or_null("/root/DataRegistry")
-		var enemy_def: EnemyDef = null
+		var enemy_def: Resource = null  # EnemyDef
 		if data_registry:
 			enemy_def = data_registry.get_enemy(current_id)
 		
-		var attack_power := enemy_def.attack_power if enemy_def else 8
+		var attack_power: int = enemy_def.attack_power if enemy_def else 8
 		
 		_battle_state.use_sticker(
 			current_id,
@@ -255,15 +258,15 @@ func _do_enemy_turn() -> void:
 
 
 func _on_damage_dealt(target_id: String, amount: int, _source_id: String) -> void:
-	var combatant := _battle_state.get_combatant(target_id)
-	var name := combatant.name if combatant else target_id
-	_hud.log_event("%s took %d damage!" % [name, amount])
+	var combatant = _battle_state.get_combatant(target_id)
+	var cname: String = combatant.name if combatant else target_id
+	_hud.log_event("%s took %d damage!" % [cname, amount])
 
 
 func _on_healing_done(target_id: String, amount: int, _source_id: String) -> void:
-	var combatant := _battle_state.get_combatant(target_id)
-	var name := combatant.name if combatant else target_id
-	_hud.log_event("%s healed %d HP!" % [name, amount])
+	var combatant = _battle_state.get_combatant(target_id)
+	var cname: String = combatant.name if combatant else target_id
+	_hud.log_event("%s healed %d HP!" % [cname, amount])
 
 
 func _on_battle_won() -> void:
@@ -293,12 +296,12 @@ func _grant_rewards() -> void:
 		_hud.log_event("Got %d gems!" % _encounter_def.gems_reward)
 	
 	# Grant first-win sticker
-	var reward_id := _encounter_def.first_win_sticker_reward_id
+	var reward_id: String = _encounter_def.first_win_sticker_reward_id
 	if reward_id != "" and not game_state.is_first_win_claimed(_encounter_id):
 		if game_state.add_sticker(reward_id):
 			var data_registry: Node = get_node_or_null("/root/DataRegistry")
-			var sticker := data_registry.get_sticker(reward_id) if data_registry else null
-			var sticker_name := sticker.name if sticker else reward_id
+			var sticker: Resource = data_registry.get_sticker(reward_id) if data_registry else null
+			var sticker_name: String = sticker.name if sticker else reward_id
 			_hud.log_event("Got new sticker: %s!" % sticker_name)
 		game_state.claim_first_win(_encounter_id)
 
