@@ -41,9 +41,22 @@ func _ready() -> void:
 	
 	# Check for --autotest command line arg
 	if "--autotest" in OS.get_cmdline_args():
-		# Wait for scene to fully load
 		await get_tree().create_timer(1.0).timeout
 		run_all_tests()
+		return
+	
+	# Check for AUTOTEST environment variable (for MCP testing)
+	if OS.get_environment("AUTOTEST") == "1":
+		await get_tree().create_timer(1.0).timeout
+		run_all_tests()
+		return
+	
+	# Check for autotest trigger file (allows MCP to trigger)
+	if FileAccess.file_exists("user://run_autotest"):
+		DirAccess.remove_absolute(OS.get_user_data_dir() + "/run_autotest")
+		await get_tree().create_timer(1.0).timeout
+		run_all_tests()
+		return
 
 
 func _input(event: InputEvent) -> void:
@@ -130,7 +143,7 @@ func _move_player_to(target: Vector3, timeout: float = 5.0) -> bool:
 	var start_time := Time.get_ticks_msec()
 	var timeout_ms := timeout * 1000.0
 	
-	while player.global_position.distance_to(target) > 1.0:
+	while is_instance_valid(player) and player.global_position.distance_to(target) > 1.0:
 		if Time.get_ticks_msec() - start_time > timeout_ms:
 			_log("ERROR: Movement timeout!")
 			return false
@@ -140,6 +153,11 @@ func _move_player_to(target: Vector3, timeout: float = 5.0) -> bool:
 		player.velocity = direction * MOVE_SPEED
 		player.move_and_slide()
 		await get_tree().physics_frame
+	
+	# Player might have been freed (e.g., battle started)
+	if not is_instance_valid(player):
+		_log("Player freed during movement (likely battle triggered)")
+		return true
 	
 	player.velocity = Vector3.ZERO
 	return true
@@ -184,7 +202,7 @@ func _test_03_trigger_and_win_battle() -> void:
 	await _delay(0.5)
 	
 	# Check if battle started (scene changed)
-	var current_scene: String = _scene_router.current_scene if _scene_router else ""
+	var current_scene: String = _scene_router.current_scene_name if _scene_router else ""
 	
 	if current_scene == "battle":
 		_log("Battle triggered automatically!")
@@ -213,22 +231,62 @@ func _test_03_trigger_and_win_battle() -> void:
 
 
 func _simulate_battle_victory() -> void:
-	# Find BattleHUD and simulate clicking attack buttons
-	var huds := get_tree().get_nodes_in_group("battle_hud")
+	# Find BattleHUD and simulate clicking sticker buttons
+	var hud: Control = null
+	var attempts := 0
+	while not hud and attempts < 20:
+		var huds := get_tree().get_nodes_in_group("battle_hud")
+		if huds.size() > 0:
+			hud = huds[0] as Control
+		if not hud:
+			await _delay(0.2)
+			attempts += 1
 	
-	# Simulate 5 turns of attacks
-	for i in range(5):
-		# Emit attack action via Input
-		var action := InputEventAction.new()
-		action.action = "ui_accept"
-		action.pressed = true
-		Input.parse_input_event(action)
-		await _delay(0.3)
-		action.pressed = false
-		Input.parse_input_event(action)
-		await _delay(0.5)
+	if not hud:
+		_log("Could not find BattleHUD, trying direct button approach")
+		# Try to find sticker buttons directly
+		var buttons := get_tree().get_nodes_in_group("sticker_button")
+		if buttons.size() > 0:
+			for i in range(10):  # Max 10 turns
+				if buttons[0] and is_instance_valid(buttons[0]):
+					buttons[0].pressed.emit()
+					await _delay(0.8)
+				else:
+					break
+		return
 	
-	# Wait for battle to resolve
+	# Simulate clicking the first sticker repeatedly until battle ends
+	for turn in range(10):  # Max 10 turns
+		# Check if still in battle
+		var current_scene: String = _scene_router.current_scene_name if _scene_router else ""
+		if current_scene != "battle":
+			_log("Battle ended after %d turns" % turn)
+			break
+		
+		# Find an enabled sticker button and click it
+		var clicked := false
+		var sticker_buttons: Array = hud.get("sticker_buttons") if hud.get("sticker_buttons") else []
+		for i in range(4):
+			if i < sticker_buttons.size():
+				var btn: Button = sticker_buttons[i]
+				if btn and is_instance_valid(btn) and not btn.disabled:
+					# Emit the signal directly on the HUD
+					if hud.has_signal("sticker_selected"):
+						hud.emit_signal("sticker_selected", i)
+					_log("Used sticker slot %d" % i)
+					clicked = true
+					break
+		
+		if not clicked:
+			# All stickers on cooldown, try defend
+			if hud.has_signal("defend_pressed"):
+				hud.emit_signal("defend_pressed")
+			_log("Defended (all stickers on cooldown)")
+		
+		# Wait for turn to process
+		await _delay(1.0)
+	
+	# Wait for battle to resolve and scene to change
 	await _delay(1.0)
 
 
@@ -254,8 +312,19 @@ func _test_04_verify_battle_rewards() -> void:
 func _test_05_move_to_hidden_note() -> void:
 	_step("Move to hidden note")
 	
-	# Wait to return to overworld
-	await _delay(1.0)
+	# Wait to return to overworld after battle
+	var attempts := 0
+	while attempts < 30:
+		var current_scene: String = _scene_router.current_scene_name if _scene_router else ""
+		if current_scene == "world":
+			break
+		await _delay(0.5)
+		attempts += 1
+	
+	if attempts >= 30:
+		_log("WARNING: Still not in overworld after battle")
+	
+	await _delay(0.5)
 	
 	if await _move_player_to(POS_HIDDEN_NOTE):
 		_pass("Moved to hidden note position")

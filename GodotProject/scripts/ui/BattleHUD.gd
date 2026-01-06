@@ -27,6 +27,8 @@ var _sticker_cooldowns: Array[int] = [0, 0, 0, 0]
 
 
 func _ready() -> void:
+	add_to_group("battle_hud")
+	
 	# Connect sticker buttons
 	for i in range(4):
 		var btn := sticker_buttons[i]
