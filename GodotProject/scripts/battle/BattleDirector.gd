@@ -300,7 +300,7 @@ func _grant_rewards() -> void:
 	if reward_id != "" and not game_state.is_first_win_claimed(_encounter_id):
 		if game_state.add_sticker(reward_id):
 			var data_registry: Node = get_node_or_null("/root/DataRegistry")
-			var sticker = data_registry.get_sticker(reward_id) if data_registry else null
+			var sticker: Resource = data_registry.get_sticker(reward_id) if data_registry else null
 			var sticker_name: String = sticker.name if sticker else reward_id
 			_hud.log_event("Got new sticker: %s!" % sticker_name)
 		game_state.claim_first_win(_encounter_id)
