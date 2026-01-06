@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e79872ca233f461bab997209927d9af, type: 3}
   m_Name: Note_01_GlowTime
   m_EditorClassIdentifier: 
   noteId: 05d763c1-0a81-46fc-9e99-4acb426c0b25

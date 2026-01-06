@@ -22,8 +22,11 @@ namespace WildsOfCloverhollow.Tools
         private float revealProgress;
         private bool isRevealed;
         private bool hasStartedReveal;
+        private bool isBeingScanned;
         
         public static event Action<NoteDefinition> OnNoteRevealed;
+        
+        private bool IsLanternActive => BlacklightScanner.Instance != null && BlacklightScanner.Instance.IsActive;
         
         public string GetRevealId()
         {
@@ -51,6 +54,11 @@ namespace WildsOfCloverhollow.Tools
             UpdateVisuals();
         }
         
+        private void Update()
+        {
+            UpdateVisuals();
+        }
+        
         private void CheckIfAlreadyRevealed()
         {
             string noteId = GetRevealId();
@@ -67,18 +75,24 @@ namespace WildsOfCloverhollow.Tools
         
         private void UpdateVisuals()
         {
+            bool showHidden = IsLanternActive && !isRevealed;
+            bool showRevealed = isRevealed;
+            
             if (hiddenVisual != null)
-                hiddenVisual.SetActive(!isRevealed);
+                hiddenVisual.SetActive(showHidden);
                 
             if (revealedVisual != null)
-                revealedVisual.SetActive(isRevealed);
+                revealedVisual.SetActive(showRevealed);
                 
             if (revealProgressVFX != null)
-                revealProgressVFX.SetActive(false);
+                revealProgressVFX.SetActive(isBeingScanned && !isRevealed);
         }
         
         public void OnRevealStart()
         {
+            isBeingScanned = true;
+            UpdateVisuals();
+            
             if (isRevealed)
                 return;
                 
@@ -102,6 +116,7 @@ namespace WildsOfCloverhollow.Tools
                 return;
                 
             isRevealed = true;
+            isBeingScanned = false;
             revealProgress = 1f;
             hasStartedReveal = false;
             
@@ -126,11 +141,15 @@ namespace WildsOfCloverhollow.Tools
         
         public void OnRevealInterrupted()
         {
-            if (isRevealed)
-                return;
-                
             hasStartedReveal = false;
-            revealProgress = 0f;
+            isBeingScanned = false;
+            
+            if (!isRevealed)
+            {
+                revealProgress = 0f;
+            }
+            
+            UpdateVisuals();
             
             if (revealProgressVFX != null)
                 revealProgressVFX.SetActive(false);

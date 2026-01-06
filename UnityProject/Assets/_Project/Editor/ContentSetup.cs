@@ -116,9 +116,8 @@ namespace WildsOfCloverhollow.Editor
                 anchorGO.transform.position = data.Position;
 
                 var persistentId = anchorGO.AddComponent<PersistentId>();
-                var pidSO = new SerializedObject(persistentId);
-                pidSO.FindProperty("id").stringValue = data.Guid;
-                pidSO.ApplyModifiedPropertiesWithoutUndo();
+                persistentId.SetId(data.Guid);
+                EditorUtility.SetDirty(persistentId);
 
                 var spawnAnchor = anchorGO.AddComponent<SpawnAnchor>();
                 var saSO = new SerializedObject(spawnAnchor);
@@ -160,6 +159,131 @@ namespace WildsOfCloverhollow.Editor
                 Position = position;
             }
         }
+
+        #region Test Content Placement
+
+        private static readonly TestNoteData[] CloverhollowTestNotes = new[]
+        {
+            new TestNoteData("05d763c1-0a81-46fc-9e99-4acb426c0b25", "HiddenNote_GlowTime", new Vector3(-57f, 0.5f, 58f)),
+            new TestNoteData("3b59327c-3932-4c40-8ce5-15ea485a8898", "HiddenNote_FollowMe", new Vector3(-60f, 0.5f, 35f)),
+            new TestNoteData("773a4316-f5a7-4566-9093-fec4194de64d", "HiddenNote_TrashBandit", new Vector3(18f, 0.5f, 58f)),
+        };
+
+        [MenuItem("Wilds of Cloverhollow/Content/Add Test Notes to Cloverhollow", priority = 103)]
+        public static void AddTestNotesToCloverhollow()
+        {
+            var scene = EditorSceneManager.OpenScene($"{ScenesPath}/Cloverhollow.unity", OpenSceneMode.Single);
+            
+            CreateNoteDatabase();
+            
+            var noteDatabase = AssetDatabase.LoadAssetAtPath<NoteDatabase>($"{ContentPath}/NoteDatabase.asset");
+            if (noteDatabase == null)
+            {
+                Debug.LogError("[ContentSetup] NoteDatabase not found!");
+                return;
+            }
+
+            var notesParent = GameObject.Find("HiddenNotes");
+            if (notesParent != null)
+            {
+                Debug.Log($"[ContentSetup] Found HiddenNotes with {notesParent.transform.childCount} children. Deleting entire object.");
+                Object.DestroyImmediate(notesParent);
+            }
+            
+            notesParent = new GameObject("HiddenNotes");
+            Debug.Log("[ContentSetup] Created fresh HiddenNotes parent.");
+
+            int placedCount = 0;
+            foreach (var data in CloverhollowTestNotes)
+            {
+
+                var noteDefinition = noteDatabase.GetNoteById(data.NoteId);
+                if (noteDefinition == null)
+                {
+                    Debug.LogWarning($"  Note definition not found for ID: {data.NoteId}");
+                    continue;
+                }
+
+                var noteGO = CreateHiddenNoteInstance(data, noteDefinition, noteDatabase);
+                noteGO.transform.SetParent(notesParent.transform);
+                placedCount++;
+                Debug.Log($"  Placed note '{data.Name}' at {data.Position}");
+            }
+
+            EditorSceneManager.MarkSceneDirty(scene);
+            EditorSceneManager.SaveScene(scene);
+            Debug.Log($"[ContentSetup] Added {placedCount} test notes to Cloverhollow scene");
+        }
+
+        private static GameObject CreateHiddenNoteInstance(TestNoteData data, NoteDefinition noteDefinition, NoteDatabase noteDatabase)
+        {
+            var noteGO = new GameObject(data.Name);
+            noteGO.transform.position = data.Position;
+            noteGO.layer = LayerMask.NameToLayer("BlacklightReveal");
+
+            var persistentId = noteGO.AddComponent<PersistentId>();
+            persistentId.SetId(data.NoteId);
+            EditorUtility.SetDirty(persistentId);
+
+            var collider = noteGO.AddComponent<SphereCollider>();
+            collider.isTrigger = true;
+            collider.radius = 0.5f;
+
+            noteGO.AddComponent<WildsOfCloverhollow.Tools.NoteGizmo>();
+
+            var hiddenVisual = new GameObject("HiddenVisual");
+            hiddenVisual.transform.SetParent(noteGO.transform, false);
+            var hiddenCube = new GameObject("GlowCube");
+            hiddenCube.transform.SetParent(hiddenVisual.transform, false);
+            hiddenCube.transform.localScale = new Vector3(1.2f, 1.2f, 0.05f);
+            var hiddenMeshFilter = hiddenCube.AddComponent<MeshFilter>();
+            hiddenMeshFilter.sharedMesh = UnityEditor.AssetDatabase.GetBuiltinExtraResource<Mesh>("Cube.mesh") ?? GetPrimitiveMesh(PrimitiveType.Cube);
+            var hiddenRenderer = hiddenCube.AddComponent<MeshRenderer>();
+            hiddenRenderer.sharedMaterial = GetOrCreateURPMaterial("HiddenGlow", new Color(0.5f, 0f, 1f, 0.8f));
+
+            var revealedVisual = new GameObject("RevealedVisual");
+            revealedVisual.transform.SetParent(noteGO.transform, false);
+            var revealedCube = new GameObject("NoteCube");
+            revealedCube.transform.SetParent(revealedVisual.transform, false);
+            revealedCube.transform.localScale = new Vector3(1f, 1f, 0.05f);
+            var revealedMeshFilter = revealedCube.AddComponent<MeshFilter>();
+            revealedMeshFilter.sharedMesh = UnityEditor.AssetDatabase.GetBuiltinExtraResource<Mesh>("Cube.mesh") ?? GetPrimitiveMesh(PrimitiveType.Cube);
+            var revealedRenderer = revealedCube.AddComponent<MeshRenderer>();
+            revealedRenderer.sharedMaterial = GetOrCreateURPMaterial("RevealedNote", new Color(1f, 1f, 0.2f, 1f));
+            revealedVisual.SetActive(false);
+
+            var revealVFX = new GameObject("RevealProgressVFX");
+            revealVFX.transform.SetParent(noteGO.transform);
+            revealVFX.transform.localPosition = Vector3.zero;
+            revealVFX.SetActive(false);
+
+            var noteReveal = noteGO.AddComponent<NoteReveal>();
+            var nrSO = new SerializedObject(noteReveal);
+            nrSO.FindProperty("noteDefinition").objectReferenceValue = noteDefinition;
+            nrSO.FindProperty("noteDatabase").objectReferenceValue = noteDatabase;
+            nrSO.FindProperty("hiddenVisual").objectReferenceValue = hiddenVisual;
+            nrSO.FindProperty("revealedVisual").objectReferenceValue = revealedVisual;
+            nrSO.FindProperty("revealProgressVFX").objectReferenceValue = revealVFX;
+            nrSO.ApplyModifiedPropertiesWithoutUndo();
+
+            return noteGO;
+        }
+
+        private struct TestNoteData
+        {
+            public string NoteId;
+            public string Name;
+            public Vector3 Position;
+
+            public TestNoteData(string noteId, string name, Vector3 position)
+            {
+                NoteId = noteId;
+                Name = name;
+                Position = position;
+            }
+        }
+
+        #endregion
 
         #region Content Databases and Prefabs
 
@@ -286,9 +410,8 @@ namespace WildsOfCloverhollow.Editor
             root.layer = LayerMask.NameToLayer("BlacklightReveal");
 
             var persistentId = root.AddComponent<PersistentId>();
-            var persistentIdSO = new SerializedObject(persistentId);
-            persistentIdSO.FindProperty("id").stringValue = System.Guid.NewGuid().ToString();
-            persistentIdSO.ApplyModifiedPropertiesWithoutUndo();
+            persistentId.SetId(System.Guid.NewGuid().ToString());
+            EditorUtility.SetDirty(persistentId);
             
             var noteReveal = root.AddComponent<NoteReveal>();
 
@@ -358,9 +481,8 @@ namespace WildsOfCloverhollow.Editor
             root.layer = LayerMask.NameToLayer("Interactable");
 
             var persistentId = root.AddComponent<PersistentId>();
-            var persistentIdSO = new SerializedObject(persistentId);
-            persistentIdSO.FindProperty("id").stringValue = System.Guid.NewGuid().ToString();
-            persistentIdSO.ApplyModifiedPropertiesWithoutUndo();
+            persistentId.SetId(System.Guid.NewGuid().ToString());
+            EditorUtility.SetDirty(persistentId);
             
             var hiddenDoor = root.AddComponent<HiddenDoor>();
 
@@ -388,9 +510,8 @@ namespace WildsOfCloverhollow.Editor
             
             var hiddenDoorReveal = uvRevealArea.AddComponent<HiddenDoorReveal>();
             var uvPersistentId = uvRevealArea.AddComponent<PersistentId>();
-            var uvPersistentIdSO = new SerializedObject(uvPersistentId);
-            uvPersistentIdSO.FindProperty("id").stringValue = System.Guid.NewGuid().ToString();
-            uvPersistentIdSO.ApplyModifiedPropertiesWithoutUndo();
+            uvPersistentId.SetId(System.Guid.NewGuid().ToString());
+            EditorUtility.SetDirty(uvPersistentId);
 
             var uvSymbolVisual = new GameObject("UVSymbolVisual");
             uvSymbolVisual.transform.SetParent(uvRevealArea.transform);
@@ -477,6 +598,15 @@ namespace WildsOfCloverhollow.Editor
             ProjectSetup.EnsureDirectoryExists(MaterialsPath);
             AssetDatabase.CreateAsset(mat, matPath);
             return mat;
+        }
+
+        private static Mesh GetPrimitiveMesh(PrimitiveType primitiveType)
+        {
+            // Create a temporary primitive to extract the mesh
+            var temp = GameObject.CreatePrimitive(primitiveType);
+            var mesh = temp.GetComponent<MeshFilter>().sharedMesh;
+            Object.DestroyImmediate(temp);
+            return mesh;
         }
 
         #endregion

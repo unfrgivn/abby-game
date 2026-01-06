@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e79872ca233f461bab997209927d9af, type: 3}
   m_Name: Note_05_SnackStash
   m_EditorClassIdentifier: 
   noteId: 7568df78-1f0d-4ba6-84d2-ac434c1a651b

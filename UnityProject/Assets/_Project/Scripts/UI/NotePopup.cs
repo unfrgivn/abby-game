@@ -41,6 +41,11 @@ namespace WildsOfCloverhollow.UI
             Hide();
         }
         
+        private void Start()
+        {
+            WildsOfCloverhollow.Tools.NoteReveal.OnNoteRevealed += ShowNote;
+        }
+        
         private void OnDestroy()
         {
             if (Instance == this)
@@ -48,15 +53,7 @@ namespace WildsOfCloverhollow.UI
                 
             if (closeButton != null)
                 closeButton.onClick.RemoveListener(Close);
-        }
-        
-        private void OnEnable()
-        {
-            WildsOfCloverhollow.Tools.NoteReveal.OnNoteRevealed += ShowNote;
-        }
-        
-        private void OnDisable()
-        {
+                
             WildsOfCloverhollow.Tools.NoteReveal.OnNoteRevealed -= ShowNote;
         }
         

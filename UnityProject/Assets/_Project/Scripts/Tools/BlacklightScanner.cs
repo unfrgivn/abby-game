@@ -15,6 +15,9 @@ namespace WildsOfCloverhollow.Tools
         [Header("Layers")]
         [SerializeField] private LayerMask revealableLayer;
         
+        [Header("Debug")]
+        [SerializeField] private bool debugForceActive;
+        
         private bool isActive;
         private float scanTimer;
         private float scanInterval;
@@ -74,6 +77,20 @@ namespace WildsOfCloverhollow.Tools
         
         private void Update()
         {
+            if (debugForceActive && !isActive)
+            {
+                SetLanternActive(true);
+            }
+            else if (!debugForceActive && isActive)
+            {
+                SetLanternActive(false);
+            }
+            
+            if (UnityEngine.Input.GetKeyDown(KeyCode.L))
+            {
+                debugForceActive = !debugForceActive;
+            }
+            
             if (!isActive)
             {
                 DecayProgress();
@@ -91,7 +108,7 @@ namespace WildsOfCloverhollow.Tools
         private void HandleLanternInput()
         {
             var gameState = GameStateManager.Instance?.State;
-            if (gameState == null || !gameState.IsLanternUnlocked)
+            if (gameState != null && !gameState.IsLanternUnlocked)
             {
                 Debug.Log("[BlacklightScanner] Lantern not unlocked yet.");
                 return;
@@ -140,7 +157,10 @@ namespace WildsOfCloverhollow.Tools
         private void PerformScan()
         {
             if (tuning == null)
+            {
+                Debug.LogWarning("[BlacklightScanner] tuning is null!");
                 return;
+            }
                 
             Vector3 origin = scanOrigin.position;
             Vector3 forward = scanOrigin.forward;
@@ -162,7 +182,7 @@ namespace WildsOfCloverhollow.Tools
                     continue;
                     
                 var revealable = collider.GetComponent<IBlacklightRevealable>();
-                if (revealable == null || revealable.IsRevealed)
+                if (revealable == null)
                     continue;
                 
                 Vector3 toTarget = collider.transform.position - origin;

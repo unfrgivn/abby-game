@@ -14,8 +14,15 @@ namespace WildsOfCloverhollow.Bootstrap
         
         private static bool hasBootstrapped;
         
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetStatics()
+        {
+            hasBootstrapped = false;
+        }
+        
         private void Awake()
         {
+            Debug.Log("[Bootstrapper] Awake called, hasBootstrapped=" + hasBootstrapped);
             if (hasBootstrapped)
             {
                 // Duplicate bootstrap scene loaded - destroy this instance
@@ -47,7 +54,8 @@ namespace WildsOfCloverhollow.Bootstrap
             }
             
             Debug.Log($"[Bootstrapper] Loading content scene: {firstContentScene}");
-            SceneManager.LoadSceneAsync(firstContentScene, LoadSceneMode.Additive);
+            var op = SceneManager.LoadSceneAsync(firstContentScene, LoadSceneMode.Additive);
+            op.completed += _ => Debug.Log($"[Bootstrapper] Scene '{firstContentScene}' loaded successfully.");
         }
         
         /// <summary>

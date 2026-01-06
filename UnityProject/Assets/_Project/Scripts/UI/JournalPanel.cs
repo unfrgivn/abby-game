@@ -50,6 +50,12 @@ namespace WildsOfCloverhollow.UI
                 closeDetailButton.onClick.AddListener(CloseDetail);
         }
         
+        private void Start()
+        {
+            if (InputRouter.Instance != null)
+                InputRouter.Instance.OnJournal += ToggleJournal;
+        }
+        
         private void OnDestroy()
         {
             if (Instance == this)
@@ -60,13 +66,13 @@ namespace WildsOfCloverhollow.UI
                 
             if (closeDetailButton != null)
                 closeDetailButton.onClick.RemoveListener(CloseDetail);
+                
+            if (InputRouter.Instance != null)
+                InputRouter.Instance.OnJournal -= ToggleJournal;
         }
         
         private void OnEnable()
         {
-            if (InputRouter.Instance != null)
-                InputRouter.Instance.OnJournal += ToggleJournal;
-                
             if (GameStateManager.Instance?.State != null)
                 GameStateManager.Instance.State.OnNoteDiscovered += OnNoteDiscovered;
                 
@@ -78,9 +84,6 @@ namespace WildsOfCloverhollow.UI
         
         private void OnDisable()
         {
-            if (InputRouter.Instance != null)
-                InputRouter.Instance.OnJournal -= ToggleJournal;
-                
             if (GameStateManager.Instance?.State != null)
                 GameStateManager.Instance.State.OnNoteDiscovered -= OnNoteDiscovered;
         }
