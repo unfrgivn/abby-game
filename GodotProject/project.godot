@@ -8,6 +8,12 @@
 
 config_version=5
 
+[autoload]
+
+GameState="*res://scripts/core/GameState.gd"
+SaveSystem="*res://scripts/core/SaveSystem.gd"
+SceneRouter="*res://scripts/core/SceneRouter.gd"
+
 [application]
 
 config/name="Wilds of Cloverhollow"
